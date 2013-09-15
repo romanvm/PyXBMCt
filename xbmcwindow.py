@@ -36,7 +36,7 @@ class AddonWindow:
     def __init__(self, title=''):
         """Constructor method."""
         self.setImages()
-        self.title_bar = xbmcgui.ControlLabel(-10, -10, 1, 1, title, alignment=ALIGN_CENTER)
+        self.title_bar = xbmcgui.ControlLabel(1, 1, 1, 1, title, alignment=ALIGN_CENTER)
 
     def setImages(self):
         """
