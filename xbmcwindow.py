@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#Licence: GPL v.3 http://www.gnu.org/licenses/gpl.html
 import xbmcgui
 
 # Text alighnment constants. Mixed variants are obtained by bit OR (|)
