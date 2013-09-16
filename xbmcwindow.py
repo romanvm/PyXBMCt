@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# Licence: GPL v.3 http://www.gnu.org/licenses/gpl.html
 import xbmcgui
 
 # Text alighnment constants. Mixed variants are obtained by bit OR (|)
@@ -37,7 +36,7 @@ class AddonWindow:
     def __init__(self, title=''):
         """Constructor method."""
         self.setImages()
-        self.title_bar = xbmcgui.ControlLabel(1, 1, 1, 1, title, alignment=ALIGN_CENTER)
+        self.title_bar = xbmcgui.ControlLabel(-10, -10, 1, 1, title, alignment=ALIGN_CENTER)
 
     def setImages(self):
         """
@@ -166,7 +165,12 @@ class AddonDialogWindow(xbmcgui.WindowDialog, AddonWindow):
     and will raise NotImplementedError exeption!
     """
 
-    def __init__(self, title=''):
+    def __init__(self, title='', id_=-1):
+        if id_ < 0:
+            Id = xbmcgui.getCurrentWindowId()
+        else:
+            Id = id_
+        xbmcgui.WindowDialog.__init__(self, Id)
         AddonWindow.__init__(self, title)
 
 
@@ -181,8 +185,13 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
     and will raise NotImplementedError exeption!
     """
 
-    def __init__(self, title=''):
+    def __init__(self, title='', id_=-1):
         """Constructor method."""
+        if id_ < 0:
+            Id = xbmcgui.getCurrentWindowId()
+        else:
+            Id = id_
+        xbmcgui.Window.__init__(self, Id)
         AddonWindow.__init__(self, title)
         self.main_bg = xbmcgui.ControlImage(0, 0, 1280, 720, self.main_bg_img)
         self.addControl(self.main_bg)
