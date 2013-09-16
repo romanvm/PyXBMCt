@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# Licence: GPL v.3 http://www.gnu.org/licenses/gpl.html
+
 import xbmcgui
 
 # Text alighnment constants. Mixed variants are obtained by bit OR (|)
@@ -36,7 +38,7 @@ class AddonWindow:
     def __init__(self, title=''):
         """Constructor method."""
         self.setImages()
-        self.title_bar = xbmcgui.ControlLabel(-10, -10, 1, 1, title, alignment=ALIGN_CENTER)
+        self.title_bar = xbmcgui.ControlLabel(1, 1, 1, 1, title, alignment=ALIGN_CENTER)
 
     def setImages(self):
         """
