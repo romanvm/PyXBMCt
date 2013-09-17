@@ -66,7 +66,7 @@ class AddonWindow:
         """
         Create a new window with given width and height, and set a backgroudnd and a title bar.
         pos_x, pos_y - coordinates of the top level corner of the window.
-        if pos_x=0, pos_y, the window will be placed at the center of the screen.
+        if pos_x=0, pos_y=0, the window will be placed at the center of the screen.
         """
         self.width = width_
         self.height = height_
