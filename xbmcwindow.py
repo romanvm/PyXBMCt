@@ -65,8 +65,8 @@ class AddonWindow:
     def setGeometry(self, width_, height_, pos_x=0, pos_y=0):
         """
         Create a new window with given width and height, and set a backgroudnd and a title bar.
-        x_, y_ - coordinates of the top level corner of the window.
-        if x_=0, y_=0, the window will be placed at the center of the screen.
+        pos_x, pos_y - coordinates of the top level corner of the window.
+        if pos_x=0, pos_y, the window will be placed at the center of the screen.
         """
         self.width = width_
         self.height = height_
