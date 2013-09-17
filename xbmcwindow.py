@@ -38,7 +38,7 @@ class AddonWindow:
     def __init__(self, title=''):
         """Constructor method."""
         self.setImages()
-        self.title_bar = xbmcgui.ControlLabel(1, 1, 1, 1, title, alignment=ALIGN_CENTER)
+        self.title_bar = xbmcgui.ControlLabel(-10, -10, 1, 1, title, alignment=ALIGN_CENTER, textColor='0xFFFFA500')
 
     def setImages(self):
         """
@@ -130,7 +130,7 @@ class AddonWindow:
         Set window title.
 
         This method must be called *after* (!!!) setGeometry(),
-        otherwise there is some werid bug with all skin text labels set to 'title' text.
+        otherwise there is some werid bug with all skin text labels set to the 'title' text.
         """
         self.title_bar.setLabel(title)
 
@@ -167,12 +167,8 @@ class AddonDialogWindow(xbmcgui.WindowDialog, AddonWindow):
     and will raise NotImplementedError exeption!
     """
 
-    def __init__(self, title='', id_=-1):
-        if id_ < 0:
-            Id = xbmcgui.getCurrentWindowId()
-        else:
-            Id = id_
-        xbmcgui.WindowDialog.__init__(self, Id)
+    def __init__(self, title=''):
+        """Constructor method."""
         AddonWindow.__init__(self, title)
 
 
@@ -187,13 +183,8 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
     and will raise NotImplementedError exeption!
     """
 
-    def __init__(self, title='', id_=-1):
+    def __init__(self, title=''):
         """Constructor method."""
-        if id_ < 0:
-            Id = xbmcgui.getCurrentWindowId()
-        else:
-            Id = id_
-        xbmcgui.Window.__init__(self, Id)
         AddonWindow.__init__(self, title)
         self.main_bg = xbmcgui.ControlImage(0, 0, 1280, 720, self.main_bg_img)
         self.addControl(self.main_bg)
