@@ -180,7 +180,7 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
     """
     Addon UI container with a solid background.
 
-    Control window is displayed on top of the main background image.
+    Control window is displayed on top of the main background image - self.main_bg.
     Video and music visualization are displayed unhindered.
     This abstract class is not supposed be instantiated directly
     and will raise NotImplementedError exeption!
@@ -189,6 +189,7 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
     def __init__(self, title=''):
         """Constructor method."""
         AddonWindow.__init__(self, title)
+        # Fullscreen background image control.
         self.main_bg = xbmcgui.ControlImage(1, 1, 1280, 720, self.main_bg_img)
         self.addControl(self.main_bg)
 
@@ -198,7 +199,7 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
         This method must be fully implemented in a child class
         with a full paths to self.main_bg_img and other images for Control window.
         """
-        # Main background image
+        # Image for the fullscreen background.
         self.main_bg_img = 'SKINDEFAULT.jpg'
         AddonWindow.setImages(self)
 
