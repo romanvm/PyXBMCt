@@ -86,7 +86,7 @@ class AddonWindow:
             self.title_bar.setWidth(self.width - 2 * self.X_MARGIN)
             self.title_bar.setHeight(self.HEADER_HEIGHT)
             self.addControl(self.title_bar)
-        except NameError:
+        except AttributeError:
             raise NotImplementedError('setImages method must be fully implemented in a child class!')
 
     def setGrid(self, rows_, columns_, padding=10):
@@ -105,7 +105,7 @@ class AddonWindow:
             control_y = (self.grid_y + self.tile_height * row) + padding
             control_width = self.tile_width * columnspan - 2 * padding
             control_height = self.tile_height * rowspan - 2 * padding
-        except NameError:
+        except AttributeError:
             raise RuntimeError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
         control.setPosition(control_x, control_y)
         control.setWidth(control_width)
