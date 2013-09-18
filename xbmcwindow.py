@@ -189,7 +189,7 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
     def __init__(self, title=''):
         """Constructor method."""
         AddonWindow.__init__(self, title)
-        self.main_bg = xbmcgui.ControlImage(0, 0, 1280, 720, self.main_bg_img)
+        self.main_bg = xbmcgui.ControlImage(1, 1, 1280, 720, self.main_bg_img)
         self.addControl(self.main_bg)
 
     def setImages(self):
