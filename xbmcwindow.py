@@ -100,10 +100,13 @@ class AddonWindow:
 
     def placeControl(self, control, row, column, rowspan=1, columnspan=1, padding=5):
         """Place control within the window grid layout."""
-        control_x = (self.grid_x + self.tile_width * column) + padding
-        control_y = (self.grid_y + self.tile_height * row) + padding
-        control_width = self.tile_width * columnspan - 2 * padding
-        control_height = self.tile_height * rowspan - 2 * padding
+        try:
+            control_x = (self.grid_x + self.tile_width * column) + padding
+            control_y = (self.grid_y + self.tile_height * row) + padding
+            control_width = self.tile_width * columnspan - 2 * padding
+            control_height = self.tile_height * rowspan - 2 * padding
+        except NameError:
+            raise RuntimeError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
         control.setPosition(control_x, control_y)
         control.setWidth(control_width)
         control.setHeight(control_height)
