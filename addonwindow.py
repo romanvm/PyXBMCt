@@ -40,8 +40,8 @@ class AddonWindow:
     The control windows serves as a parent widget for other XBMC UI controls
     much like Tkinter.Tk or PyQt QWidget class.
     This is an abstract class which is not supposed to be instantiated directly
-    and will raise NotImplementedError exeption.
-    It is designed to be fully implemented in a grand-child class with the second inheritance
+    and will raise exeptions.
+    It is designed to be implemented in a grand-child class with the second inheritance
     from xbmcgui.Window or xbmcgui.WindowDialog in a direct child class.
     """
 
