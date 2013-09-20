@@ -169,9 +169,7 @@ class AddonDialogWindow(xbmcgui.WindowDialog, AddonWindow):
 
     Control window is displayed on top of XBMC UI,
     including video an music visualization!
-    This abstract class is not supposed be instantiated directly
-    and will raise NotImplementedError exeption!
-    """
+        """
 
     def __init__(self, title=''):
         """Constructor method."""
