@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
+#
+# A mini-framework for creating XBMC Python addons with arbitrary UI
+# made of controls - decendants of xbmcgui.Control class.
+#
 # Licence: GPL v.3 http://www.gnu.org/licenses/gpl.html
+
 
 import xbmcgui
 
@@ -25,10 +30,10 @@ ACTION_MOVE_DOWN = 4
 class AddonWindow:
 
     """
-    A mini-framework for an addon control window in XBMC.
+    Top-level control window.
 
     The control windows serves as a parent widget for other XBMC UI controls
-    much like Tkinter.Tk class.
+    much like Tkinter.Tk or PyQt QWidget class.
     This is an abstract class which is not supposed to be instantiated directly
     and will raise NotImplementedError exeption.
     It is designed to be fully implemented in a grand-child class with the second inheritance
