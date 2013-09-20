@@ -52,7 +52,7 @@ class Label(xbmcgui.ControlLabel):
         self.label = Label('Status', angle=45)
     """
     def __new__(cls, *args, **kwargs):
-        return xbmcgui.ControlLabel.__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+        return super(Label, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
 
 
 class FadeLabel(xbmcgui.ControlFadeLabel):
@@ -70,7 +70,7 @@ class FadeLabel(xbmcgui.ControlFadeLabel):
         self.fadelabel = FadeLabel(textColor='0xFFFFFFFF')
     """
     def __new__(cls, *args, **kwargs):
-        return xbmcgui.ControlFadeLabel.__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+        return super(FadeLabel, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
 
 
 class TextBox(xbmcgui.ControlTextBox):
@@ -87,7 +87,7 @@ class TextBox(xbmcgui.ControlTextBox):
         self.textbox = TextBox(textColor='0xFFFFFFFF')
     """
     def __new__(cls, *args, **kwargs):
-        return xbmcgui.ControlTextBox.__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+        return super(TextBox, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
 
 
 class Image(xbmcgui.ControlImage):
@@ -106,7 +106,7 @@ class Image(xbmcgui.ControlImage):
         self.image = Image('picture.jpg', aspectRatio=2)
     """
     def __new__(cls, *args, **kwargs):
-        return xbmcgui.ControlImage.__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+        return super(Image, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
 
 
 class Button(xbmcgui.ControlButton):
@@ -133,7 +133,7 @@ class Button(xbmcgui.ControlButton):
         self.button = Button('Status', font='font14')
     """
     def __new__(cls, *args, **kwargs):
-        return xbmcgui.ControlButton.__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+        return super(Button, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
 
 
 class RadioButton(xbmcgui.ControlRadioButton):
@@ -162,7 +162,7 @@ class RadioButton(xbmcgui.ControlRadioButton):
         self.radiobutton = RadioButton('Status', font='font14')
     """
     def __new__(cls, *args, **kwargs):
-        return xbmcgui.ControlRadioButton.__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+        return super(RadioButton, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
 
 
 class Edit(xbmcgui.ControlEdit):
@@ -189,7 +189,7 @@ class Edit(xbmcgui.ControlEdit):
     - self.edit = Edit('Status')
     """
     def __new__(cls, *args, **kwargs):
-        return xbmcgui.ControlEdit.__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+        return super(Edit, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
 
 
 class List(xbmcgui.ControlList):
@@ -216,7 +216,7 @@ class List(xbmcgui.ControlList):
         self.cList = List('font14', space=5)
     """
     def __new__(cls, *args, **kwargs):
-        return xbmcgui.ControlList.__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+        return super(List, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
 
 
 class Slider(xbmcgui.ControlSlider):
@@ -234,10 +234,65 @@ class Slider(xbmcgui.ControlSlider):
         self.slider = Slider()
     """
     def __new__(cls, *args, **kwargs):
-        return xbmcgui.ControlSlider.__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+        return super(Slider, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
 
 
-class AddonWindow:
+class CheckMark(xbmcgui.ControlCheckMark):
+    """ControlCheckMark class.
+
+    Params:
+    label: string or unicode - text string.
+
+    focusTexture: string - filename for focus texture.
+    noFocusTexture: string - filename for no focus texture.
+    checkWidth: integer - width of checkmark.
+    checkHeight: integer - height of checkmark.
+    _alignment: integer - alignment of label - *Note, see xbfont.h
+    font: string - font used for label text. (e.g. 'font13')
+    textColor: hexstring - color of enabled checkmark's label. (e.g. '0xFFFFFFFF')
+    disabledColor: hexstring - color of disabled checkmark's label. (e.g. '0xFFFF3300')
+
+    Note:
+        After you create the control, you need to add it to the window with placeControl().
+
+    Example:
+        self.checkmark = CheckMark('Status', font='font14')
+    """
+    def __new__(cls, *args, **kwargs):
+        return super(CheckMark, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+
+
+class Progress(xbmcgui.ControlProgress):
+    """ControlProgress class.
+
+    Params:
+    texturebg: string - image filename.
+    textureleft: string - image filename.
+    texturemid: string - image filename.
+    textureright: string - image filename.
+    textureoverlay: string - image filename.
+
+    Note:
+        After you create the control, you need to add it to the window with placeControl().
+
+    Example:
+        self.progress = xbmcgui.ControlProgress()
+    """
+    def __new__(cls, *args, **kwargs):
+        return super(Progress, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+
+
+class Group(xbmcgui.ControlGroup):
+    """ControlGroup class.
+
+    Example:
+        self.group = Group()
+        """
+    def __new__(cls, *args, **kwargs):
+        return super(Group, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+
+
+class AddonWindow(object):
 
     """
     Top-level control window.
@@ -378,7 +433,7 @@ class AddonDialogWindow(xbmcgui.WindowDialog, AddonWindow):
 
     def __init__(self, title=''):
         """Constructor method."""
-        AddonWindow.__init__(self, title)
+        super(AddonDialogWindow, self).__init__(title)
 
 
 class AddonFullWindow(xbmcgui.Window, AddonWindow):
@@ -391,11 +446,11 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
     """
 
     def __new__(cls, title='', *args, **kwargs):
-        return xbmcgui.Window.__new__(cls, *args, **kwargs)
+        return super(AddonFullWindow, cls).__new__(cls, *args, **kwargs)
 
     def __init__(self, title=''):
         """Constructor method."""
-        AddonWindow.__init__(self, title)
+        super(AddonFullWindow, self).__init__(title)
         # Fullscreen background image control.
         self.main_bg = xbmcgui.ControlImage(1, 1, 1280, 720, self.main_bg_img)
         self.addControl(self.main_bg)
@@ -406,7 +461,7 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
         """
         # Image for the fullscreen background.
         self.main_bg_img = os.path.join(_images, 'SKINDEFAULT.jpg')
-        AddonWindow.setImages(self)
+        super(AddonFullWindow, self).setImages()
 
 
 def main():
