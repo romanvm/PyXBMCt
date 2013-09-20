@@ -10,7 +10,7 @@ import xbmcgui, xbmcaddon
 
 _addon = xbmcaddon.Addon()
 _addon_path = _addon.getAddonInfo('path').decode(sys.getfilesystemencoding())
-_images = os.path.join(_addon_path, 'framework')
+_images = os.path.join(_addon_path, 'addonwindow')
 
 
 # Text alighnment constants. Mixed variants are obtained by bit OR (|)
