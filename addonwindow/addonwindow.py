@@ -33,6 +33,210 @@ ACTION_MOVE_UP = 3
 ACTION_MOVE_DOWN = 4
 
 
+class Label(xbmcgui.ControlLabel):
+    """ControlLabel class.
+
+    Parameters:
+    label: string or unicode - text string.
+    font: string - font used for label text. (e.g. 'font13')
+    textColor: hexstring - color of enabled label's label. (e.g. '0xFFFFFFFF')
+    disabledColor: hexstring - color of disabled label's label. (e.g. '0xFFFF3300')
+    alignment: integer - alignment of label - *Note, see xbfont.h
+    hasPath: bool - True=stores a path / False=no path.
+    angle: integer - angle of control. (+ rotates CCW, - rotates CW)"
+
+    Note:
+        After you create the control, you need to add it to the window with placeControl().
+
+    Example:
+        self.label = Label('Status', angle=45)
+    """
+    def __new__(cls, *args, **kwargs):
+        return xbmcgui.ControlLabel.__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+
+
+class FadeLabel(xbmcgui.ControlFadeLabel):
+    """Control that scrolls label text.
+
+    Parameters:
+    font: string - font used for label text. (e.g. 'font13')
+    textColor: hexstring - color of fadelabel's labels. (e.g. '0xFFFFFFFF')
+    alignment: integer - alignment of label - *Note, see xbfont.h
+
+    Note:
+        After you create the control, you need to add it to the window with placeControl().
+
+    Example:
+        self.fadelabel = FadeLabel(textColor='0xFFFFFFFF')
+    """
+    def __new__(cls, *args, **kwargs):
+        return xbmcgui.ControlFadeLabel.__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+
+
+class TextBox(xbmcgui.ControlTextBox):
+    """ControlTextBox class.
+
+    Parameters:
+    font: string - font used for text. (e.g. 'font13')
+    textColor: hexstring - color of textbox's text. (e.g. '0xFFFFFFFF')
+
+    Note:
+        After you create the control, you need to add it to the window with placeControl().
+
+    Example:
+        self.textbox = TextBox(textColor='0xFFFFFFFF')
+    """
+    def __new__(cls, *args, **kwargs):
+        return xbmcgui.ControlTextBox.__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+
+
+class Image(xbmcgui.ControlImage):
+    """ControlImage class.
+
+    Parameters:
+    filename: string - image filename.
+    colorKey: hexString - (example, '0xFFFF3300')
+    aspectRatio: integer - (values 0 = stretch (default), 1 = scale up (crops), 2 = scale down (black bars)
+    colorDiffuse: hexString - (example, '0xC0FF0000' (red tint)).
+
+    Note:
+        After you create the control, you need to add it to the window with placeControl().
+
+    Example:
+        self.image = Image('picture.jpg', aspectRatio=2)
+    """
+    def __new__(cls, *args, **kwargs):
+        return xbmcgui.ControlImage.__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+
+
+class Button(xbmcgui.ControlButton):
+    """ControlButton class.
+
+    Parameters:
+    label: string or unicode - text string.
+    focusTexture: string - filename for focus texture.
+    noFocusTexture: string - filename for no focus texture.
+    textOffsetX: integer - x offset of label.
+    textOffsetY: integer - y offset of label.
+    alignment: integer - alignment of label - *Note, see xbfont.h
+    font: string - font used for label text. (e.g. 'font13')
+    textColor: hexstring - color of enabled button's label. (e.g. '0xFFFFFFFF')
+    disabledColor: hexstring - color of disabled button's label. (e.g. '0xFFFF3300')
+    angle: integer - angle of control. (+ rotates CCW, - rotates CW)
+    shadowColor: hexstring - color of button's label's shadow. (e.g. '0xFF000000')
+    focusedColor: hexstring - color of focused button's label. (e.g. '0xFF00FFFF')
+
+    Note:
+        After you create the control, you need to add it to the window with placeControl().
+
+    Example:
+        self.button = Button('Status', font='font14')
+    """
+    def __new__(cls, *args, **kwargs):
+        return xbmcgui.ControlButton.__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+
+
+class RadioButton(xbmcgui.ControlRadioButton):
+    """ControlRadioButton class.
+
+    Parameters:
+    label: string or unicode - text string.
+    focusTexture: string - filename for focus texture.
+    noFocusTexture: string - filename for no focus texture.
+    textOffsetX: integer - x offset of label.
+    textOffsetY: integer - y offset of label.
+    _alignment: integer - alignment of label - *Note, see xbfont.h
+    font: string - font used for label text. (e.g. 'font13')
+    textColor: hexstring - color of enabled radio button's label. (e.g. '0xFFFFFFFF')
+    disabledColor: hexstring - color of disabled radio button's label. (e.g. '0xFFFF3300')
+    angle: integer - angle of control. (+ rotates CCW, - rotates CW)
+    shadowColor: hexstring - color of radio button's label's shadow. (e.g. '0xFF000000')
+    focusedColor: hexstring - color of focused radio button's label. (e.g. '0xFF00FFFF')
+    TextureRadioFocu: string - filename for radio focus texture.
+    TextureRadioNoFocus: string - filename for radio no focus texture.
+
+    Note:
+        After you create the control, you need to add it to the window with placeControl().
+
+    Example:
+        self.radiobutton = RadioButton('Status', font='font14')
+    """
+    def __new__(cls, *args, **kwargs):
+        return xbmcgui.ControlRadioButton.__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+
+
+class Edit(xbmcgui.ControlEdit):
+    """
+   	ControlEdit class.
+
+    Edit(label[, font, textColor, disabledColor, alignment, focusTexture, noFocusTexture])
+
+    Parameters:
+    label          : string or unicode - text string.
+    font           : [opt] string - font used for label text. (e.g. 'font13')
+    textColor      : [opt] hexstring - color of enabled label's label. (e.g. '0xFFFFFFFF')
+    disabledColor  : [opt] hexstring - color of disabled label's label. (e.g. '0xFFFF3300')
+    _alignment      : [opt] integer - alignment of label - *Note, see xbfont.h
+    focusTexture   : [opt] string - filename for focus texture.
+    noFocusTexture : [opt] string - filename for no focus texture.
+    isPassword     : [opt] bool - if true, mask text value.
+
+    *Note, You can use the above as keywords for arguments and skip certain optional arguments.
+    Once you use a keyword, all following arguments require the keyword.
+    After you create the control, you need to add it to the window with palceControl().
+
+    example:
+    - self.edit = Edit('Status')
+    """
+    def __new__(cls, *args, **kwargs):
+        return xbmcgui.ControlEdit.__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+
+
+class List(xbmcgui.ControlList):
+    """ControlList class.
+
+    Parameters:
+    font: string - font used for items label. (e.g. 'font13')
+    textColor: hexstring - color of items label. (e.g. '0xFFFFFFFF')
+    buttonTexture: string - filename for no focus texture.
+    buttonFocusTexture: string - filename for focus texture.
+    selectedColor: integer - x offset of label.
+    _imageWidth: integer - width of items icon or thumbnail.
+    _imageHeight: integer - height of items icon or thumbnail.
+    _itemTextXOffset: integer - x offset of items label.
+    _itemTextYOffset: integer - y offset of items label.
+    _itemHeight: integer - height of items.
+    _space: integer - space between items.
+    _alignmentY: integer - Y-axis alignment of items label - *Note, see xbfont.h
+
+    Note:
+        After you create the control, you need to add it to the window with placeControl().
+
+    Example:
+        self.cList = List('font14', space=5)
+    """
+    def __new__(cls, *args, **kwargs):
+        return xbmcgui.ControlList.__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+
+
+class Slider(xbmcgui.ControlSlider):
+    """ControlSlider class.
+
+    Parameters:
+    textureback: string - image filename.
+    texture: string - image filename.
+    texturefocus: string - image filename.
+
+    Note:
+        After you create the control, you need to add it to the window with placeControl().
+
+    Example:
+        self.slider = Slider()
+    """
+    def __new__(cls, *args, **kwargs):
+        return xbmcgui.ControlSlider.__new__(cls, -10, -10, 1, 1, *args, **kwargs)
+
+
 class AddonWindow:
 
     """
@@ -162,6 +366,7 @@ class AddonWindow:
         if action == ACTION_PREVIOUS_MENU or action == ACTION_NAV_BACK:
             self.close()
 
+
 class AddonDialogWindow(xbmcgui.WindowDialog, AddonWindow):
 
     """
@@ -184,6 +389,9 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
     Control window is displayed on top of the main background image - self.main_bg.
     Video and music visualization are displayed unhindered.
     """
+
+    def __new__(cls, title='', *args, **kwargs):
+        return xbmcgui.Window.__new__(cls, *args, **kwargs)
 
     def __init__(self, title=''):
         """Constructor method."""
