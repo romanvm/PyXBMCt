@@ -5,8 +5,13 @@
 #
 # Licence: GPL v.3 http://www.gnu.org/licenses/gpl.html
 
+import sys, os
+import xbmcgui, xbmcaddon
 
-import xbmcgui
+_addon = xbmcaddon.Addon()
+_addon_path = _addon.getAddonInfo('path').decode(sys.getfilesystemencoding())
+_images = os.path.join(_addon_path, 'framework')
+
 
 # Text alighnment constants. Mixed variants are obtained by bit OR (|)
 ALIGN_LEFT = 0
@@ -47,16 +52,12 @@ class AddonWindow:
 
     def setImages(self):
         """
-        Set paths to images.
-
-        The code below is the minimal example for implementation in a grand-child class.
-        setImages method must have at least 2 image paths - self.background_img and self.title_background_img -
-        and all geometry adjustment constants fully defined in a grand-child class.
+        Set paths to images and control position adjustment constants.
         """
         # Window background image
-        self.background_img = 'ContentPanel.png'
+        self.background_img = os.path.join(_images, 'ContentPanel.png')
         # Background for the window header
-        self.title_background_img = 'dialogheader.png'
+        self.title_background_img = os.path.join(_images, 'dialogheader.png')
         # Horisontal adjustment for a header background if the main background has transparent edges.
         self.X_MARGIN = 5
         # Vertical adjustment for a header background if the main background has transparent edges
@@ -65,7 +66,6 @@ class AddonWindow:
         self.Y_SHIFT = 4
         # The height of a window header (for the title background and the title label).
         self.HEADER_HEIGHT = 35
-        raise NotImplementedError('setImages method must be fully implemented in a child class!')
 
     def setGeometry(self, width_, height_, pos_x=0, pos_y=0):
         """
@@ -83,16 +83,13 @@ class AddonWindow:
             self.y = 360 - self.height/2
         self.background = xbmcgui.ControlImage(self.x, self.y, self.width, self.height, self.background_img)
         self.addControl(self.background)
-        try:
-            self.title_background = xbmcgui.ControlImage(self.x + self.X_MARGIN, self.y + self.Y_MARGIN + self.Y_SHIFT,
-                                        self.width - 2 * self.X_MARGIN, self.HEADER_HEIGHT, self.title_background_img)
-            self.addControl(self.title_background)
-            self.title_bar.setPosition(self.x + self.X_MARGIN, self.y + self.Y_MARGIN + self.Y_SHIFT)
-            self.title_bar.setWidth(self.width - 2 * self.X_MARGIN)
-            self.title_bar.setHeight(self.HEADER_HEIGHT)
-            self.addControl(self.title_bar)
-        except AttributeError:
-            raise NotImplementedError('setImages method must be fully implemented in a child class!')
+        self.title_background = xbmcgui.ControlImage(self.x + self.X_MARGIN, self.y + self.Y_MARGIN + self.Y_SHIFT,
+                                    self.width - 2 * self.X_MARGIN, self.HEADER_HEIGHT, self.title_background_img)
+        self.addControl(self.title_background)
+        self.title_bar.setPosition(self.x + self.X_MARGIN, self.y + self.Y_MARGIN + self.Y_SHIFT)
+        self.title_bar.setWidth(self.width - 2 * self.X_MARGIN)
+        self.title_bar.setHeight(self.HEADER_HEIGHT)
+        self.addControl(self.title_bar)
 
     def setGrid(self, rows_, columns_, padding=10):
         """Set window grid layout of rows * columns."""
@@ -187,8 +184,6 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
 
     Control window is displayed on top of the main background image - self.main_bg.
     Video and music visualization are displayed unhindered.
-    This abstract class is not supposed be instantiated directly
-    and will raise NotImplementedError exeption!
     """
 
     def __init__(self, title=''):
@@ -201,11 +196,9 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
     def setImages(self):
         """
         Set images.
-        This method must be fully implemented in a child class
-        with a full paths to self.main_bg_img and other images for Control window.
         """
         # Image for the fullscreen background.
-        self.main_bg_img = 'SKINDEFAULT.jpg'
+        self.main_bg_img = os.path.join(_images, 'SKINDEFAULT.jpg')
         AddonWindow.setImages(self)
 
 
