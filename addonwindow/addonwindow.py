@@ -2,6 +2,7 @@
 #
 # A mini-framework for creating XBMC Python addons with arbitrary UI
 # made of controls - decendants of xbmcgui.Control class.
+# The framework uses image textures from XBMC Confluence skin.
 #
 # Licence: GPL v.3 http://www.gnu.org/licenses/gpl.html
 
