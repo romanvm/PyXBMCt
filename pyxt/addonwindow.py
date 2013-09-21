@@ -7,7 +7,7 @@
 # Licence: GPL v.3 http://www.gnu.org/licenses/gpl.html
 
 import sys, os
-import xbmc, xbmcgui, xbmcaddon
+import xbmcgui, xbmcaddon
 
 _addon = xbmcaddon.Addon()
 _addon_path = _addon.getAddonInfo('path').decode(sys.getfilesystemencoding())
@@ -40,6 +40,10 @@ def _set_textures(textures={}, kwargs={}):
             kwargs[texture]
         except KeyError:
             kwargs[texture] = textures[texture]
+
+
+class AddonWindowError(Exception):
+    pass
 
 
 class Label(xbmcgui.ControlLabel):
@@ -346,13 +350,6 @@ class AddonWindow(object):
         """Change the control window size."""
         self.setGeometry(width_, height_)
 
-    def move(self, pos_x, pos_y):
-        """
-        Move the control window to a new position.
-        Both pos_x and pos_y must be > 0.
-        """
-        self.setGeometry(self.width, self.height, pos_x, pos_y)
-
     def setGrid(self, rows_, columns_, padding=5):
         """
         Set window grid layout of rows * columns.
@@ -369,11 +366,11 @@ class AddonWindow(object):
 
     def placeControl(self, control, row, column, rowspan=1, columnspan=1, pad_x=5, pad_y=5):
         """
-        Place control within the window grid layout.
+        Place a control within the window grid layout.
 
-        pad_x, pad_y: horisontal and vertical padding for control's size
-        and aspect adjustments. Negative values can be used to make a control
-        overlap with grid cells next to it, if necessary.
+        pad_x, pad_y: horisontal and vertical padding for control's
+        size and aspect adjustments. Negative values can be used
+        to make a control overlap with grid cells next to it, if necessary.
         Example:
             self.placeControl(self.label, 0, 1)
         """
@@ -383,7 +380,7 @@ class AddonWindow(object):
             control_width = self.tile_width * columnspan - 2 * pad_x
             control_height = self.tile_height * rowspan - 2 * pad_y
         except AttributeError:
-            raise RuntimeError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
+            raise AddonWindowError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
         control.setPosition(control_x, control_y)
         control.setWidth(control_width)
         control.setHeight(control_height)
@@ -425,14 +422,14 @@ class AddonWindow(object):
         try:
             return self.rows
         except AttributeError:
-            raise RuntimeError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
+            raise AddonWindowError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
 
     def getColumns(self):
         """Get grid columns count."""
         try:
             return self.columns
         except AttributeError:
-            raise RuntimeError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
+            raise AddonWindowError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
 
     def onAction(self, action):
         """
