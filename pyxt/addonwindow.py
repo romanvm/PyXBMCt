@@ -43,6 +43,7 @@ def _set_textures(textures={}, kwargs={}):
 
 
 class AddonWindowError(Exception):
+    """Custom exception."""
     pass
 
 
@@ -454,8 +455,7 @@ class AddonDialogWindow(xbmcgui.WindowDialog, AddonWindow):
     class MyAddon(AddonDialogWindow):
         def __init__(self, title='')
             super(MyAddon, self).__init__(title)
-            self.setGeomtry(500, 400)
-            self.setGrid(5, 4)
+            self.setGrid(4, 3)
 
     addon = MyAddon('My Cool Addon')
     addon.doModal
@@ -482,8 +482,7 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
     class MyAddon(AddonFullWindow):
         def __init__(self, title='')
             super(MyAddon, self).__init__(title)
-            self.setGeomtry(500, 400)
-            self.setGrid(5, 4)
+            self.setGrid(4, 3)
 
     addon = MyAddon('My Cool Addon')
     addon.doModal
