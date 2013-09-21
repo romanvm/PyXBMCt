@@ -1,9 +1,11 @@
-A mini-framework for an addon control window in XBMC.
+pyxt
 
-The control windows serves as a parent widget for other XBMC UI controls much like Tkinter.Tk class.
+pyxt is mini-framework which simplifies UI creation for XBMC addons. It works much like PyQt GUI framework (hence the name) and provides a main window and a number of controls (widgets).
 
-Simply add addonwindow directory to your addon directory and use
+The main windows serves as a parent widget for the controls much like QtGui.QWidget class and provides a grid layout manager to place the controls.
 
-from addonwindow.addonwindow import *
+Simply add \pyxt directory to your addon directory and use
+
+from pyxt.addonwindow import *
 
 to acces framework classes and variables.
