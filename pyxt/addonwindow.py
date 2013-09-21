@@ -112,7 +112,7 @@ class Image(xbmcgui.ControlImage):
         After you create the control, you need to add it to the window with placeControl().
 
     Example:
-        self.image = Image('picture.jpg', aspectRatio=2)
+        self.image = Image('d:\images\picture.jpg', aspectRatio=2)
     """
     def __new__(cls, *args, **kwargs):
         return super(Image, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
@@ -486,6 +486,8 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
         """
         Set the main bacground to an image file.
         image: path to an image file as str.
+        Example:
+            self.setBackground('d:\images\bacground.png')
         """
         self.main_bg.setImage(image)
 
