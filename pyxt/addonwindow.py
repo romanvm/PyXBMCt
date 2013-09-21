@@ -470,9 +470,6 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
     def __init__(self, title=''):
         """Constructor method."""
         super(AddonFullWindow, self).__init__(title)
-        # Fullscreen background image control.
-        self.main_bg = xbmcgui.ControlImage(1, 1, 1280, 720, self.main_bg_img)
-        self.addControl(self.main_bg)
 
     def setImages(self):
         """
@@ -480,6 +477,9 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
         """
         # Image for the fullscreen background.
         self.main_bg_img = os.path.join(_images, 'AddonWindow', 'SKINDEFAULT.jpg')
+        # Fullscreen background image control.
+        self.main_bg = xbmcgui.ControlImage(1, 1, 1280, 720, self.main_bg_img)
+        self.addControl(self.main_bg)
         super(AddonFullWindow, self).setImages()
 
     def setBackground(self, image=''):
