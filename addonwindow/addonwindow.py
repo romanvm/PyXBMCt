@@ -7,11 +7,11 @@
 # Licence: GPL v.3 http://www.gnu.org/licenses/gpl.html
 
 import sys, os
-import xbmcgui, xbmcaddon
+import xbmc, xbmcgui, xbmcaddon
 
 _addon = xbmcaddon.Addon()
 _addon_path = _addon.getAddonInfo('path').decode(sys.getfilesystemencoding())
-_images = os.path.join(_addon_path, 'addonwindow')
+_images = os.path.join(_addon_path, 'addonwindow', 'textures', 'default')
 
 
 # Text alighnment constants. Mixed variants are obtained by bit OR (|)
@@ -237,51 +237,6 @@ class Slider(xbmcgui.ControlSlider):
         return super(Slider, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
 
 
-class CheckMark(xbmcgui.ControlCheckMark):
-    """ControlCheckMark class.
-
-    Params:
-    label: string or unicode - text string.
-
-    focusTexture: string - filename for focus texture.
-    noFocusTexture: string - filename for no focus texture.
-    checkWidth: integer - width of checkmark.
-    checkHeight: integer - height of checkmark.
-    _alignment: integer - alignment of label - *Note, see xbfont.h
-    font: string - font used for label text. (e.g. 'font13')
-    textColor: hexstring - color of enabled checkmark's label. (e.g. '0xFFFFFFFF')
-    disabledColor: hexstring - color of disabled checkmark's label. (e.g. '0xFFFF3300')
-
-    Note:
-        After you create the control, you need to add it to the window with placeControl().
-
-    Example:
-        self.checkmark = CheckMark('Status', font='font14')
-    """
-    def __new__(cls, *args, **kwargs):
-        return super(CheckMark, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
-
-
-class Progress(xbmcgui.ControlProgress):
-    """ControlProgress class.
-
-    Params:
-    texturebg: string - image filename.
-    textureleft: string - image filename.
-    texturemid: string - image filename.
-    textureright: string - image filename.
-    textureoverlay: string - image filename.
-
-    Note:
-        After you create the control, you need to add it to the window with placeControl().
-
-    Example:
-        self.progress = xbmcgui.ControlProgress()
-    """
-    def __new__(cls, *args, **kwargs):
-        return super(Progress, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
-
-
 class Group(xbmcgui.ControlGroup):
     """ControlGroup class.
 
@@ -314,10 +269,12 @@ class AddonWindow(object):
         """
         Set paths to images and control position adjustment constants.
         """
+
         # Window background image
-        self.background_img = os.path.join(_images, 'ContentPanel.png')
+        self.background_img = os.path.join(_images, 'AddonWindow', 'ContentPanel.png')
+        print self.background_img
         # Background for the window header
-        self.title_background_img = os.path.join(_images, 'dialogheader.png')
+        self.title_background_img = os.path.join(_images, 'AddonWindow', 'dialogheader.png')
         # Horisontal adjustment for a header background if the main background has transparent edges.
         self.X_MARGIN = 5
         # Vertical adjustment for a header background if the main background has transparent edges
@@ -329,9 +286,13 @@ class AddonWindow(object):
 
     def setGeometry(self, width_, height_, pos_x=0, pos_y=0):
         """
+        Create a new window with given geometry and position.
+
         Create a new window with given width and height, and set a backgroudnd and a title bar.
         pos_x, pos_y - coordinates of the top left corner of the window.
         if pos_x=0, pos_y=0, the window will be placed at the center of the screen.
+        Example:
+            self.setGeometry(500, 500)
         """
         self.width = width_
         self.height = height_
@@ -351,8 +312,13 @@ class AddonWindow(object):
         self.title_bar.setHeight(self.HEADER_HEIGHT)
         self.addControl(self.title_bar)
 
-    def setGrid(self, rows_, columns_, padding=10):
-        """Set window grid layout of rows * columns."""
+    def setGrid(self, rows_, columns_, padding=5):
+        """
+        Set window grid layout of rows * columns.
+
+        Example:
+            self.setGrid(5, 4)
+        """
         self.rows = rows_
         self.columns = columns_
         self.grid_x = self.x + self.X_MARGIN + padding
@@ -360,13 +326,21 @@ class AddonWindow(object):
         self.tile_width = (self.width - 2 * (self.X_MARGIN + padding))/self.columns
         self.tile_height = (self.height - self.HEADER_HEIGHT - self.Y_SHIFT - 2 * (self.Y_MARGIN + padding))/self.rows
 
-    def placeControl(self, control, row, column, rowspan=1, columnspan=1, padding=5):
-        """Place control within the window grid layout."""
+    def placeControl(self, control, row, column, rowspan=1, columnspan=1, pad_x=5, pad_y=5):
+        """
+        Place control within the window grid layout.
+
+        pad_x, pad_y: horisontal and vertical padding for control's size
+        and aspect adjustments. Negative values can be used to make a control
+        overlap with grid cells next to it, if necessary.
+        Example:
+            self.placeControl(self.label, 0, 1)
+        """
         try:
-            control_x = (self.grid_x + self.tile_width * column) + padding
-            control_y = (self.grid_y + self.tile_height * row) + padding
-            control_width = self.tile_width * columnspan - 2 * padding
-            control_height = self.tile_height * rowspan - 2 * padding
+            control_x = (self.grid_x + self.tile_width * column) + pad_x
+            control_y = (self.grid_y + self.tile_height * row) + pad_y
+            control_width = self.tile_width * columnspan - 2 * pad_x
+            control_height = self.tile_height * rowspan - 2 * pad_y
         except AttributeError:
             raise RuntimeError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
         control.setPosition(control_x, control_y)
@@ -394,8 +368,10 @@ class AddonWindow(object):
         """
         Set window title.
 
-        This method must be called *after* (!!!) setGeometry(),
+        This method must be called AFTER (!!!) setGeometry(),
         otherwise there is some werid bug with all skin text labels set to the 'title' text.
+        Example:
+            self.setTitle('My Cool Addon')
         """
         self.title_bar.setLabel(title)
 
@@ -429,7 +405,18 @@ class AddonDialogWindow(xbmcgui.WindowDialog, AddonWindow):
 
     Control window is displayed on top of XBMC UI,
     including video an music visualization!
-        """
+    Minimal example:
+
+    class MyAddon(AddonDialogWindow):
+        def __init__(self, title='')
+            super(MyAddon, self).__init__(title)
+            self.setGeomtry(500, 400)
+            self.setGrid(5, 4)
+
+    addon = MyAddon('My Cool Addon')
+    addon.doModal
+    del addon
+    """
 
     def __init__(self, title=''):
         """Constructor method."""
@@ -443,6 +430,17 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
 
     Control window is displayed on top of the main background image - self.main_bg.
     Video and music visualization are displayed unhindered.
+    Minimal example:
+
+    class MyAddon(AddonFullWindow):
+        def __init__(self, title='')
+            super(MyAddon, self).__init__(title)
+            self.setGeomtry(500, 400)
+            self.setGrid(5, 4)
+
+    addon = MyAddon('My Cool Addon')
+    addon.doModal
+    del addon
     """
 
     def __new__(cls, title='', *args, **kwargs):
@@ -460,7 +458,7 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
         Set images.
         """
         # Image for the fullscreen background.
-        self.main_bg_img = os.path.join(_images, 'SKINDEFAULT.jpg')
+        self.main_bg_img = os.path.join(_images, 'AddonWindow', 'SKINDEFAULT.jpg')
         super(AddonFullWindow, self).setImages()
 
 
