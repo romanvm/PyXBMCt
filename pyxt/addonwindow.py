@@ -11,7 +11,7 @@ import xbmc, xbmcgui, xbmcaddon
 
 _addon = xbmcaddon.Addon()
 _addon_path = _addon.getAddonInfo('path').decode(sys.getfilesystemencoding())
-_images = os.path.join(_addon_path, 'addonwindow', 'textures', 'default')
+_images = os.path.join(_addon_path, 'pyxt', 'textures', 'default')
 
 
 # Text alighnment constants. Mixed variants are obtained by bit OR (|)
@@ -31,6 +31,15 @@ ACTION_MOVE_LEFT = 1
 ACTION_MOVE_RIGHT = 2
 ACTION_MOVE_UP = 3
 ACTION_MOVE_DOWN = 4
+
+
+def _set_textures(textures={}, kwargs={}):
+    """Set texture arguments for controls."""
+    for texture in textures.keys():
+        try:
+            kwargs[texture]
+        except KeyError:
+            kwargs[texture] = textures[texture]
 
 
 class Label(xbmcgui.ControlLabel):
@@ -133,6 +142,13 @@ class Button(xbmcgui.ControlButton):
         self.button = Button('Status', font='font14')
     """
     def __new__(cls, *args, **kwargs):
+        textures = {'focusTexture': os.path.join(_images, 'Button', 'KeyboardKey.png'),
+                    'noFocusTexture': os.path.join(_images, 'Button', 'KeyboardKeyNF.png')}
+        _set_textures(textures, kwargs)
+        try:
+            kwargs['alignment']
+        except KeyError:
+            kwargs['alignment'] = ALIGN_CENTER
         return super(Button, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
 
 
@@ -152,7 +168,7 @@ class RadioButton(xbmcgui.ControlRadioButton):
     angle: integer - angle of control. (+ rotates CCW, - rotates CW)
     shadowColor: hexstring - color of radio button's label's shadow. (e.g. '0xFF000000')
     focusedColor: hexstring - color of focused radio button's label. (e.g. '0xFF00FFFF')
-    TextureRadioFocu: string - filename for radio focus texture.
+    TextureRadioFocus: string - filename for radio focus texture.
     TextureRadioNoFocus: string - filename for radio no focus texture.
 
     Note:
@@ -162,6 +178,11 @@ class RadioButton(xbmcgui.ControlRadioButton):
         self.radiobutton = RadioButton('Status', font='font14')
     """
     def __new__(cls, *args, **kwargs):
+        textures = {'focusTexture': os.path.join(_images, 'RadioButton', 'MenuItemFO.png'),
+                    'noFocusTexture': os.path.join(_images, 'RadioButton', 'MenuItemNF.png'),
+                    'TextureRadioFocus': os.path.join(_images, 'RadioButton', 'radiobutton-focus.png'),
+                    'TextureRadioNoFocus': os.path.join(_images, 'RadioButton', 'radiobutton-nofocus.png')}
+        _set_textures(textures, kwargs)
         return super(RadioButton, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
 
 
@@ -189,6 +210,9 @@ class Edit(xbmcgui.ControlEdit):
     - self.edit = Edit('Status')
     """
     def __new__(cls, *args, **kwargs):
+        textures = {'focusTexture': os.path.join(_images, 'Edit', 'button-focus.png'),
+                    'noFocusTexture': os.path.join(_images, 'Edit', 'black-back2.png')}
+        _set_textures(textures, kwargs)
         return super(Edit, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
 
 
@@ -216,6 +240,9 @@ class List(xbmcgui.ControlList):
         self.cList = List('font14', space=5)
     """
     def __new__(cls, *args, **kwargs):
+        textures = {'buttonTexture': os.path.join(_images, 'List', 'MenuItemNF.png'),
+                    'buttonFocusTexture': os.path.join(_images, 'List', 'MenuItemFO.png')}
+        _set_textures(textures, kwargs)
         return super(List, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
 
 
@@ -234,17 +261,11 @@ class Slider(xbmcgui.ControlSlider):
         self.slider = Slider()
     """
     def __new__(cls, *args, **kwargs):
+        textures = {'textureback': os.path.join(_images, 'Slider', 'osd_slider_bg.png'),
+                    'texture': os.path.join(_images, 'Slider', 'osd_slider_nibNF.png'),
+                    'texturefocus': os.path.join(_images, 'Slider', 'osd_slider_nib.png')}
+        _set_textures(textures, kwargs)
         return super(Slider, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
-
-
-class Group(xbmcgui.ControlGroup):
-    """ControlGroup class.
-
-    Example:
-        self.group = Group()
-        """
-    def __new__(cls, *args, **kwargs):
-        return super(Group, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
 
 
 class AddonWindow(object):
@@ -460,6 +481,13 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
         # Image for the fullscreen background.
         self.main_bg_img = os.path.join(_images, 'AddonWindow', 'SKINDEFAULT.jpg')
         super(AddonFullWindow, self).setImages()
+
+    def setBackground(self, image=''):
+        """
+        Set the main bacground to an image file.
+        image: path to an image file as str.
+        """
+        self.main_bg.setImage(image)
 
 
 def main():
