@@ -439,6 +439,9 @@ class AddonDialogWindow(xbmcgui.WindowDialog, AddonWindow):
     del addon
     """
 
+    def __new__(cls, title='', *args, **kwargs):
+        return super(AddonDialogWindow, cls).__new__(cls, *args, **kwargs)
+
     def __init__(self, title=''):
         """Constructor method."""
         super(AddonDialogWindow, self).__init__(title)
