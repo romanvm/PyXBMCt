@@ -282,9 +282,19 @@ class AddonWindow(object):
     """
 
     def __init__(self, title=''):
-        """Constructor method."""
+        """
+        Constructor method.
+
+        Creates a new control window with default width and height.
+        """
         self.setImages()
+        self.background = xbmcgui.ControlImage(-10, -10, 1, 1, self.background_img)
+        self.addControl(self.background)
+        self.title_background = xbmcgui.ControlImage(-10, -10, 1, 1, self.title_background_img)
+        self.addControl(self.title_background)
         self.title_bar = xbmcgui.ControlLabel(-10, -10, 1, 1, title, alignment=ALIGN_CENTER, textColor='0xFFFFA500')
+        self.addControl(self.title_bar)
+        self.setGeometry(300, 300)
 
     def setImages(self):
         """
@@ -305,11 +315,10 @@ class AddonWindow(object):
         # The height of a window header (for the title background and the title label).
         self.HEADER_HEIGHT = 35
 
-    def setGeometry(self, width_, height_, pos_x=0, pos_y=0):
+    def setGeometry(self, width_, height_, pos_x=-1, pos_y=-1):
         """
-        Create a new window with given geometry and position.
+        Set control window width, height and coordinates (optional).
 
-        Create a new window with given width and height, and set a backgroudnd and a title bar.
         pos_x, pos_y - coordinates of the top left corner of the window.
         if pos_x=0, pos_y=0, the window will be placed at the center of the screen.
         Example:
@@ -317,21 +326,32 @@ class AddonWindow(object):
         """
         self.width = width_
         self.height = height_
-        if pos_x and pos_y:
+        if pos_x > 0 and pos_y > 0:
             self.x = pos_x
             self.y = pos_y
         else:
             self.x = 640 - self.width/2
             self.y = 360 - self.height/2
-        self.background = xbmcgui.ControlImage(self.x, self.y, self.width, self.height, self.background_img)
-        self.addControl(self.background)
-        self.title_background = xbmcgui.ControlImage(self.x + self.X_MARGIN, self.y + self.Y_MARGIN + self.Y_SHIFT,
-                                    self.width - 2 * self.X_MARGIN, self.HEADER_HEIGHT, self.title_background_img)
-        self.addControl(self.title_background)
+        self.background.setPosition(self.x, self.y)
+        self.background.setWidth(self.width)
+        self.background.setHeight(self.height)
+        self.title_background.setPosition(self.x + self.X_MARGIN, self.y + self.Y_MARGIN + self.Y_SHIFT)
+        self.title_background.setWidth(self.width - 2 * self.X_MARGIN)
+        self.title_background.setHeight(self.HEADER_HEIGHT)
         self.title_bar.setPosition(self.x + self.X_MARGIN, self.y + self.Y_MARGIN + self.Y_SHIFT)
         self.title_bar.setWidth(self.width - 2 * self.X_MARGIN)
         self.title_bar.setHeight(self.HEADER_HEIGHT)
-        self.addControl(self.title_bar)
+
+    def resize(self, width_, height_):
+        """Change the control window size."""
+        self.setGeometry(width_, height_)
+
+    def move(self, pos_x, pos_y):
+        """
+        Move the control window to a new position.
+        Both pos_x and pos_y must be > 0.
+        """
+        self.setGeometry(self.width, self.height, pos_x, pos_y)
 
     def setGrid(self, rows_, columns_, padding=5):
         """
@@ -402,11 +422,17 @@ class AddonWindow(object):
 
     def getRows(self):
         """Get grid rows count."""
-        return self.rows
+        try:
+            return self.rows
+        except AttributeError:
+            raise RuntimeError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
 
     def getColumns(self):
         """Get grid columns count."""
-        return self.columns
+        try:
+            return self.columns
+        except AttributeError:
+            raise RuntimeError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
 
     def onAction(self, action):
         """
