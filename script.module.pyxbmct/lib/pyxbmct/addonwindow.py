@@ -9,9 +9,10 @@
 import sys, os
 import xbmcgui, xbmcaddon
 
-_addon = xbmcaddon.Addon()
+_ADDON_NAME = 'script.module.pyxbmct'
+_addon = xbmcaddon.Addon(id=_ADDON_NAME)
 _addon_path = _addon.getAddonInfo('path').decode(sys.getfilesystemencoding())
-_images = os.path.join(_addon_path, 'pyxt', 'textures', 'default')
+_images = os.path.join(_addon_path, 'lib', 'pyxbmct', 'textures', 'default')
 
 
 # Text alighnment constants. Mixed variants are obtained by bit OR (|)
@@ -281,9 +282,9 @@ class AddonWindow(object):
     The control windows serves as a parent widget for other XBMC UI controls
     much like Tkinter.Tk or PyQt QWidget class.
     This is an abstract class which is not supposed to be instantiated directly
-    and will raise exeptions.
-    It is designed to be implemented in a grand-child class with the second inheritance
-    from xbmcgui.Window or xbmcgui.WindowDialog in a direct child class.
+    and will raise exeptions. It is designed to be implemented in a grand-child class
+    with the second inheritance from xbmcgui.Window or xbmcgui.WindowDialog
+    in a direct child class.
     """
 
     def __init__(self, title=''):
@@ -299,7 +300,7 @@ class AddonWindow(object):
         self.addControl(self.title_background)
         self.title_bar = xbmcgui.ControlLabel(-10, -10, 1, 1, title, alignment=ALIGN_CENTER, textColor='0xFFFFA500')
         self.addControl(self.title_bar)
-        self.setGeometry(300, 300)
+        self.setGeometry(400, 300)
 
     def setImages(self):
         """
@@ -347,9 +348,6 @@ class AddonWindow(object):
         self.title_bar.setWidth(self.width - 2 * self.X_MARGIN)
         self.title_bar.setHeight(self.HEADER_HEIGHT)
 
-    def resize(self, width_, height_):
-        """Change the control window size."""
-        self.setGeometry(width_, height_)
 
     def setGrid(self, rows_, columns_, padding=5):
         """
@@ -477,6 +475,7 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
 
     Control window is displayed on top of the main background image - self.main_bg.
     Video and music visualization are displayed unhindered.
+    Window ID can be passed as the 2nd positional agrument.
     Minimal example:
 
     class MyAddon(AddonFullWindow):
