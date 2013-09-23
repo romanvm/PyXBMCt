@@ -293,6 +293,8 @@ class AddonWindow(object):
 
         Creates a new control window with default width and height.
         """
+        self.actions_connected = []
+        self.controls_connected = []
         self.setImages()
         self.background = xbmcgui.ControlImage(-10, -10, 1, 1, self.background_img)
         self.addControl(self.background)
@@ -430,42 +432,28 @@ class AddonWindow(object):
         except AttributeError:
             raise AddonWindowError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
 
-    def onAction(self, action):
+    def connectAction(self, action, function):
         """
-        Catch button actions.
-
-        Note that, despite being compared to an integer,
-        action is an instance of xbmcgui.Action class.
+        Connect a key action to a function or a method to be executed
+        when the respective key pressed. lambda can be used to call the function
+        with parameters.
         """
-        if action == ACTION_PREVIOUS_MENU or action == ACTION_NAV_BACK:
-            self.close()
+        self.actions_connected.append([action, function])
 
+    def connectControl(self, control, function):
+        """
+        Connect a control to a function or a method to be executed
+        when the control activated. lambda can be used to call the function
+        with parameters.
+        """
+        self.controls_connected.append([control, function])
 
-class AddonDialogWindow(xbmcgui.WindowDialog, AddonWindow):
-
-    """
-    Addon UI container with a transparent background.
-
-    Control window is displayed on top of XBMC UI,
-    including video an music visualization!
-    Minimal example:
-
-    class MyAddon(AddonDialogWindow):
-        def __init__(self, title='')
-            super(MyAddon, self).__init__(title)
-            self.setGrid(4, 3)
-
-    addon = MyAddon('My Cool Addon')
-    addon.doModal
-    del addon
-    """
-
-    def __new__(cls, title='', *args, **kwargs):
-        return super(AddonDialogWindow, cls).__new__(cls, *args, **kwargs)
-
-    def __init__(self, title=''):
-        """Constructor method."""
-        super(AddonDialogWindow, self).__init__(title)
+    def executeConnected(self, event, connected):
+        """Execute a connected event (an action or a control)."""
+        for item in connected:
+            if event == item[0]:
+                item[1]()
+                break
 
 
 class AddonFullWindow(xbmcgui.Window, AddonWindow):
@@ -492,7 +480,6 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
         return super(AddonFullWindow, cls).__new__(cls, *args, **kwargs)
 
     def __init__(self, title=''):
-        """Constructor method."""
         super(AddonFullWindow, self).__init__(title)
 
     def setImages(self):
@@ -514,6 +501,72 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
             self.setBackground('d:\images\bacground.png')
         """
         self.main_bg.setImage(image)
+
+    def onAction(self, action):
+        """
+        Catch button actions.
+
+        Note that, despite being compared to an integer,
+        action is an instance of xbmcgui.Action class.
+        """
+        if action == ACTION_PREVIOUS_MENU or action == ACTION_NAV_BACK:
+            self.close()
+        else:
+            self.executeConnected(action, self.actions_connected)
+
+    def onControl(self, control):
+        """
+        Catch activated controls.
+
+        Control is an instance of xbmcgui.Control class.
+        """
+        self.executeConnected(control, self.controls_connected)
+
+
+class AddonDialogWindow(xbmcgui.WindowDialog, AddonWindow):
+
+    """
+    Addon UI container with a transparent background.
+
+    Control window is displayed on top of XBMC UI,
+    including video an music visualization!
+    Minimal example:
+
+    class MyAddon(AddonDialogWindow):
+        def __init__(self, title='')
+            super(MyAddon, self).__init__(title)
+            self.setGrid(4, 3)
+
+    addon = MyAddon('My Cool Addon')
+    addon.doModal
+    del addon
+    """
+
+    def __new__(cls, title='', *args, **kwargs):
+        return super(AddonDialogWindow, cls).__new__(cls, *args, **kwargs)
+
+    def __init__(self, title=''):
+        super(AddonDialogWindow, self).__init__(title)
+
+    def onAction(self, action):
+        """
+        Catch button actions.
+
+        Note that, despite being compared to an integer,
+        action is an instance of xbmcgui.Action class.
+        """
+        if action == ACTION_PREVIOUS_MENU or action == ACTION_NAV_BACK:
+            self.close()
+        else:
+            self.executeConnected(action, self.actions_connected)
+
+    def onControl(self, control):
+        """
+        Catch activated controls.
+
+        Control is an instance of xbmcgui.Control class.
+        """
+        self.executeConnected(control, self.controls_connected)
 
 
 def main():
