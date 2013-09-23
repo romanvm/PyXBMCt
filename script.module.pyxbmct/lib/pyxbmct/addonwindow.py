@@ -372,6 +372,7 @@ class AddonWindow(object):
         pad_x, pad_y: horisontal and vertical padding for control's
         size and aspect adjustments. Negative values can be used
         to make a control overlap with grid cells next to it, if necessary.
+        Raises AddonWindowError if a grid has not yet been set.
         Example:
             self.placeControl(self.label, 0, 1)
         """
@@ -419,18 +420,35 @@ class AddonWindow(object):
         return self.title_bar.getLabel()
 
     def getRows(self):
-        """Get grid rows count."""
+        """
+        Get grid rows count.
+        Raises AddonWindowError if a grid has not yet been set.
+        """
         try:
             return self.rows
         except AttributeError:
             raise AddonWindowError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
 
     def getColumns(self):
-        """Get grid columns count."""
+        """
+        Get grid columns count.
+        Raises AddonWindowError if a grid has not yet been set.
+        """
         try:
             return self.columns
         except AttributeError:
             raise AddonWindowError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
+
+    def connect(self, event, function, connected_list):
+        """
+        Connect an event to a function.
+        This is a helper method not to be called directly.
+        """
+        try:
+            self.disconnect(event, connected_list)
+        except AddonWindowError:
+            pass
+        connected_list.append([event, function])
 
     def connectAction(self, action, function):
         """
@@ -438,7 +456,7 @@ class AddonWindow(object):
         when the respective key pressed. lambda can be used to call the function
         with parameters.
         """
-        self.actions_connected.append([action, function])
+        self.connect(action, function, self.actions_connected)
 
     def connectControl(self, control, function):
         """
@@ -446,7 +464,7 @@ class AddonWindow(object):
         when the control activated. lambda can be used to call the function
         with parameters.
         """
-        self.controls_connected.append([control, function])
+        self.connect(control, function, self.controls_connected)
 
     def executeConnected(self, event, connected_list):
         """
@@ -462,11 +480,14 @@ class AddonWindow(object):
         """
         Disconnect an event which is coneected to a function.
         This is a helper method not to be called directly.
+        Raises AddonWindowError if an event is not connected to any function.
         """
         for index in range(len(connected_list)):
             if event == connected_list[index][0]:
                 connected_list.pop(index)
                 break
+        else:
+            raise AddonWindowError('The action or control is not connected!')
 
     def disconnectAction(self, action):
         """Disconnect an action which is coneected to a function."""
@@ -572,7 +593,6 @@ class AddonDialogWindow(xbmcgui.WindowDialog, AddonWindow):
     def onAction(self, action):
         """
         Catch button actions.
-
         Note that, despite being compared to an integer,
         action is an instance of xbmcgui.Action class.
         """
@@ -584,7 +604,6 @@ class AddonDialogWindow(xbmcgui.WindowDialog, AddonWindow):
     def onControl(self, control):
         """
         Catch activated controls.
-
         Control is an instance of xbmcgui.Control class.
         """
         self.executeConnected(control, self.controls_connected)
