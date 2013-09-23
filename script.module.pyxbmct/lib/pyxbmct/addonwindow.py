@@ -274,7 +274,7 @@ class Slider(xbmcgui.ControlSlider):
         return super(Slider, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
 
 
-class AddonWindow(object):
+class AbstractWindow(object):
 
     """
     Top-level control window.
@@ -285,9 +285,11 @@ class AddonWindow(object):
     and will raise exeptions. It is designed to be implemented in a grand-child class
     with the second inheritance from xbmcgui.Window or xbmcgui.WindowDialog
     in a direct child class.
+
+    This is a basic "skeleton" for a control window.
     """
 
-    def __init__(self, title=''):
+    def __init__(self):
         """
         Constructor method.
 
@@ -295,33 +297,6 @@ class AddonWindow(object):
         """
         self.actions_connected = []
         self.controls_connected = []
-        self.setImages()
-        self.background = xbmcgui.ControlImage(-10, -10, 1, 1, self.background_img)
-        self.addControl(self.background)
-        self.title_background = xbmcgui.ControlImage(-10, -10, 1, 1, self.title_background_img)
-        self.addControl(self.title_background)
-        self.title_bar = xbmcgui.ControlLabel(-10, -10, 1, 1, title, alignment=ALIGN_CENTER, textColor='0xFFFFA500')
-        self.addControl(self.title_bar)
-        self.setGeometry(400, 300)
-
-    def setImages(self):
-        """
-        Set paths to images and control position adjustment constants.
-        """
-
-        # Window background image
-        self.background_img = os.path.join(_images, 'AddonWindow', 'ContentPanel.png')
-        print self.background_img
-        # Background for the window header
-        self.title_background_img = os.path.join(_images, 'AddonWindow', 'dialogheader.png')
-        # Horisontal adjustment for a header background if the main background has transparent edges.
-        self.X_MARGIN = 5
-        # Vertical adjustment for a header background if the main background has transparent edges
-        self.Y_MARGIN = 5
-        # Header position adjustment if the main backround has visible borders.
-        self.Y_SHIFT = 4
-        # The height of a window header (for the title background and the title label).
-        self.HEADER_HEIGHT = 35
 
     def setGeometry(self, width_, height_, pos_x=-1, pos_y=-1):
         """
@@ -340,18 +315,8 @@ class AddonWindow(object):
         else:
             self.x = 640 - self.width/2
             self.y = 360 - self.height/2
-        self.background.setPosition(self.x, self.y)
-        self.background.setWidth(self.width)
-        self.background.setHeight(self.height)
-        self.title_background.setPosition(self.x + self.X_MARGIN, self.y + self.Y_MARGIN + self.Y_SHIFT)
-        self.title_background.setWidth(self.width - 2 * self.X_MARGIN)
-        self.title_background.setHeight(self.HEADER_HEIGHT)
-        self.title_bar.setPosition(self.x + self.X_MARGIN, self.y + self.Y_MARGIN + self.Y_SHIFT)
-        self.title_bar.setWidth(self.width - 2 * self.X_MARGIN)
-        self.title_bar.setHeight(self.HEADER_HEIGHT)
 
-
-    def setGrid(self, rows_, columns_, padding=5):
+    def setGrid(self, rows_, columns_):
         """
         Set window grid layout of rows * columns.
 
@@ -360,10 +325,13 @@ class AddonWindow(object):
         """
         self.rows = rows_
         self.columns = columns_
-        self.grid_x = self.x + self.X_MARGIN + padding
-        self.grid_y = self.y + self.Y_MARGIN + self.Y_SHIFT + self.HEADER_HEIGHT + padding
-        self.tile_width = (self.width - 2 * (self.X_MARGIN + padding))/self.columns
-        self.tile_height = (self.height - self.HEADER_HEIGHT - self.Y_SHIFT - 2 * (self.Y_MARGIN + padding))/self.rows
+        try:
+            self.grid_x = self.x
+            self.grid_y = self.y
+            self.tile_width = self.width/self.columns
+            self.tile_height = self.height/self.rows
+        except AttributeError:
+            raise AddonWindowError('Window geometry is not defined! Call setGeometry(width, height) first.')
 
     def placeControl(self, control, row, column, rowspan=1, columnspan=1, pad_x=5, pad_y=5):
         """
@@ -382,7 +350,7 @@ class AddonWindow(object):
             control_width = self.tile_width * columnspan - 2 * pad_x
             control_height = self.tile_height * rowspan - 2 * pad_y
         except AttributeError:
-            raise AddonWindowError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
+            raise AddonWindowError('Window grid is not set! Call setGrid(rows#, columns#) first.')
         control.setPosition(control_x, control_y)
         control.setWidth(control_width)
         control.setHeight(control_height)
@@ -390,34 +358,31 @@ class AddonWindow(object):
 
     def getX(self):
         """Get X coordinate of the top-left corner of the window."""
-        return self.x
+        try:
+            return self.x
+        except AttributeError:
+            raise AddonWindowError('Window geometry is not defined! Call setGeometry(width, height) first.')
 
     def getY(self):
         """Get Y coordinate of the top-left corner of the window."""
-        return self.y
+        try:
+            return self.y
+        except AttributeError:
+            raise AddonWindowError('Window geometry is not defined! Call setGeometry(width, height) first.')
 
     def getWindowWidth(self):
         """Get window width."""
-        return self.width
+        try:
+            return self.width
+        except AttributeError:
+            raise AddonWindowError('Window geometry is not defined! Call setGeometry(width, height) first.')
 
     def getWindowHeight(self):
         """Get window height."""
-        return self.height
-
-    def setTitle(self, title=''):
-        """
-        Set window title.
-
-        This method must be called AFTER (!!!) setGeometry(),
-        otherwise there is some werid bug with all skin text labels set to the 'title' text.
-        Example:
-            self.setTitle('My Cool Addon')
-        """
-        self.title_bar.setLabel(title)
-
-    def getTitle(self):
-        """Get windos title."""
-        return self.title_bar.getLabel()
+        try:
+            return self.height
+        except AttributeError:
+            raise AddonWindowError('Window geometry is not defined! Call setGeometry(width, height) first.')
 
     def getRows(self):
         """
@@ -498,6 +463,110 @@ class AddonWindow(object):
         self.disconnect(control, self.controls_connected)
 
 
+class AddonWindow(AbstractWindow):
+
+    """
+    Top-level control window.
+
+    The control windows serves as a parent widget for other XBMC UI controls
+    much like Tkinter.Tk or PyQt QWidget class.
+    This is an abstract class which is not supposed to be instantiated directly
+    and will raise exeptions. It is designed to be implemented in a grand-child class
+    with the second inheritance from xbmcgui.Window or xbmcgui.WindowDialog
+    in a direct child class.
+
+    This class provides a control window with a background and a header
+    similar to top-level widgets of desktop UI frameworks.
+    """
+
+    def __init__(self, title=''):
+        """
+        Constructor method.
+
+        Creates a new control window with default width and height.
+        """
+        super(AddonWindow, self).__init__()
+        self.setFrame(title)
+
+    def setFrame(self, title):
+        """
+        Define paths to images for window background and title background textures,
+        and set control position adjustment constants used in setGrid.
+        """
+        # Window background image
+        self.background_img = os.path.join(_images, 'AddonWindow', 'ContentPanel.png')
+        print self.background_img
+        # Background for a window header
+        self.title_background_img = os.path.join(_images, 'AddonWindow', 'dialogheader.png')
+        # Horisontal adjustment for a header background if the main background has transparent edges.
+        self.X_MARGIN = 5
+        # Vertical adjustment for a header background if the main background has transparent edges
+        self.Y_MARGIN = 5
+        # Header position adjustment if the main backround has visible borders.
+        self.Y_SHIFT = 4
+        # The height of a window header (for the title background and the title label).
+        self.HEADER_HEIGHT = 35
+        self.background = xbmcgui.ControlImage(-10, -10, 1, 1, self.background_img)
+        self.addControl(self.background)
+        self.title_background = xbmcgui.ControlImage(-10, -10, 1, 1, self.title_background_img)
+        self.addControl(self.title_background)
+        self.title_bar = xbmcgui.ControlLabel(-10, -10, 1, 1, title, alignment=ALIGN_CENTER, textColor='0xFFFFA500')
+        self.addControl(self.title_bar)
+
+    def setGeometry(self, width_, height_, pos_x=-1, pos_y=-1):
+        """
+        Set control window width, height and coordinates (optional).
+
+        pos_x, pos_y - coordinates of the top left corner of the window.
+        if pos_x=0, pos_y=0, the window will be placed at the center of the screen.
+        Example:
+            self.setGeometry(500, 500)
+        """
+        super(AddonWindow, self).setGeometry(width_, height_, pos_x, pos_y)
+        self.background.setPosition(self.x, self.y)
+        self.background.setWidth(self.width)
+        self.background.setHeight(self.height)
+        self.title_background.setPosition(self.x + self.X_MARGIN, self.y + self.Y_MARGIN + self.Y_SHIFT)
+        self.title_background.setWidth(self.width - 2 * self.X_MARGIN)
+        self.title_background.setHeight(self.HEADER_HEIGHT)
+        self.title_bar.setPosition(self.x + self.X_MARGIN, self.y + self.Y_MARGIN + self.Y_SHIFT)
+        self.title_bar.setWidth(self.width - 2 * self.X_MARGIN)
+        self.title_bar.setHeight(self.HEADER_HEIGHT)
+
+    def setGrid(self, rows_, columns_, padding=5):
+        """
+        Set window grid layout of rows * columns.
+
+        Example:
+            self.setGrid(5, 4)
+        """
+        self.rows = rows_
+        self.columns = columns_
+        try:
+            self.grid_x = self.x + self.X_MARGIN + padding
+            self.grid_y = self.y + self.Y_MARGIN + self.Y_SHIFT + self.HEADER_HEIGHT + padding
+            self.tile_width = (self.width - 2 * (self.X_MARGIN + padding))/self.columns
+            self.tile_height = (
+                        self.height - self.HEADER_HEIGHT - self.Y_SHIFT - 2 * (self.Y_MARGIN + padding))/self.rows
+        except AttributeError:
+            raise AddonWindowError('Window geometry is not defined! Call setGeometry(width, height) first.')
+
+    def setTitle(self, title=''):
+        """
+        Set window title.
+
+        This method must be called AFTER (!!!) setGeometry(),
+        otherwise there is some werid bug with all skin text labels set to the 'title' text.
+        Example:
+            self.setTitle('My Cool Addon')
+        """
+        self.title_bar.setLabel(title)
+
+    def getTitle(self):
+        """Get windos title."""
+        return self.title_bar.getLabel()
+
+
 class AddonFullWindow(xbmcgui.Window, AddonWindow):
 
     """
@@ -511,6 +580,7 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
     class MyAddon(AddonFullWindow):
         def __init__(self, title='')
             super(MyAddon, self).__init__(title)
+            self.setGeometry(400, 300)
             self.setGrid(4, 3)
 
     addon = MyAddon('My Cool Addon')
@@ -524,16 +594,16 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
     def __init__(self, title=''):
         super(AddonFullWindow, self).__init__(title)
 
-    def setImages(self):
+    def setFrame(self):
         """
-        Set images.
+        Set the image for for the fullscreen background.
         """
         # Image for the fullscreen background.
         self.main_bg_img = os.path.join(_images, 'AddonWindow', 'SKINDEFAULT.jpg')
         # Fullscreen background image control.
         self.main_bg = xbmcgui.ControlImage(1, 1, 1280, 720, self.main_bg_img)
         self.addControl(self.main_bg)
-        super(AddonFullWindow, self).setImages()
+        super(AddonFullWindow, self).setFrame()
 
     def setBackground(self, image=''):
         """
@@ -577,6 +647,7 @@ class AddonDialogWindow(xbmcgui.WindowDialog, AddonWindow):
     class MyAddon(AddonDialogWindow):
         def __init__(self, title='')
             super(MyAddon, self).__init__(title)
+            self.setGeometry(400, 300)
             self.setGrid(4, 3)
 
     addon = MyAddon('My Cool Addon')
@@ -604,6 +675,92 @@ class AddonDialogWindow(xbmcgui.WindowDialog, AddonWindow):
     def onControl(self, control):
         """
         Catch activated controls.
+        Control is an instance of xbmcgui.Control class.
+        """
+        self.executeConnected(control, self.controls_connected)
+
+
+class BlankFullWindow(xbmcgui.Window, AbstractWindow):
+
+    """
+    Addon UI container with a solid background.
+
+    This is a blank window with a black background and without any elements whatsoever.
+    The decoration and layout are completely up to an addon developer.
+    The window controls can hide under video or music visualization.
+
+    Minimal example:
+
+    class MyAddon(BlankFullWindow):
+        def __init__(self)
+            super(MyAddon, self).__init__()
+            self.setGeometry(400, 300)
+            self.setGrid(4, 3)
+
+    addon = MyAddon()
+    addon.doModal
+    del addon
+    """
+
+    def onAction(self, action):
+        """
+        Catch button actions.
+
+        Note that, despite being compared to an integer,
+        action is an instance of xbmcgui.Action class.
+        """
+        if action == ACTION_PREVIOUS_MENU:
+            self.close()
+        else:
+            self.executeConnected(action, self.actions_connected)
+
+    def onControl(self, control):
+        """
+        Catch activated controls.
+
+        Control is an instance of xbmcgui.Control class.
+        """
+        self.executeConnected(control, self.controls_connected)
+
+
+class BlankDialogWindow(xbmcgui.WindowDialog, AbstractWindow):
+
+    """
+    Addon UI container with a transparent background.
+
+    This is a blank window with a transparent background and without any elements whatsoever.
+    The decoration and layout are completely up to an addon developer.
+    The window controls is always displayed over video or music visualization.
+
+    Minimal example:
+
+    class MyAddon(BlankDialogWindow):
+        def __init__(self)
+            super(MyAddon, self).__init__()
+            self.setGeometry(400, 300)
+            self.setGrid(4, 3)
+
+    addon = MyAddon()
+    addon.doModal
+    del addon
+    """
+
+    def onAction(self, action):
+        """
+        Catch button actions.
+
+        Note that, despite being compared to an integer,
+        action is an instance of xbmcgui.Action class.
+        """
+        if action == ACTION_PREVIOUS_MENU:
+            self.close()
+        else:
+            self.executeConnected(action, self.actions_connected)
+
+    def onControl(self, control):
+        """
+        Catch activated controls.
+
         Control is an instance of xbmcgui.Control class.
         """
         self.executeConnected(control, self.controls_connected)
