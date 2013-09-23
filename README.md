@@ -8,6 +8,9 @@ Simply install the framework as an XBMC addon and use
 from pyxbmct.addonwindow import *
 
 to acces framework classes and variables.
+
+The docunentation for the framework classes can be found here: http://romanvm.github.io/PyXBMCt/docs
+
 The framework uses image textures from XBMC Confluence skin.
 
 Licence: GPL v.3 http://www.gnu.org/licenses/gpl.html
