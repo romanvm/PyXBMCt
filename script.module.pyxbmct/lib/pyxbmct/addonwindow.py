@@ -26,8 +26,8 @@ ALIGN_JUSTIFY = 10
 
 # XBMC key action codes.
 # More codes at https://github.com/xbmc/xbmc/blob/master/xbmc/guilib/Key.h
-ACTION_PREVIOUS_MENU = 10
-ACTION_NAV_BACK = 92
+ACTION_PREVIOUS_MENU = 10 # ESC
+ACTION_NAV_BACK = 92 # Backspace
 ACTION_MOVE_LEFT = 1
 ACTION_MOVE_RIGHT = 2
 ACTION_MOVE_UP = 3
@@ -448,12 +448,33 @@ class AddonWindow(object):
         """
         self.controls_connected.append([control, function])
 
-    def executeConnected(self, event, connected):
-        """Execute a connected event (an action or a control)."""
-        for item in connected:
+    def executeConnected(self, event, connected_list):
+        """
+        Execute a connected event (an action or a control).
+        This is a helper method not to be called directly.
+        """
+        for item in connected_list:
             if event == item[0]:
                 item[1]()
                 break
+
+    def disconnect(self, event, connected_list):
+        """
+        Disconnect an event which is coneected to a function.
+        This is a helper method not to be called directly.
+        """
+        for index in range(len(connected_list)):
+            if event == connected_list[index][0]:
+                connected_list.pop(index)
+                break
+
+    def disconnectAction(self, action):
+        """Disconnect an action which is coneected to a function."""
+        self.disconnect(action, self.actions_connected)
+
+    def disconnectControl(self, control):
+        """Disconnect a control which is coneected to a function."""
+        self.disconnect(control, self.controls_connected)
 
 
 class AddonFullWindow(xbmcgui.Window, AddonWindow):
@@ -509,7 +530,7 @@ class AddonFullWindow(xbmcgui.Window, AddonWindow):
         Note that, despite being compared to an integer,
         action is an instance of xbmcgui.Action class.
         """
-        if action == ACTION_PREVIOUS_MENU or action == ACTION_NAV_BACK:
+        if action == ACTION_PREVIOUS_MENU:
             self.close()
         else:
             self.executeConnected(action, self.actions_connected)
@@ -555,7 +576,7 @@ class AddonDialogWindow(xbmcgui.WindowDialog, AddonWindow):
         Note that, despite being compared to an integer,
         action is an instance of xbmcgui.Action class.
         """
-        if action == ACTION_PREVIOUS_MENU or action == ACTION_NAV_BACK:
+        if action == ACTION_PREVIOUS_MENU:
             self.close()
         else:
             self.executeConnected(action, self.actions_connected)
