@@ -7,7 +7,7 @@
 # Licence: GPL v.3 http://www.gnu.org/licenses/gpl.html
 #
 ## @package addonwindow
-#  PyXBMCt framework classes and constants
+#  PyXBMCt framework module
 
 import sys, os
 import xbmcgui, xbmcaddon
