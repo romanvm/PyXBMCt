@@ -495,7 +495,7 @@ class _AddonWindow(_AbstractWindow):
 
         Creates a new control window with default width and height.
         """
-        super(AddonWindow, self).__init__()
+        super(_AddonWindow, self).__init__()
         self.setFrame(title)
 
     def setFrame(self, title):
@@ -532,7 +532,7 @@ class _AddonWindow(_AbstractWindow):
         Example:
             self.setGeometry(500, 500)
         """
-        super(AddonWindow, self).setGeometry(width_, height_, pos_x, pos_y)
+        super(_AddonWindow, self).setGeometry(width_, height_, pos_x, pos_y)
         self.background.setPosition(self.x, self.y)
         self.background.setWidth(self.width)
         self.background.setHeight(self.height)
@@ -585,11 +585,12 @@ class BlankFullWindow(xbmcgui.Window, _AbstractWindow):
     This is a blank window with a black background and without any elements whatsoever.
     The decoration and layout are completely up to an addon developer.
     The window controls can hide under video or music visualization.
-
+    Window ID can be passed as an argument on class instantiation.
     Minimal example:
 
     class MyAddon(BlankFullWindow):
-        def __init__(self)
+
+        def __init__(self, *args, **kwargs):
             super(MyAddon, self).__init__()
             self.setGeometry(400, 300)
             self.setGrid(4, 3)
@@ -632,7 +633,8 @@ class BlankDialogWindow(xbmcgui.WindowDialog, _AbstractWindow):
     Minimal example:
 
     class MyAddon(BlankDialogWindow):
-        def __init__(self)
+
+        def __init__(self):
             super(MyAddon, self).__init__()
             self.setGeometry(400, 300)
             self.setGrid(4, 3)
@@ -670,12 +672,14 @@ class AddonFullWindow(xbmcgui.Window, _AddonWindow):
 
     Control window is displayed on top of the main background image - self.main_bg.
     Video and music visualization are displayed unhindered.
-    Window ID can be passed as the 2nd positional agrument.
+    Window ID can be passed on class instantiation as the 2nd positional agrument.
     Minimal example:
 
     class MyAddon(AddonFullWindow):
-        def __init__(self, title='')
-            super(MyAddon, self).__init__(title)
+
+        def __init__(self, title='', *args, **kwargs):
+
+            super(MyAddon, self).__init__(title):
             self.setGeometry(400, 300)
             self.setGrid(4, 3)
 
@@ -684,13 +688,13 @@ class AddonFullWindow(xbmcgui.Window, _AddonWindow):
     del addon
     """
 
-    def __new__(cls, title='', *args, **kwargs):
-        return super(AddonFullWindow, cls).__new__(cls, *args, **kwargs)
+    def __new__(cls, title='', windowID=-1):
+        return super(AddonFullWindow, cls).__new__(cls, windowID)
 
-    def __init__(self, title=''):
+    def __init__(self, title='', *args, **kwargs):
         super(AddonFullWindow, self).__init__(title)
 
-    def setFrame(self):
+    def setFrame(self, title):
         """
         Set the image for for the fullscreen background.
         """
@@ -699,7 +703,7 @@ class AddonFullWindow(xbmcgui.Window, _AddonWindow):
         # Fullscreen background image control.
         self.main_bg = xbmcgui.ControlImage(1, 1, 1280, 720, self.main_bg_img)
         self.addControl(self.main_bg)
-        super(AddonFullWindow, self).setFrame()
+        super(AddonFullWindow, self).setFrame(title)
 
     def setBackground(self, image=''):
         """
@@ -741,7 +745,8 @@ class AddonDialogWindow(xbmcgui.WindowDialog, _AddonWindow):
     Minimal example:
 
     class MyAddon(AddonDialogWindow):
-        def __init__(self, title='')
+
+        def __init__(self, title=''):
             super(MyAddon, self).__init__(title)
             self.setGeometry(400, 300)
             self.setGrid(4, 3)
@@ -750,9 +755,6 @@ class AddonDialogWindow(xbmcgui.WindowDialog, _AddonWindow):
     addon.doModal
     del addon
     """
-
-    def __new__(cls, title='', *args, **kwargs):
-        return super(AddonDialogWindow, cls).__new__(cls, *args, **kwargs)
 
     def __init__(self, title=''):
         super(AddonDialogWindow, self).__init__(title)
