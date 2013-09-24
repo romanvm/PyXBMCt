@@ -420,6 +420,7 @@ class AbstractWindow(object):
         Connect a key action to a function or a method to be executed
         when the respective key pressed. lambda can be used to call the function
         with parameters.
+        More action codes can be found at https://github.com/xbmc/xbmc/blob/master/xbmc/guilib/Key.h
         """
         self.connect(action, function, self.actions_connected)
 
@@ -730,7 +731,7 @@ class BlankDialogWindow(xbmcgui.WindowDialog, AbstractWindow):
 
     This is a blank window with a transparent background and without any elements whatsoever.
     The decoration and layout are completely up to an addon developer.
-    The window controls is always displayed over video or music visualization.
+    The window controls are always displayed over video or music visualization.
 
     Minimal example:
 
