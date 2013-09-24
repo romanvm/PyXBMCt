@@ -545,7 +545,7 @@ class _AddonWindow(_AbstractWindow):
         Set window grid layout of rows * columns.
 
         Example:
-            self.setGrid(5, 4)
+        self.setGrid(5, 4)
         """
         self.rows = rows_
         self.columns = columns_
@@ -565,7 +565,7 @@ class _AddonWindow(_AbstractWindow):
         This method must be called AFTER (!!!) setGeometry(),
         otherwise there is some werid bug with all skin text labels set to the 'title' text.
         Example:
-            self.setTitle('My Cool Addon')
+        self.setTitle('My Cool Addon')
         """
         self.title_bar.setLabel(title)
 
