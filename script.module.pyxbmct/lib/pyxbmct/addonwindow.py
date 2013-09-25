@@ -558,7 +558,7 @@ class _AddonWindow(_AbstractWindow):
         self.title_bar.setLabel(title)
 
     def getTitle(self):
-        """Get windos title."""
+        """Get window title."""
         return self.title_bar.getLabel()
 
 
@@ -625,7 +625,6 @@ class BlankDialogWindow(xbmcgui.WindowDialog, _AbstractWindow):
 
     addon = MyAddon()
     addon.doModal
-    del addon
     """
 
     def onAction(self, action):
@@ -670,7 +669,6 @@ class AddonFullWindow(xbmcgui.Window, _AddonWindow):
 
     addon = MyAddon('My Cool Addon')
     addon.doModal
-    del addon
     """
 
     def __new__(cls, title='', *args, **kwargs):
@@ -732,7 +730,6 @@ class AddonDialogWindow(xbmcgui.WindowDialog, _AddonWindow):
 
     addon = MyAddon('My Cool Addon')
     addon.doModal
-    del addon
     """
 
     def onAction(self, action):
