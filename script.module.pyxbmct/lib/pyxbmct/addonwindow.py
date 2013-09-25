@@ -298,11 +298,10 @@ class _AbstractWindow(object):
     def setGeometry(self, width_, height_, pos_x=-1, pos_y=-1):
         """
         Set control window width, height and coordinates (optional).
-
         pos_x, pos_y - coordinates of the top left corner of the window.
-        if pos_x=0, pos_y=0, the window will be placed at the center of the screen.
+        If pos_x=0, pos_y=0, the window will be placed at the center of the screen.
         Example:
-            self.setGeometry(500, 500)
+        self.setGeometry(500, 500)
         """
         self.width = width_
         self.height = height_
@@ -316,9 +315,8 @@ class _AbstractWindow(object):
     def setGrid(self, rows_, columns_):
         """
         Set window grid layout of rows * columns.
-
         Example:
-            self.setGrid(5, 4)
+        self.setGrid(5, 4)
         """
         self.rows = rows_
         self.columns = columns_
@@ -339,7 +337,7 @@ class _AbstractWindow(object):
         to make a control overlap with grid cells next to it, if necessary.
         Raises AddonWindowError if a grid has not yet been set.
         Example:
-            self.placeControl(self.label, 0, 1)
+        self.placeControl(self.label, 0, 1)
         """
         try:
             control_x = (self.grid_x + self.tile_width * column) + pad_x
@@ -516,11 +514,10 @@ class _AddonWindow(_AbstractWindow):
     def setGeometry(self, width_, height_, pos_x=-1, pos_y=-1):
         """
         Set control window width, height and coordinates (optional).
-
         pos_x, pos_y - coordinates of the top left corner of the window.
         if pos_x=0, pos_y=0, the window will be placed at the center of the screen.
         Example:
-            self.setGeometry(500, 500)
+        self.setGeometry(500, 500)
         """
         super(_AddonWindow, self).setGeometry(width_, height_, pos_x, pos_y)
         self.background.setPosition(self.x, self.y)
@@ -536,7 +533,6 @@ class _AddonWindow(_AbstractWindow):
     def setGrid(self, rows_, columns_, padding=5):
         """
         Set window grid layout of rows * columns.
-
         Example:
         self.setGrid(5, 4)
         """
@@ -554,7 +550,6 @@ class _AddonWindow(_AbstractWindow):
     def setTitle(self, title=''):
         """
         Set window title.
-
         This method must be called AFTER (!!!) setGeometry(),
         otherwise there is some werid bug with all skin text labels set to the 'title' text.
         Example:
@@ -571,7 +566,6 @@ class BlankFullWindow(xbmcgui.Window, _AbstractWindow):
 
     """
     Addon UI container with a solid background.
-
     This is a blank window with a black background and without any elements whatsoever.
     The decoration and layout are completely up to an addon developer.
     The window controls can hide under video or music visualization.
@@ -597,7 +591,6 @@ class BlankFullWindow(xbmcgui.Window, _AbstractWindow):
     def onAction(self, action):
         """
         Catch button actions.
-
         Note that, despite being compared to an integer,
         action is an instance of xbmcgui.Action class.
         """
@@ -609,7 +602,6 @@ class BlankFullWindow(xbmcgui.Window, _AbstractWindow):
     def onControl(self, control):
         """
         Catch activated controls.
-
         Control is an instance of xbmcgui.Control class.
         """
         self.executeConnected(control, self.controls_connected)
@@ -619,11 +611,9 @@ class BlankDialogWindow(xbmcgui.WindowDialog, _AbstractWindow):
 
     """
     Addon UI container with a transparent background.
-
     This is a blank window with a transparent background and without any elements whatsoever.
     The decoration and layout are completely up to an addon developer.
     The window controls are always displayed over video or music visualization.
-
     Minimal example:
 
     class MyAddon(BlankDialogWindow):
@@ -641,7 +631,6 @@ class BlankDialogWindow(xbmcgui.WindowDialog, _AbstractWindow):
     def onAction(self, action):
         """
         Catch button actions.
-
         Note that, despite being compared to an integer,
         action is an instance of xbmcgui.Action class.
         """
@@ -653,7 +642,6 @@ class BlankDialogWindow(xbmcgui.WindowDialog, _AbstractWindow):
     def onControl(self, control):
         """
         Catch activated controls.
-
         Control is an instance of xbmcgui.Control class.
         """
         self.executeConnected(control, self.controls_connected)
@@ -663,7 +651,6 @@ class AddonFullWindow(xbmcgui.Window, _AddonWindow):
 
     """
     Addon UI container with a solid background.
-
     Control window is displayed on top of the main background image - self.main_bg.
     Video and music visualization are displayed unhindered.
     Window ID can be passed on class instantiation as the 2nd positional agrument
@@ -689,9 +676,6 @@ class AddonFullWindow(xbmcgui.Window, _AddonWindow):
     def __new__(cls, title='', *args, **kwargs):
         return super(AddonFullWindow, cls).__new__(cls, *args, **kwargs)
 
-    def __init__(self, title=''):
-        super(AddonFullWindow, self).__init__(title)
-
     def setFrame(self, title):
         """
         Set the image for for the fullscreen background.
@@ -708,14 +692,13 @@ class AddonFullWindow(xbmcgui.Window, _AddonWindow):
         Set the main bacground to an image file.
         image: path to an image file as str.
         Example:
-            self.setBackground('d:\images\bacground.png')
+        self.setBackground('d:\images\bacground.png')
         """
         self.main_bg.setImage(image)
 
     def onAction(self, action):
         """
         Catch button actions.
-
         Note that, despite being compared to an integer,
         action is an instance of xbmcgui.Action class.
         """
@@ -727,7 +710,6 @@ class AddonFullWindow(xbmcgui.Window, _AddonWindow):
     def onControl(self, control):
         """
         Catch activated controls.
-
         Control is an instance of xbmcgui.Control class.
         """
         self.executeConnected(control, self.controls_connected)
@@ -737,7 +719,6 @@ class AddonDialogWindow(xbmcgui.WindowDialog, _AddonWindow):
 
     """
     Addon UI container with a transparent background.
-
     Control window is displayed on top of XBMC UI,
     including video an music visualization!
     Minimal example:
@@ -753,9 +734,6 @@ class AddonDialogWindow(xbmcgui.WindowDialog, _AddonWindow):
     addon.doModal
     del addon
     """
-
-    def __init__(self, title=''):
-        super(AddonDialogWindow, self).__init__(title)
 
     def onAction(self, action):
         """
