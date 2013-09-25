@@ -285,19 +285,13 @@ class _AbstractWindow(object):
     The control windows serves as a parent widget for other XBMC UI controls
     much like Tkinter.Tk or PyQt QWidget class.
     This is an abstract class which is not supposed to be instantiated directly
-    and will raise exeptions. It is designed to be implemented in a grand-child class
-    with the second inheritance from xbmcgui.Window or xbmcgui.WindowDialog
-    in a direct child class.
+    and will raise exeptions.
 
-    This is a basic "skeleton" for a control window.
+    This class is a basic "skeleton" for a control window.
     """
 
     def __init__(self):
-        """
-        Constructor method.
-
-        Creates a new control window with default width and height.
-        """
+        """Constructor method."""
         self.actions_connected = []
         self.controls_connected = []
 
@@ -447,7 +441,7 @@ class _AbstractWindow(object):
 
     def disconnect(self, event, connected_list):
         """
-        Disconnect an event which is coneected to a function.
+        Disconnect an event from a function.
         This is a helper method not to be called directly.
         Raises AddonWindowError if an event is not connected to any function.
         """
@@ -460,14 +454,14 @@ class _AbstractWindow(object):
 
     def disconnectAction(self, action):
         """
-        Disconnect an action which is coneected to a function.
+        Disconnect an action from a function.
         Raises AddonWindowError if an action is not connected to any function.
         """
         self.disconnect(action, self.actions_connected)
 
     def disconnectControl(self, control):
         """
-        Disconnect a control which is coneected to a function.
+        Disconnect a control from a function.
         Raises AddonWindowError if a control is not connected to any function.
         """
         self.disconnect(control, self.controls_connected)
@@ -490,11 +484,7 @@ class _AddonWindow(_AbstractWindow):
     """
 
     def __init__(self, title=''):
-        """
-        Constructor method.
-
-        Creates a new control window with default width and height.
-        """
+        """Constructor method."""
         super(_AddonWindow, self).__init__()
         self.setFrame(title)
 
@@ -677,7 +667,7 @@ class AddonFullWindow(xbmcgui.Window, _AddonWindow):
     Control window is displayed on top of the main background image - self.main_bg.
     Video and music visualization are displayed unhindered.
     Window ID can be passed on class instantiation as the 2nd positional agrument
-    but __init__ must have the *args as the 2nd fake argument, e.g:
+    but __init__ must have *args as the 2nd fake argument, e.g:
 
     def __init__(self, title='', *args)
 
@@ -784,10 +774,3 @@ class AddonDialogWindow(xbmcgui.WindowDialog, _AddonWindow):
         Control is an instance of xbmcgui.Control class.
         """
         self.executeConnected(control, self.controls_connected)
-
-
-def main():
-    pass
-
-if __name__ == '__main__':
-    main()
