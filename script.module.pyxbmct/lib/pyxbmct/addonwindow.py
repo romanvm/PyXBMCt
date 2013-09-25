@@ -585,12 +585,16 @@ class BlankFullWindow(xbmcgui.Window, _AbstractWindow):
     This is a blank window with a black background and without any elements whatsoever.
     The decoration and layout are completely up to an addon developer.
     The window controls can hide under video or music visualization.
-    Window ID can be passed as an argument on class instantiation.
+    Window ID can be passed on class instantiation an agrument
+    but __init__ must have the *args as a fake argument, e.g:
+
+    def __init__(self, *args)
+
     Minimal example:
 
     class MyAddon(BlankFullWindow):
 
-        def __init__(self, *args, **kwargs):
+        def __init__(self):
             super(MyAddon, self).__init__()
             self.setGeometry(400, 300)
             self.setGrid(4, 3)
@@ -672,12 +676,16 @@ class AddonFullWindow(xbmcgui.Window, _AddonWindow):
 
     Control window is displayed on top of the main background image - self.main_bg.
     Video and music visualization are displayed unhindered.
-    Window ID can be passed on class instantiation as the 2nd positional agrument.
+    Window ID can be passed on class instantiation as the 2nd positional agrument
+    but __init__ must have the *args as the 2nd fake argument, e.g:
+
+    def __init__(self, title='', *args)
+
     Minimal example:
 
     class MyAddon(AddonFullWindow):
 
-        def __init__(self, title='', *args, **kwargs):
+        def __init__(self, title=''):
 
             super(MyAddon, self).__init__(title):
             self.setGeometry(400, 300)
@@ -688,10 +696,10 @@ class AddonFullWindow(xbmcgui.Window, _AddonWindow):
     del addon
     """
 
-    def __new__(cls, title='', windowID=-1):
-        return super(AddonFullWindow, cls).__new__(cls, windowID)
+    def __new__(cls, title='', *args, **kwargs):
+        return super(AddonFullWindow, cls).__new__(cls, *args, **kwargs)
 
-    def __init__(self, title='', *args, **kwargs):
+    def __init__(self, title=''):
         super(AddonFullWindow, self).__init__(title)
 
     def setFrame(self, title):
