@@ -399,33 +399,49 @@ class _AbstractWindow(object):
         except AttributeError:
             raise AddonWindowError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
 
-    def connect(self, event, function, connected_list):
+    def connect(self, signal, slot):
         """
-        Connect an event to a function.
-        This is a helper method not to be called directly.
+        Connect a signal to a slot.
+        A signal can be an inctance of a Control object or an integer key action code.
+        Basic key action codes are provided by PyXBMCT. More action codes can be found at
+        https://github.com/xbmc/xbmc/blob/master/xbmc/guilib/Key.h
+        A slot is a function or a method to be executed. Note that you must provide
+        a function object (without brackets), not a function call!
+        lambda can be used as a slot to call a function or a method with parameters.
+        Examples:
+        self.connect(self.exit_button, self.close)
+        or
+        self.connect(ACTION_NAV_BACK, self.close)
         """
         try:
-            self.disconnect(event, connected_list)
+            self.disconnect(signal)
         except AddonWindowError:
-            pass
-        connected_list.append([event, function])
+            if type(signal) == int:
+                self.actions_connected.append([signal, slot])
+            else:
+                self.controls_connected.append([signal, slot])
 
-    def connectAction(self, action, function):
+    def disconnect(self, signal):
         """
-        Connect a key action to a function or a method to be executed
-        when the respective key pressed. lambda can be used to call the function
-        with parameters.
-        More action codes can be found at https://github.com/xbmc/xbmc/blob/master/xbmc/guilib/Key.h
+        Disconnect an signal from a slot.
+        A signal can be an inctance of a Control object or an integer key action code
+        which has previously been connected to a slot, i.e. function or a method.
+        Raises AddonWindowError if a signal is not connected to any slot.
+        Examples:
+        self.disconnect(self.exit_button)
+        or
+        self.disconnect(ACTION_NAV_BACK)
         """
-        self.connect(action, function, self.actions_connected)
-
-    def connectControl(self, control, function):
-        """
-        Connect a control to a function or a method to be executed
-        when the control activated. lambda can be used to call the function
-        with parameters.
-        """
-        self.connect(control, function, self.controls_connected)
+        if type(signal) == int:
+             slot_list = self.actions_connected
+        else:
+             slot_list = self.controls_connected
+        for index in range(len(slot_list)):
+            if signal == slot_list[index][0]:
+                slot_list.pop(index)
+                break
+        else:
+            raise AddonWindowError('The action or control %s is not connected!' % signal)
 
     def executeConnected(self, event, connected_list):
         """
@@ -436,33 +452,6 @@ class _AbstractWindow(object):
             if event == item[0]:
                 item[1]()
                 break
-
-    def disconnect(self, event, connected_list):
-        """
-        Disconnect an event from a function.
-        This is a helper method not to be called directly.
-        Raises AddonWindowError if an event is not connected to any function.
-        """
-        for index in range(len(connected_list)):
-            if event == connected_list[index][0]:
-                connected_list.pop(index)
-                break
-        else:
-            raise AddonWindowError('The action or control is not connected!')
-
-    def disconnectAction(self, action):
-        """
-        Disconnect an action from a function.
-        Raises AddonWindowError if an action is not connected to any function.
-        """
-        self.disconnect(action, self.actions_connected)
-
-    def disconnectControl(self, control):
-        """
-        Disconnect a control from a function.
-        Raises AddonWindowError if a control is not connected to any function.
-        """
-        self.disconnect(control, self.controls_connected)
 
 
 class _AddonWindow(_AbstractWindow):
