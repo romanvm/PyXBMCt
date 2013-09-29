@@ -399,49 +399,49 @@ class _AbstractWindow(object):
         except AttributeError:
             raise AddonWindowError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
 
-    def connect(self, event, function):
+    def connect(self, signal, slot):
         """
-        Connect an event to a function.
-        An event can be an inctance of a Control object or an integer key action code.
-        Several basic key action codes are provided by PyXBMCT. More action codes can be found at
+        Connect a signal to a slot.
+        A signal can be an inctance of a Control object or an integer key action code.
+        Basic key action codes are provided by PyXBMCT. More action codes can be found at
         https://github.com/xbmc/xbmc/blob/master/xbmc/guilib/Key.h
-        "function" parameter is a function or a method to be executed. Note that you must provide
-        a function instance (without brackets), not a function call!
-        lambda can be used as a function to call another function or method with parameters.
+        A slot is a function or a method to be executed. Note that you must provide
+        a function object (without brackets), not a function call!
+        lambda can be used as a slot to call a function or a method with parameters.
         Examples:
         self.connect(self.exit_button, self.close)
         or
         self.connect(ACTION_NAV_BACK, self.close)
         """
         try:
-            self.disconnect(event)
+            self.disconnect(signal)
         except AddonWindowError:
-            if type(event) == int:
-                self.actions_connected.append([event, function])
+            if type(signal) == int:
+                self.actions_connected.append([signal, slot])
             else:
-                self.controls_connected.append([event, function])
+                self.controls_connected.append([signal, slot])
 
-    def disconnect(self, event):
+    def disconnect(self, signal):
         """
-        Disconnect an event from a function.
-        An event can be an inctance of a Control object or an integer key action code
-        which has previously been connected to a function or a method.
-        Raises AddonWindowError if an event is not connected to any function.
+        Disconnect an signal from a slot.
+        A signal can be an inctance of a Control object or an integer key action code
+        which has previously been connected to a slot, i.e. function or a method.
+        Raises AddonWindowError if a signal is not connected to any slot.
         Examples:
         self.disconnect(self.exit_button)
         or
         self.disconnect(ACTION_NAV_BACK)
         """
-        if type(event) == int:
-             event_list = self.actions_connected
+        if type(signal) == int:
+             slot_list = self.actions_connected
         else:
-             event_list = self.controls_connected
-        for index in range(len(event_list)):
-            if event == event_list[index][0]:
-                event_list.pop(index)
+             slot_list = self.controls_connected
+        for index in range(len(slot_list)):
+            if signal == slot_list[index][0]:
+                slot_list.pop(index)
                 break
         else:
-            raise AddonWindowError('The action or control %s is not connected!' % event)
+            raise AddonWindowError('The action or control %s is not connected!' % signal)
 
     def executeConnected(self, event, connected_list):
         """
