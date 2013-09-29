@@ -554,9 +554,53 @@ class _AddonWindow(_AbstractWindow):
         """Get window title."""
         return self.title_bar.getLabel()
 
+class _FullWindow(xbmcgui.Window):
 
-class BlankFullWindow(xbmcgui.Window, _AbstractWindow):
+    """An abstract class to define window event processing."""
 
+    def onAction(self, action):
+        """
+        Catch button actions.
+        Note that, despite being compared to an integer,
+        action is an instance of xbmcgui.Action class.
+        """
+        if action == ACTION_PREVIOUS_MENU:
+            self.close()
+        else:
+            self.executeConnected(action, self.actions_connected)
+
+    def onControl(self, control):
+        """
+        Catch activated controls.
+        Control is an instance of xbmcgui.Control class.
+        """
+        self.executeConnected(control, self.controls_connected)
+
+
+class _DialogWindow(xbmcgui.WindowDialog):
+
+    """An abstract class to define window event processing."""
+
+    def onAction(self, action):
+        """
+        Catch button actions.
+        Note that, despite being compared to an integer,
+        action is an instance of xbmcgui.Action class.
+        """
+        if action == ACTION_PREVIOUS_MENU:
+            self.close()
+        else:
+            self.executeConnected(action, self.actions_connected)
+
+    def onControl(self, control):
+        """
+        Catch activated controls.
+        Control is an instance of xbmcgui.Control class.
+        """
+        self.executeConnected(control, self.controls_connected)
+
+
+class BlankFullWindow(_FullWindow, _AbstractWindow):
     """
     Addon UI container with a solid background.
     This is a blank window with a black background and without any elements whatsoever.
@@ -579,28 +623,10 @@ class BlankFullWindow(xbmcgui.Window, _AbstractWindow):
     addon.doModal
     del addon
     """
-
-    def onAction(self, action):
-        """
-        Catch button actions.
-        Note that, despite being compared to an integer,
-        action is an instance of xbmcgui.Action class.
-        """
-        if action == ACTION_PREVIOUS_MENU:
-            self.close()
-        else:
-            self.executeConnected(action, self.actions_connected)
-
-    def onControl(self, control):
-        """
-        Catch activated controls.
-        Control is an instance of xbmcgui.Control class.
-        """
-        self.executeConnected(control, self.controls_connected)
+    pass
 
 
-class BlankDialogWindow(xbmcgui.WindowDialog, _AbstractWindow):
-
+class BlankDialogWindow(_DialogWindow, _AbstractWindow):
     """
     Addon UI container with a transparent background.
     This is a blank window with a transparent background and without any elements whatsoever.
@@ -617,27 +643,9 @@ class BlankDialogWindow(xbmcgui.WindowDialog, _AbstractWindow):
     addon = MyAddon()
     addon.doModal
     """
+    pass
 
-    def onAction(self, action):
-        """
-        Catch button actions.
-        Note that, despite being compared to an integer,
-        action is an instance of xbmcgui.Action class.
-        """
-        if action == ACTION_PREVIOUS_MENU:
-            self.close()
-        else:
-            self.executeConnected(action, self.actions_connected)
-
-    def onControl(self, control):
-        """
-        Catch activated controls.
-        Control is an instance of xbmcgui.Control class.
-        """
-        self.executeConnected(control, self.controls_connected)
-
-
-class AddonFullWindow(xbmcgui.Window, _AddonWindow):
+class AddonFullWindow(_FullWindow, _AddonWindow):
 
     """
     Addon UI container with a solid background.
@@ -684,27 +692,8 @@ class AddonFullWindow(xbmcgui.Window, _AddonWindow):
         """
         self.main_bg.setImage(image)
 
-    def onAction(self, action):
-        """
-        Catch button actions.
-        Note that, despite being compared to an integer,
-        action is an instance of xbmcgui.Action class.
-        """
-        if action == ACTION_PREVIOUS_MENU:
-            self.close()
-        else:
-            self.executeConnected(action, self.actions_connected)
 
-    def onControl(self, control):
-        """
-        Catch activated controls.
-        Control is an instance of xbmcgui.Control class.
-        """
-        self.executeConnected(control, self.controls_connected)
-
-
-class AddonDialogWindow(xbmcgui.WindowDialog, _AddonWindow):
-
+class AddonDialogWindow(_DialogWindow, _AddonWindow):
     """
     Addon UI container with a transparent background.
     Control window is displayed on top of XBMC UI,
@@ -720,21 +709,4 @@ class AddonDialogWindow(xbmcgui.WindowDialog, _AddonWindow):
     addon = MyAddon('My Cool Addon')
     addon.doModal
     """
-
-    def onAction(self, action):
-        """
-        Catch button actions.
-        Note that, despite being compared to an integer,
-        action is an instance of xbmcgui.Action class.
-        """
-        if action == ACTION_PREVIOUS_MENU:
-            self.close()
-        else:
-            self.executeConnected(action, self.actions_connected)
-
-    def onControl(self, control):
-        """
-        Catch activated controls.
-        Control is an instance of xbmcgui.Control class.
-        """
-        self.executeConnected(control, self.controls_connected)
+    pass
