@@ -206,7 +206,7 @@ class Edit(xbmcgui.ControlEdit):
     font           : [opt] string - font used for label text. (e.g. 'font13')
     textColor      : [opt] hexstring - color of enabled label's label. (e.g. '0xFFFFFFFF')
     disabledColor  : [opt] hexstring - color of disabled label's label. (e.g. '0xFFFF3300')
-    _alignment      : [opt] integer - alignment of label - *Note, see xbfont.h
+    _alignment     : [opt] integer - alignment of label - *Note, see xbfont.h
     focusTexture   : [opt] string - filename for focus texture.
     noFocusTexture : [opt] string - filename for no focus texture.
     isPassword     : [opt] bool - if true, mask text value.
@@ -295,38 +295,40 @@ class _AbstractWindow(object):
         self.actions_connected = []
         self.controls_connected = []
 
-    def setGeometry(self, width_, height_, pos_x=-1, pos_y=-1):
+    def setGeometry(self, width_, height_, rows_, columns_, pos_x=-1, pos_y=-1):
         """
-        Set control window width, height and coordinates (optional).
-        pos_x, pos_y - coordinates of the top left corner of the window.
-        If pos_x=0, pos_y=0, the window will be placed at the center of the screen.
+        Set width, height, Grid layout, and coordinates (optional) for a new control window.
+
+        Parameters:
+        width_, height_: widgh and height of the created window.
+        rows_, columns_: rows and colums of the Grid layout to place controls on.
+        pos_x, pos_y (optional): coordinates of the top left corner of the window.
+        If pos_x and pos_y are not privided, the window will be placed
+        at the center of the screen.
         Example:
-        self.setGeometry(500, 500)
+        self.setGeometry(400, 500, 5, 4)
         """
         self.width = width_
         self.height = height_
+        self.rows = rows_
+        self.columns = columns_
         if pos_x > 0 and pos_y > 0:
             self.x = pos_x
             self.y = pos_y
         else:
             self.x = 640 - self.width/2
             self.y = 360 - self.height/2
+        self.setGrid()
 
-    def setGrid(self, rows_, columns_):
+    def setGrid(self):
         """
         Set window grid layout of rows * columns.
-        Example:
-        self.setGrid(5, 4)
+        This is a helper method not to be called directly.
         """
-        self.rows = rows_
-        self.columns = columns_
-        try:
-            self.grid_x = self.x
-            self.grid_y = self.y
-            self.tile_width = self.width/self.columns
-            self.tile_height = self.height/self.rows
-        except AttributeError:
-            raise AddonWindowError('Window geometry is not defined! Call setGeometry(width, height) first.')
+        self.grid_x = self.x
+        self.grid_y = self.y
+        self.tile_width = self.width/self.columns
+        self.tile_height = self.height/self.rows
 
     def placeControl(self, control, row, column, rowspan=1, columnspan=1, pad_x=5, pad_y=5):
         """
@@ -356,28 +358,28 @@ class _AbstractWindow(object):
         try:
             return self.x
         except AttributeError:
-            raise AddonWindowError('Window geometry is not defined! Call setGeometry(width, height) first.')
+            raise AddonWindowError('Window geometry is not defined! Call setGeometry first.')
 
     def getY(self):
         """Get Y coordinate of the top-left corner of the window."""
         try:
             return self.y
         except AttributeError:
-            raise AddonWindowError('Window geometry is not defined! Call setGeometry(width, height) first.')
+            raise AddonWindowError('Window geometry is not defined! Call setGeometry first.')
 
     def getWindowWidth(self):
         """Get window width."""
         try:
             return self.width
         except AttributeError:
-            raise AddonWindowError('Window geometry is not defined! Call setGeometry(width, height) first.')
+            raise AddonWindowError('Window geometry is not defined! Call setGeometry first.')
 
     def getWindowHeight(self):
         """Get window height."""
         try:
             return self.height
         except AttributeError:
-            raise AddonWindowError('Window geometry is not defined! Call setGeometry(width, height) first.')
+            raise AddonWindowError('Window geometry is not defined! Call setGeometry first.')
 
     def getRows(self):
         """
@@ -387,7 +389,7 @@ class _AbstractWindow(object):
         try:
             return self.rows
         except AttributeError:
-            raise AddonWindowError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
+            raise AddonWindowError('Grid layot is not set! Call setGeometry first.')
 
     def getColumns(self):
         """
@@ -397,7 +399,7 @@ class _AbstractWindow(object):
         try:
             return self.columns
         except AttributeError:
-            raise AddonWindowError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
+            raise AddonWindowError('Grid layout is not set! Call setGeometry first.')
 
     def connect(self, event, function):
         """
@@ -500,15 +502,23 @@ class _AddonWindow(_AbstractWindow):
         self.title_bar = xbmcgui.ControlLabel(-10, -10, 1, 1, title, alignment=ALIGN_CENTER, textColor='0xFFFFA500')
         self.addControl(self.title_bar)
 
-    def setGeometry(self, width_, height_, pos_x=-1, pos_y=-1):
+    def setGeometry(self, width_, height_, rows_, columns_, pos_x=-1, pos_y=-1, padding=5):
         """
-        Set control window width, height and coordinates (optional).
-        pos_x, pos_y - coordinates of the top left corner of the window.
-        if pos_x=0, pos_y=0, the window will be placed at the center of the screen.
+        Set width, height, Grid layout, and coordinates (optional) for a new control window.
+
+        Parameters:
+        width_, height_: widgh and height of the created window.
+        rows_, columns_: rows and colums of the Grid layout to place controls on.
+        pos_x, pos_y (optional): coordinates of the top left corner of the window.
+        If pos_x and pos_y are not privided, the window will be placed
+        at the center of the screen.
+        padding (optional): padding between outer edges of the window and
+        controls placed on it.
         Example:
-        self.setGeometry(500, 500)
+        self.setGeometry(400, 500, 5, 4)
         """
-        super(_AddonWindow, self).setGeometry(width_, height_, pos_x, pos_y)
+        self.win_padding = padding
+        super(_AddonWindow, self).setGeometry(width_, height_, rows_, columns_, pos_x, pos_y)
         self.background.setPosition(self.x, self.y)
         self.background.setWidth(self.width)
         self.background.setHeight(self.height)
@@ -519,22 +529,16 @@ class _AddonWindow(_AbstractWindow):
         self.title_bar.setWidth(self.width - 2 * self.X_MARGIN)
         self.title_bar.setHeight(self.HEADER_HEIGHT)
 
-    def setGrid(self, rows_, columns_, padding=5):
+    def setGrid(self):
         """
         Set window grid layout of rows * columns.
-        Example:
-        self.setGrid(5, 4)
+        This is a helper method not to be called directly.
         """
-        self.rows = rows_
-        self.columns = columns_
-        try:
-            self.grid_x = self.x + self.X_MARGIN + padding
-            self.grid_y = self.y + self.Y_MARGIN + self.Y_SHIFT + self.HEADER_HEIGHT + padding
-            self.tile_width = (self.width - 2 * (self.X_MARGIN + padding))/self.columns
-            self.tile_height = (
-                        self.height - self.HEADER_HEIGHT - self.Y_SHIFT - 2 * (self.Y_MARGIN + padding))/self.rows
-        except AttributeError:
-            raise AddonWindowError('Window geometry is not defined! Call setGeometry(width, height) first.')
+        self.grid_x = self.x + self.X_MARGIN + self.win_padding
+        self.grid_y = self.y + self.Y_MARGIN + self.Y_SHIFT + self.HEADER_HEIGHT + self.win_padding
+        self.tile_width = (self.width - 2 * (self.X_MARGIN + self.win_padding))/self.columns
+        self.tile_height = (
+                    self.height - self.HEADER_HEIGHT - self.Y_SHIFT - 2 * (self.Y_MARGIN + self.win_padding))/self.rows
 
     def setTitle(self, title=''):
         """
@@ -569,8 +573,7 @@ class BlankFullWindow(xbmcgui.Window, _AbstractWindow):
 
         def __init__(self):
             super(MyAddon, self).__init__()
-            self.setGeometry(400, 300)
-            self.setGrid(4, 3)
+            self.setGeometry(400, 300, 4, 3)
 
     addon = MyAddon()
     addon.doModal
@@ -609,8 +612,7 @@ class BlankDialogWindow(xbmcgui.WindowDialog, _AbstractWindow):
 
         def __init__(self):
             super(MyAddon, self).__init__()
-            self.setGeometry(400, 300)
-            self.setGrid(4, 3)
+            self.setGeometry(400, 300, 4, 3)
 
     addon = MyAddon()
     addon.doModal
@@ -653,8 +655,7 @@ class AddonFullWindow(xbmcgui.Window, _AddonWindow):
         def __init__(self, title=''):
 
             super(MyAddon, self).__init__(title):
-            self.setGeometry(400, 300)
-            self.setGrid(4, 3)
+            self.setGeometry(400, 300, 4, 3)
 
     addon = MyAddon('My Cool Addon')
     addon.doModal
@@ -714,8 +715,7 @@ class AddonDialogWindow(xbmcgui.WindowDialog, _AddonWindow):
 
         def __init__(self, title=''):
             super(MyAddon, self).__init__(title)
-            self.setGeometry(400, 300)
-            self.setGrid(4, 3)
+            self.setGeometry(400, 300, 4, 3)
 
     addon = MyAddon('My Cool Addon')
     addon.doModal
