@@ -408,7 +408,7 @@ class _AbstractWindow(object):
         Several basic key action codes are provided by PyXBMCT. More action codes can be found at
         https://github.com/xbmc/xbmc/blob/master/xbmc/guilib/Key.h
         "function" parameter is a function or a method to be executed. Note that you must provide
-        a function instance (without brackets), not a function call!
+        a function object [without brackets ()], not a function call!
         lambda can be used as a function to call another function or method with parameters.
         Examples:
         self.connect(self.exit_button, self.close)
@@ -607,21 +607,15 @@ class BlankFullWindow(_FullWindow, _AbstractWindow):
     The decoration and layout are completely up to an addon developer.
     The window controls can hide under video or music visualization.
     Window ID can be passed on class instantiation an agrument
-    but __init__ must have the *args as a fake argument, e.g:
+    but __init__ must have the 2nd fake argument, e.g:
 
     def __init__(self, *args)
 
     Minimal example:
 
-    class MyAddon(BlankFullWindow):
-
-        def __init__(self):
-            super(MyAddon, self).__init__()
-            self.setGeometry(400, 300, 4, 3)
-
-    addon = MyAddon()
-    addon.doModal
-    del addon
+    addon = MyAddon('My Cool Addon')
+    addon.setGeometry(400, 300, 4, 3)
+    addon.doModal()
     """
     pass
 
@@ -634,14 +628,9 @@ class BlankDialogWindow(_DialogWindow, _AbstractWindow):
     The window controls are always displayed over video or music visualization.
     Minimal example:
 
-    class MyAddon(BlankDialogWindow):
-
-        def __init__(self):
-            super(MyAddon, self).__init__()
-            self.setGeometry(400, 300, 4, 3)
-
-    addon = MyAddon()
-    addon.doModal
+    addon = MyAddon('My Cool Addon')
+    addon.setGeometry(400, 300, 4, 3)
+    addon.doModal()
     """
     pass
 
@@ -652,21 +641,15 @@ class AddonFullWindow(_FullWindow, _AddonWindow):
     Control window is displayed on top of the main background image - self.main_bg.
     Video and music visualization are displayed unhindered.
     Window ID can be passed on class instantiation as the 2nd positional agrument
-    but __init__ must have *args as the 2nd fake argument, e.g:
+    but __init__ must have the 3rd fake argument, e.g:
 
     def __init__(self, title='', *args)
 
     Minimal example:
 
-    class MyAddon(AddonFullWindow):
-
-        def __init__(self, title=''):
-
-            super(MyAddon, self).__init__(title):
-            self.setGeometry(400, 300, 4, 3)
-
     addon = MyAddon('My Cool Addon')
-    addon.doModal
+    addon.setGeometry(400, 300, 4, 3)
+    addon.doModal()
     """
 
     def __new__(cls, title='', *args, **kwargs):
@@ -700,13 +683,8 @@ class AddonDialogWindow(_DialogWindow, _AddonWindow):
     including video an music visualization!
     Minimal example:
 
-    class MyAddon(AddonDialogWindow):
-
-        def __init__(self, title=''):
-            super(MyAddon, self).__init__(title)
-            self.setGeometry(400, 300, 4, 3)
-
     addon = MyAddon('My Cool Addon')
-    addon.doModal
+    addon.setGeometry(400, 300, 4, 3)
+    addon.doModal()
     """
     pass
