@@ -35,6 +35,8 @@ ACTION_MOVE_LEFT = 1
 ACTION_MOVE_RIGHT = 2
 ACTION_MOVE_UP = 3
 ACTION_MOVE_DOWN = 4
+# This is to provide feedback when moving a Slider nib with a mouse.
+ACTION_MOUSE_DRAG = 106
 
 
 def _set_textures(textures={}, kwargs={}):
@@ -347,7 +349,7 @@ class _AbstractWindow(object):
             control_width = self.tile_width * columnspan - 2 * pad_x
             control_height = self.tile_height * rowspan - 2 * pad_y
         except AttributeError:
-            raise AddonWindowError('Window grid is not set! Call setGrid(rows#, columns#) first.')
+            raise AddonWindowError('Window grid is not set! Call setGrid first.')
         control.setPosition(control_x, control_y)
         control.setWidth(control_width)
         control.setHeight(control_height)
@@ -404,12 +406,21 @@ class _AbstractWindow(object):
     def connect(self, event, function):
         """
         Connect an event to a function.
+
         An event can be an inctance of a Control object or an integer key action code.
         Several basic key action codes are provided by PyXBMCT. More action codes can be found at
         https://github.com/xbmc/xbmc/blob/master/xbmc/guilib/Key.h
+
+        You can connect the following Controls: Button, RadioButton and List. Other Controls do not
+        generate any control events when activated so their connections won't work.
+        To catch Slider events you need to connect the following key actions:
+        ACTION_MOVE_LEFT, ACTION_MOVE_RIGHT and ACTION_MOUSE_DRAG, and do a check
+        whether the Slider is focused.
+
         "function" parameter is a function or a method to be executed. Note that you must provide
         a function object [without brackets ()], not a function call!
         lambda can be used as a function to call another function or method with parameters.
+
         Examples:
         self.connect(self.exit_button, self.close)
         or
@@ -426,9 +437,11 @@ class _AbstractWindow(object):
     def disconnect(self, event):
         """
         Disconnect an event from a function.
+
         An event can be an inctance of a Control object or an integer key action code
         which has previously been connected to a function or a method.
         Raises AddonWindowError if an event is not connected to any function.
+
         Examples:
         self.disconnect(self.exit_button)
         or

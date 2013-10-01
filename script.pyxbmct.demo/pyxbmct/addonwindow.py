@@ -35,6 +35,8 @@ ACTION_MOVE_LEFT = 1
 ACTION_MOVE_RIGHT = 2
 ACTION_MOVE_UP = 3
 ACTION_MOVE_DOWN = 4
+# This is to provide feedback when moving the Slider nib with a mouse.
+ACTION_MOUSE_DRAG = 106
 
 
 def _set_textures(textures={}, kwargs={}):
@@ -206,7 +208,7 @@ class Edit(xbmcgui.ControlEdit):
     font           : [opt] string - font used for label text. (e.g. 'font13')
     textColor      : [opt] hexstring - color of enabled label's label. (e.g. '0xFFFFFFFF')
     disabledColor  : [opt] hexstring - color of disabled label's label. (e.g. '0xFFFF3300')
-    _alignment      : [opt] integer - alignment of label - *Note, see xbfont.h
+    _alignment     : [opt] integer - alignment of label - *Note, see xbfont.h
     focusTexture   : [opt] string - filename for focus texture.
     noFocusTexture : [opt] string - filename for no focus texture.
     isPassword     : [opt] bool - if true, mask text value.
@@ -295,38 +297,40 @@ class _AbstractWindow(object):
         self.actions_connected = []
         self.controls_connected = []
 
-    def setGeometry(self, width_, height_, pos_x=-1, pos_y=-1):
+    def setGeometry(self, width_, height_, rows_, columns_, pos_x=-1, pos_y=-1):
         """
-        Set control window width, height and coordinates (optional).
-        pos_x, pos_y - coordinates of the top left corner of the window.
-        If pos_x=0, pos_y=0, the window will be placed at the center of the screen.
+        Set width, height, Grid layout, and coordinates (optional) for a new control window.
+
+        Parameters:
+        width_, height_: widgh and height of the created window.
+        rows_, columns_: rows and colums of the Grid layout to place controls on.
+        pos_x, pos_y (optional): coordinates of the top left corner of the window.
+        If pos_x and pos_y are not privided, the window will be placed
+        at the center of the screen.
         Example:
-        self.setGeometry(500, 500)
+        self.setGeometry(400, 500, 5, 4)
         """
         self.width = width_
         self.height = height_
+        self.rows = rows_
+        self.columns = columns_
         if pos_x > 0 and pos_y > 0:
             self.x = pos_x
             self.y = pos_y
         else:
             self.x = 640 - self.width/2
             self.y = 360 - self.height/2
+        self.setGrid()
 
-    def setGrid(self, rows_, columns_):
+    def setGrid(self):
         """
         Set window grid layout of rows * columns.
-        Example:
-        self.setGrid(5, 4)
+        This is a helper method not to be called directly.
         """
-        self.rows = rows_
-        self.columns = columns_
-        try:
-            self.grid_x = self.x
-            self.grid_y = self.y
-            self.tile_width = self.width/self.columns
-            self.tile_height = self.height/self.rows
-        except AttributeError:
-            raise AddonWindowError('Window geometry is not defined! Call setGeometry(width, height) first.')
+        self.grid_x = self.x
+        self.grid_y = self.y
+        self.tile_width = self.width/self.columns
+        self.tile_height = self.height/self.rows
 
     def placeControl(self, control, row, column, rowspan=1, columnspan=1, pad_x=5, pad_y=5):
         """
@@ -345,7 +349,7 @@ class _AbstractWindow(object):
             control_width = self.tile_width * columnspan - 2 * pad_x
             control_height = self.tile_height * rowspan - 2 * pad_y
         except AttributeError:
-            raise AddonWindowError('Window grid is not set! Call setGrid(rows#, columns#) first.')
+            raise AddonWindowError('Window grid is not set! Call setGrid first.')
         control.setPosition(control_x, control_y)
         control.setWidth(control_width)
         control.setHeight(control_height)
@@ -356,28 +360,28 @@ class _AbstractWindow(object):
         try:
             return self.x
         except AttributeError:
-            raise AddonWindowError('Window geometry is not defined! Call setGeometry(width, height) first.')
+            raise AddonWindowError('Window geometry is not defined! Call setGeometry first.')
 
     def getY(self):
         """Get Y coordinate of the top-left corner of the window."""
         try:
             return self.y
         except AttributeError:
-            raise AddonWindowError('Window geometry is not defined! Call setGeometry(width, height) first.')
+            raise AddonWindowError('Window geometry is not defined! Call setGeometry first.')
 
     def getWindowWidth(self):
         """Get window width."""
         try:
             return self.width
         except AttributeError:
-            raise AddonWindowError('Window geometry is not defined! Call setGeometry(width, height) first.')
+            raise AddonWindowError('Window geometry is not defined! Call setGeometry first.')
 
     def getWindowHeight(self):
         """Get window height."""
         try:
             return self.height
         except AttributeError:
-            raise AddonWindowError('Window geometry is not defined! Call setGeometry(width, height) first.')
+            raise AddonWindowError('Window geometry is not defined! Call setGeometry first.')
 
     def getRows(self):
         """
@@ -387,7 +391,7 @@ class _AbstractWindow(object):
         try:
             return self.rows
         except AttributeError:
-            raise AddonWindowError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
+            raise AddonWindowError('Grid layot is not set! Call setGeometry first.')
 
     def getColumns(self):
         """
@@ -397,51 +401,62 @@ class _AbstractWindow(object):
         try:
             return self.columns
         except AttributeError:
-            raise AddonWindowError('AddonWindow grid is not set! Call setGrid(rows#, columns#) first.')
+            raise AddonWindowError('Grid layout is not set! Call setGeometry first.')
 
-    def connect(self, signal, slot):
+    def connect(self, event, function):
         """
-        Connect a signal to a slot.
-        A signal can be an inctance of a Control object or an integer key action code.
-        Basic key action codes are provided by PyXBMCT. More action codes can be found at
+        Connect an event to a function.
+
+        An event can be an inctance of a Control object or an integer key action code.
+        Several basic key action codes are provided by PyXBMCT. More action codes can be found at
         https://github.com/xbmc/xbmc/blob/master/xbmc/guilib/Key.h
-        A slot is a function or a method to be executed. Note that you must provide
-        a function object (without brackets), not a function call!
-        lambda can be used as a slot to call a function or a method with parameters.
+
+        You can connect the following Controls: Button, RadioButton and List. Other Controls do not
+        generate any control events when activated so their connections won't work.
+        To catch Slider events you need to connect the following key actions:
+        ACTION_MOVE_LEFT, ACTION_MOVE_RIGHT and ACTION_MOUSE_DRAG, and do a check
+        whether the Slider is focused.
+
+        "function" parameter is a function or a method to be executed. Note that you must provide
+        a function object [without brackets ()], not a function call!
+        lambda can be used as a function to call another function or method with parameters.
+
         Examples:
         self.connect(self.exit_button, self.close)
         or
         self.connect(ACTION_NAV_BACK, self.close)
         """
         try:
-            self.disconnect(signal)
+            self.disconnect(event)
         except AddonWindowError:
-            if type(signal) == int:
-                self.actions_connected.append([signal, slot])
+            if type(event) == int:
+                self.actions_connected.append([event, function])
             else:
-                self.controls_connected.append([signal, slot])
+                self.controls_connected.append([event, function])
 
-    def disconnect(self, signal):
+    def disconnect(self, event):
         """
-        Disconnect an signal from a slot.
-        A signal can be an inctance of a Control object or an integer key action code
-        which has previously been connected to a slot, i.e. function or a method.
-        Raises AddonWindowError if a signal is not connected to any slot.
+        Disconnect an event from a function.
+
+        An event can be an inctance of a Control object or an integer key action code
+        which has previously been connected to a function or a method.
+        Raises AddonWindowError if an event is not connected to any function.
+
         Examples:
         self.disconnect(self.exit_button)
         or
         self.disconnect(ACTION_NAV_BACK)
         """
-        if type(signal) == int:
-             slot_list = self.actions_connected
+        if type(event) == int:
+             event_list = self.actions_connected
         else:
-             slot_list = self.controls_connected
-        for index in range(len(slot_list)):
-            if signal == slot_list[index][0]:
-                slot_list.pop(index)
+             event_list = self.controls_connected
+        for index in range(len(event_list)):
+            if event == event_list[index][0]:
+                event_list.pop(index)
                 break
         else:
-            raise AddonWindowError('The action or control %s is not connected!' % signal)
+            raise AddonWindowError('The action or control %s is not connected!' % event)
 
     def executeConnected(self, event, connected_list):
         """
@@ -500,15 +515,23 @@ class _AddonWindow(_AbstractWindow):
         self.title_bar = xbmcgui.ControlLabel(-10, -10, 1, 1, title, alignment=ALIGN_CENTER, textColor='0xFFFFA500')
         self.addControl(self.title_bar)
 
-    def setGeometry(self, width_, height_, pos_x=-1, pos_y=-1):
+    def setGeometry(self, width_, height_, rows_, columns_, pos_x=-1, pos_y=-1, padding=5):
         """
-        Set control window width, height and coordinates (optional).
-        pos_x, pos_y - coordinates of the top left corner of the window.
-        if pos_x=0, pos_y=0, the window will be placed at the center of the screen.
+        Set width, height, Grid layout, and coordinates (optional) for a new control window.
+
+        Parameters:
+        width_, height_: widgh and height of the created window.
+        rows_, columns_: rows and colums of the Grid layout to place controls on.
+        pos_x, pos_y (optional): coordinates of the top left corner of the window.
+        If pos_x and pos_y are not privided, the window will be placed
+        at the center of the screen.
+        padding (optional): padding between outer edges of the window and
+        controls placed on it.
         Example:
-        self.setGeometry(500, 500)
+        self.setGeometry(400, 500, 5, 4)
         """
-        super(_AddonWindow, self).setGeometry(width_, height_, pos_x, pos_y)
+        self.win_padding = padding
+        super(_AddonWindow, self).setGeometry(width_, height_, rows_, columns_, pos_x, pos_y)
         self.background.setPosition(self.x, self.y)
         self.background.setWidth(self.width)
         self.background.setHeight(self.height)
@@ -519,22 +542,16 @@ class _AddonWindow(_AbstractWindow):
         self.title_bar.setWidth(self.width - 2 * self.X_MARGIN)
         self.title_bar.setHeight(self.HEADER_HEIGHT)
 
-    def setGrid(self, rows_, columns_, padding=5):
+    def setGrid(self):
         """
         Set window grid layout of rows * columns.
-        Example:
-        self.setGrid(5, 4)
+        This is a helper method not to be called directly.
         """
-        self.rows = rows_
-        self.columns = columns_
-        try:
-            self.grid_x = self.x + self.X_MARGIN + padding
-            self.grid_y = self.y + self.Y_MARGIN + self.Y_SHIFT + self.HEADER_HEIGHT + padding
-            self.tile_width = (self.width - 2 * (self.X_MARGIN + padding))/self.columns
-            self.tile_height = (
-                        self.height - self.HEADER_HEIGHT - self.Y_SHIFT - 2 * (self.Y_MARGIN + padding))/self.rows
-        except AttributeError:
-            raise AddonWindowError('Window geometry is not defined! Call setGeometry(width, height) first.')
+        self.grid_x = self.x + self.X_MARGIN + self.win_padding
+        self.grid_y = self.y + self.Y_MARGIN + self.Y_SHIFT + self.HEADER_HEIGHT + self.win_padding
+        self.tile_width = (self.width - 2 * (self.X_MARGIN + self.win_padding))/self.columns
+        self.tile_height = (
+                    self.height - self.HEADER_HEIGHT - self.Y_SHIFT - 2 * (self.Y_MARGIN + self.win_padding))/self.rows
 
     def setTitle(self, title=''):
         """
@@ -550,32 +567,9 @@ class _AddonWindow(_AbstractWindow):
         """Get window title."""
         return self.title_bar.getLabel()
 
+class _FullWindow(xbmcgui.Window):
 
-class BlankFullWindow(xbmcgui.Window, _AbstractWindow):
-
-    """
-    Addon UI container with a solid background.
-    This is a blank window with a black background and without any elements whatsoever.
-    The decoration and layout are completely up to an addon developer.
-    The window controls can hide under video or music visualization.
-    Window ID can be passed on class instantiation an agrument
-    but __init__ must have the *args as a fake argument, e.g:
-
-    def __init__(self, *args)
-
-    Minimal example:
-
-    class MyAddon(BlankFullWindow):
-
-        def __init__(self):
-            super(MyAddon, self).__init__()
-            self.setGeometry(400, 300)
-            self.setGrid(4, 3)
-
-    addon = MyAddon()
-    addon.doModal
-    del addon
-    """
+    """An abstract class to define window event processing."""
 
     def onAction(self, action):
         """
@@ -596,8 +590,50 @@ class BlankFullWindow(xbmcgui.Window, _AbstractWindow):
         self.executeConnected(control, self.controls_connected)
 
 
-class BlankDialogWindow(xbmcgui.WindowDialog, _AbstractWindow):
+class _DialogWindow(xbmcgui.WindowDialog):
 
+    """An abstract class to define window event processing."""
+
+    def onAction(self, action):
+        """
+        Catch button actions.
+        Note that, despite being compared to an integer,
+        action is an instance of xbmcgui.Action class.
+        """
+        if action == ACTION_PREVIOUS_MENU:
+            self.close()
+        else:
+            self.executeConnected(action, self.actions_connected)
+
+    def onControl(self, control):
+        """
+        Catch activated controls.
+        Control is an instance of xbmcgui.Control class.
+        """
+        self.executeConnected(control, self.controls_connected)
+
+
+class BlankFullWindow(_FullWindow, _AbstractWindow):
+    """
+    Addon UI container with a solid background.
+    This is a blank window with a black background and without any elements whatsoever.
+    The decoration and layout are completely up to an addon developer.
+    The window controls can hide under video or music visualization.
+    Window ID can be passed on class instantiation an agrument
+    but __init__ must have the 2nd fake argument, e.g:
+
+    def __init__(self, *args)
+
+    Minimal example:
+
+    addon = MyAddon('My Cool Addon')
+    addon.setGeometry(400, 300, 4, 3)
+    addon.doModal()
+    """
+    pass
+
+
+class BlankDialogWindow(_DialogWindow, _AbstractWindow):
     """
     Addon UI container with a transparent background.
     This is a blank window with a transparent background and without any elements whatsoever.
@@ -605,59 +641,28 @@ class BlankDialogWindow(xbmcgui.WindowDialog, _AbstractWindow):
     The window controls are always displayed over video or music visualization.
     Minimal example:
 
-    class MyAddon(BlankDialogWindow):
-
-        def __init__(self):
-            super(MyAddon, self).__init__()
-            self.setGeometry(400, 300)
-            self.setGrid(4, 3)
-
-    addon = MyAddon()
-    addon.doModal
+    addon = MyAddon('My Cool Addon')
+    addon.setGeometry(400, 300, 4, 3)
+    addon.doModal()
     """
+    pass
 
-    def onAction(self, action):
-        """
-        Catch button actions.
-        Note that, despite being compared to an integer,
-        action is an instance of xbmcgui.Action class.
-        """
-        if action == ACTION_PREVIOUS_MENU:
-            self.close()
-        else:
-            self.executeConnected(action, self.actions_connected)
-
-    def onControl(self, control):
-        """
-        Catch activated controls.
-        Control is an instance of xbmcgui.Control class.
-        """
-        self.executeConnected(control, self.controls_connected)
-
-
-class AddonFullWindow(xbmcgui.Window, _AddonWindow):
+class AddonFullWindow(_FullWindow, _AddonWindow):
 
     """
     Addon UI container with a solid background.
     Control window is displayed on top of the main background image - self.main_bg.
     Video and music visualization are displayed unhindered.
     Window ID can be passed on class instantiation as the 2nd positional agrument
-    but __init__ must have *args as the 2nd fake argument, e.g:
+    but __init__ must have the 3rd fake argument, e.g:
 
     def __init__(self, title='', *args)
 
     Minimal example:
 
-    class MyAddon(AddonFullWindow):
-
-        def __init__(self, title=''):
-
-            super(MyAddon, self).__init__(title):
-            self.setGeometry(400, 300)
-            self.setGrid(4, 3)
-
     addon = MyAddon('My Cool Addon')
-    addon.doModal
+    addon.setGeometry(400, 300, 4, 3)
+    addon.doModal()
     """
 
     def __new__(cls, title='', *args, **kwargs):
@@ -683,58 +688,16 @@ class AddonFullWindow(xbmcgui.Window, _AddonWindow):
         """
         self.main_bg.setImage(image)
 
-    def onAction(self, action):
-        """
-        Catch button actions.
-        Note that, despite being compared to an integer,
-        action is an instance of xbmcgui.Action class.
-        """
-        if action == ACTION_PREVIOUS_MENU:
-            self.close()
-        else:
-            self.executeConnected(action, self.actions_connected)
 
-    def onControl(self, control):
-        """
-        Catch activated controls.
-        Control is an instance of xbmcgui.Control class.
-        """
-        self.executeConnected(control, self.controls_connected)
-
-
-class AddonDialogWindow(xbmcgui.WindowDialog, _AddonWindow):
-
+class AddonDialogWindow(_DialogWindow, _AddonWindow):
     """
     Addon UI container with a transparent background.
     Control window is displayed on top of XBMC UI,
     including video an music visualization!
     Minimal example:
 
-    class MyAddon(AddonDialogWindow):
-
-        def __init__(self, title=''):
-            super(MyAddon, self).__init__(title)
-            self.setGeometry(400, 300)
-            self.setGrid(4, 3)
-
     addon = MyAddon('My Cool Addon')
-    addon.doModal
+    addon.setGeometry(400, 300, 4, 3)
+    addon.doModal()
     """
-
-    def onAction(self, action):
-        """
-        Catch button actions.
-        Note that, despite being compared to an integer,
-        action is an instance of xbmcgui.Action class.
-        """
-        if action == ACTION_PREVIOUS_MENU:
-            self.close()
-        else:
-            self.executeConnected(action, self.actions_connected)
-
-    def onControl(self, control):
-        """
-        Catch activated controls.
-        Control is an instance of xbmcgui.Control class.
-        """
-        self.executeConnected(control, self.controls_connected)
+    pass
