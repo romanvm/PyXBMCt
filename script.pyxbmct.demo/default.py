@@ -15,92 +15,102 @@ class MyAddon(AddonDialogWindow):
 
     def __init__(self, title=''):
         super(MyAddon, self).__init__(title)
-        self.setGeometry(400, 700, 16, 2)
-        self.set_controls()
+        self.setGeometry(700, 450, 9, 4)
+        self.set_info_controls()
+        self.set_active_controls()
         self.set_navigation()
-        # Connect an action (Backspace) to close the window.
+        # Connect a key action (Backspace) to close the window.
         self.connect(ACTION_NAV_BACK, self.close)
 
-    def set_controls(self):
+    def set_info_controls(self):
         # Demo for PyXBMCt UI controls.
-        int_label = Label('Interactive Controls', alignment=ALIGN_CENTER)
-        self.placeControl(int_label, 0, 0, 1, 2)
+        no_int_label = Label('Information output', alignment=ALIGN_CENTER)
+        self.placeControl(no_int_label, 0, 0, 1, 2)
         #
-        button_label = Label('Button')
-        self.placeControl(button_label, 1, 0)
-        # Button
-        self.button = Button('Close')
-        self.placeControl(self.button, 1, 1)
-        # Connect control to close the window.
-        self.connect(self.button, self.close)
+        label_label = Label('Label')
+        self.placeControl(label_label, 1, 0)
+        # Label
+        self.label = Label('Simple label')
+        self.placeControl(self.label, 1, 1)
+        #
+        fadelabel_label = Label('FadeLabel')
+        self.placeControl(fadelabel_label, 2, 0)
+        # FadeLabel
+        self.fade_label = FadeLabel()
+        self.placeControl(self.fade_label, 2, 1)
+        self.fade_label.addLabel('Very long string can be here.')
+        #
+        textbox_label = Label('TextBox')
+        self.placeControl(textbox_label, 3, 0)
+        # TextBox
+        self.textbox = TextBox()
+        self.placeControl(self.textbox, 3, 1, 2, 1)
+        self.textbox.setText('Text box.\nIt can contain several lines.')
+        #
+        image_label = Label('Image')
+        self.placeControl(image_label, 5, 0)
+        # Image
+        self.image = Image(os.path.join(_addon_path, 'xbmc-logo.png'))
+        self.placeControl(self.image, 5, 1, 2, 1)
+
+    def set_active_controls(self):
+        int_label = Label('Interactive Controls', alignment=ALIGN_CENTER)
+        self.placeControl(int_label, 0, 2, 1, 2)
         #
         radiobutton_label = Label('RadioButton')
-        self.placeControl(radiobutton_label, 2, 0)
+        self.placeControl(radiobutton_label, 1, 2)
         # RadioButton
-        self.radiobutton = RadioButton('Switch on/off')
-        self.placeControl(self.radiobutton, 2, 1)
+        self.radiobutton = RadioButton('Switched off')
+        self.placeControl(self.radiobutton, 1, 3)
+        self.connect(self.radiobutton, self.radio_update)
         #
         edit_label = Label('Edit')
-        self.placeControl(edit_label, 3, 0)
+        self.placeControl(edit_label, 2, 2)
         # Edit
         self.edit = Edit('Edit')
-        self.placeControl(self.edit, 3, 1)
+        self.placeControl(self.edit, 2, 3)
         # Additional properties must be changed after (!) displaying a control.
         self.edit.setText('Enter text here')
         #
         list_label = Label('List')
-        self.placeControl(list_label, 4, 0)
+        self.placeControl(list_label, 3, 2)
+        #
+        self.list_item_label = Label('', textColor='0xFF808080')
+        self.placeControl(self.list_item_label, 4, 2)
+        # Connect key events for list navigation feedback.
+        self.connect(ACTION_MOVE_DOWN, self.list_update)
+        self.connect(ACTION_MOVE_UP, self.list_update)
         # List
         self.list = List()
-        self.placeControl(self.list, 4, 1, 3, 1)
+        self.placeControl(self.list, 3, 3, 3, 1)
+        # Add items to the list
         self.list.addItems(['Item 1', 'Item 2', 'Item 3'])
-        # Connect list to a function to display which list item is selected.
+        # Connect the list to a function to display which list item is selected.
         self.connect(self.list, lambda: xbmc.executebuiltin('Notification(Note!,%s selected.)' %
                                             self.list.getListItem(self.list.getSelectedPosition()).getLabel()))
         # Slider value label
         SLIDER_INIT_VALUE = 25.0
         self.slider_value = Label(str(SLIDER_INIT_VALUE), alignment=ALIGN_CENTER)
-        self.placeControl(self.slider_value, 7, 1)
+        self.placeControl(self.slider_value, 6, 3)
         #
         slider_caption = Label('Slider')
-        self.placeControl(slider_caption, 8, 0)
+        self.placeControl(slider_caption, 7, 2)
         # Slider
         self.slider = Slider()
-        self.placeControl(self.slider, 8, 1, pad_y=10)
+        self.placeControl(self.slider, 7, 3, pad_y=10)
         self.slider.setPercent(SLIDER_INIT_VALUE)
         # Connect key events for slider update feedback.
         self.connect(ACTION_MOVE_LEFT, self.slider_update)
         self.connect(ACTION_MOVE_RIGHT, self.slider_update)
         self.connect(ACTION_MOUSE_DRAG, self.slider_update)
         #
-        no_int_label = Label('Information output', alignment=ALIGN_CENTER)
-        self.placeControl(no_int_label, 9, 0, 1, 2)
-        #
-        label_label = Label('Label')
-        self.placeControl(label_label, 10, 0)
-        # Label
-        self.label = Label('Simple label')
-        self.placeControl(self.label, 10, 1)
-        #
-        fadelabel_label = Label('FadeLabel')
-        self.placeControl(fadelabel_label, 11, 0)
-        # FadeLabel
-        self.fade_label = FadeLabel()
-        self.placeControl(self.fade_label, 11, 1)
-        self.fade_label.addLabel('Very long string can be here.')
-        #
-        textbox_label = Label('TextBox')
-        self.placeControl(textbox_label, 12, 0)
-        # TextBox
-        self.textbox = TextBox()
-        self.placeControl(self.textbox, 12, 1, 2, 1)
-        self.textbox.setText('Text box.\nIt can contain several lines.')
-        #
-        image_label = Label('Image')
-        self.placeControl(image_label, 14, 0)
-        # Image
-        self.image = Image(os.path.join(_addon_path, 'xbmc-logo.png'))
-        self.placeControl(self.image, 14, 1, 2, 1)
+        button_label = Label('Button')
+        self.placeControl(button_label, 8, 2)
+        # Button
+        self.button = Button('Close')
+        self.placeControl(self.button, 8, 3)
+        # Connect control to close the window.
+        self.connect(self.button, self.close)
 
     def set_navigation(self):
         # Set navigation between controls
@@ -115,12 +125,30 @@ class MyAddon(AddonDialogWindow):
         self.slider.controlUp(self.list)
         self.slider.controlDown(self.button)
         # Set initial focus
-        self.setFocus(self.button)
+        self.setFocus(self.radiobutton)
 
     def slider_update(self):
+        # Update slider value label when slider nib moves
         try:
             if self.getFocus() == self.slider:
                 self.slider_value.setLabel('%.1f' % self.slider.getPercent())
+        except (RuntimeError, SystemError):
+            pass
+
+    def radio_update(self):
+        # Update radiobutton caption on toggle
+        if self.radiobutton.isSelected():
+            self.radiobutton.setLabel('Switched on')
+        else:
+            self.radiobutton.setLabel('Switched off')
+
+    def list_update(self):
+        # Update list_item label when navigating through the list.
+        try:
+            if self.getFocus() == self.list:
+                self.list_item_label.setLabel(self.list.getListItem(self.list.getSelectedPosition()).getLabel())
+            else:
+                self.list_item_label.setLabel('')
         except (RuntimeError, SystemError):
             pass
 
