@@ -4,7 +4,8 @@
    version="0.0.1"
    provider-name="Roman_V_M">
   <requires>
-    <import addon="xbmc.python" version="2.0"/>    
+    <import addon="xbmc.python" version="2.0"/>
+    <import addon="script.module.pyxbmct" version="0.9.0" />
   </requires>
   <extension point="xbmc.python.script" library="default.py">
     <provides>executable</provides>
