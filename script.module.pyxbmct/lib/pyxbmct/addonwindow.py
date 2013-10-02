@@ -29,13 +29,21 @@ ALIGN_JUSTIFY = 10
 
 # XBMC key action codes.
 # More codes at https://github.com/xbmc/xbmc/blob/master/xbmc/guilib/Key.h
-ACTION_PREVIOUS_MENU = 10 # ESC
-ACTION_NAV_BACK = 92 # Backspace
+
+## ESC action
+ACTION_PREVIOUS_MENU = 10
+## Backspace action
+ACTION_NAV_BACK = 92
+## Left arrow key
 ACTION_MOVE_LEFT = 1
+## Right arrow key
 ACTION_MOVE_RIGHT = 2
+## Up arrow key
 ACTION_MOVE_UP = 3
+## Down arrow key
 ACTION_MOVE_DOWN = 4
-# This is to provide feedback when moving a Slider nib with a mouse.
+## Mouse drag action
+## This is to provide feedback when moving a Slider nib with a mouse.
 ACTION_MOUSE_DRAG = 106
 
 
@@ -494,6 +502,7 @@ class _AddonWindow(_AbstractWindow):
         """
         Define paths to images for window background and title background textures,
         and set control position adjustment constants used in setGrid.
+        This is a helper method not to be called directly.
         """
         # Window background image
         self.background_img = os.path.join(_images, 'AddonWindow', 'ContentPanel.png')
