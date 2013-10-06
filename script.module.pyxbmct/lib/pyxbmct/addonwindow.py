@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
-# A mini-framework for creating XBMC Python addons with arbitrary UI
-# made of controls - decendants of xbmcgui.Control class.
+# PyXBMCt is a mini-framework for creating XBMC Python addons
+# with arbitrary UI made of Controls - decendants of xbmcgui.Control class.
 # The framework uses image textures from XBMC Confluence skin.
 #
 # Licence: GPL v.3 http://www.gnu.org/licenses/gpl.html
@@ -29,7 +29,6 @@ ALIGN_JUSTIFY = 10
 
 # XBMC key action codes.
 # More codes at https://github.com/xbmc/xbmc/blob/master/xbmc/guilib/Key.h
-
 ## ESC action
 ACTION_PREVIOUS_MENU = 10
 ## Backspace action
@@ -42,9 +41,14 @@ ACTION_MOVE_RIGHT = 2
 ACTION_MOVE_UP = 3
 ## Down arrow key
 ACTION_MOVE_DOWN = 4
-## Mouse drag action
-## This is to provide feedback when moving a Slider nib with a mouse.
+## Mouse wheel up
+ACTION_MOUSE_WHEEL_UP = 104
+## Mouse wheel down
+ACTION_MOUSE_WHEEL_DOWN = 105
+## Mouse drag
 ACTION_MOUSE_DRAG = 106
+## Mouse move
+ACTION_MOUSE_MOVE = 107
 
 
 def _set_textures(textures={}, kwargs={}):
