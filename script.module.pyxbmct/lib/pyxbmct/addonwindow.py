@@ -361,7 +361,7 @@ class _AbstractWindow(object):
             control_width = self.tile_width * columnspan - 2 * pad_x
             control_height = self.tile_height * rowspan - 2 * pad_y
         except AttributeError:
-            raise AddonWindowError('Window grid is not set! Call setGrid first.')
+            raise AddonWindowError('Window geometry is not defined! Call setGeometry first.')
         control.setPosition(control_x, control_y)
         control.setWidth(control_width)
         control.setHeight(control_height)
@@ -446,6 +446,13 @@ class _AbstractWindow(object):
             else:
                 self.controls_connected.append([event, function])
 
+    def connectEventList(self, events, function):
+        """
+        Connect a list of controls/action codes to a function.
+        See connect docstring for more info.
+        """
+        [self.connect(event, function) for event in events]
+
     def disconnect(self, event):
         """
         Disconnect an event from a function.
@@ -469,6 +476,15 @@ class _AbstractWindow(object):
                 break
         else:
             raise AddonWindowError('The action or control %s is not connected!' % event)
+
+    def disconnectEventList(self, events):
+        """
+        Disconnect a list of controls/action codes from functions.
+        See disconnect docstring for more info.
+        Raises AddonWindowError if at least one event in the list
+        is not connected to any function.
+        """
+        [self.disconnect(event) for event in events]
 
     def executeConnected(self, event, connected_list):
         """

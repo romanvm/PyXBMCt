@@ -77,17 +77,18 @@ class MyAddon(AddonDialogWindow):
         #
         self.list_item_label = Label('', textColor='0xFF808080')
         self.placeControl(self.list_item_label, 4, 2)
-        # Connect key events for list navigation feedback.
-        self.connect(ACTION_MOVE_DOWN, self.list_update)
-        self.connect(ACTION_MOVE_UP, self.list_update)
         # List
         self.list = List()
         self.placeControl(self.list, 3, 3, 3, 1)
         # Add items to the list
-        self.list.addItems(['Item 1', 'Item 2', 'Item 3'])
+        self.list.addItems(['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7'])
         # Connect the list to a function to display which list item is selected.
         self.connect(self.list, lambda: xbmc.executebuiltin('Notification(Note!,%s selected.)' %
                                             self.list.getListItem(self.list.getSelectedPosition()).getLabel()))
+        # Connect key and mouse events for list navigation feedback.
+        self.connectEventList(
+            [ACTION_MOVE_DOWN, ACTION_MOVE_UP, ACTION_MOUSE_WHEEL_DOWN, ACTION_MOUSE_WHEEL_UP, ACTION_MOUSE_MOVE],
+            self.list_update)
         # Slider value label
         SLIDER_INIT_VALUE = 25.0
         self.slider_value = Label(str(SLIDER_INIT_VALUE), alignment=ALIGN_CENTER)
@@ -99,10 +100,8 @@ class MyAddon(AddonDialogWindow):
         self.slider = Slider()
         self.placeControl(self.slider, 7, 3, pad_y=10)
         self.slider.setPercent(SLIDER_INIT_VALUE)
-        # Connect key events for slider update feedback.
-        self.connect(ACTION_MOVE_LEFT, self.slider_update)
-        self.connect(ACTION_MOVE_RIGHT, self.slider_update)
-        self.connect(ACTION_MOUSE_DRAG, self.slider_update)
+        # Connect key and mouse events for slider update feedback.
+        self.connectEventList([ACTION_MOVE_LEFT, ACTION_MOVE_RIGHT, ACTION_MOUSE_DRAG], self.slider_update)
         #
         button_label = Label('Button')
         self.placeControl(button_label, 8, 2)
