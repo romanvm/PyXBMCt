@@ -81,7 +81,8 @@ class MyAddon(AddonDialogWindow):
         self.list = List()
         self.placeControl(self.list, 3, 3, 3, 1)
         # Add items to the list
-        self.list.addItems(['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7'])
+        items = ['Item %s' % i for i in range(1, 8)]
+        self.list.addItems(items)
         # Connect the list to a function to display which list item is selected.
         self.connect(self.list, lambda: xbmc.executebuiltin('Notification(Note!,%s selected.)' %
                                             self.list.getListItem(self.list.getSelectedPosition()).getLabel()))

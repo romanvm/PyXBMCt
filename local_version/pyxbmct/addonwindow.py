@@ -13,10 +13,9 @@
 import sys, os
 import xbmcgui, xbmcaddon
 
-_ADDON_NAME = 'script.module.pyxbmct'
-_addon = xbmcaddon.Addon(id=_ADDON_NAME)
+_addon = xbmcaddon.Addon()
 _addon_path = _addon.getAddonInfo('path').decode(sys.getfilesystemencoding())
-_images = os.path.join(_addon_path, 'lib', 'pyxbmct', 'textures', 'default')
+_images = os.path.join(_addon_path, 'pyxbmct', 'textures', 'default')
 
 
 # Text alighnment constants. Mixed variants are obtained by bit OR (|)
