@@ -541,7 +541,8 @@ class _AddonWindow(_AbstractWindow):
         self.addControl(self.background)
         self.title_background = xbmcgui.ControlImage(-10, -10, 1, 1, self.title_background_img)
         self.addControl(self.title_background)
-        self.title_bar = xbmcgui.ControlLabel(-10, -10, 1, 1, title, alignment=ALIGN_CENTER, textColor='0xFFFFA500')
+        self.title_bar = xbmcgui.ControlLabel(-10, -10, 1, 1, title, alignment=ALIGN_CENTER, textColor='0xFFFFA500',
+                                                                        font='font13_title')
         self.addControl(self.title_bar)
 
     def setGeometry(self, width_, height_, rows_, columns_, pos_x=-1, pos_y=-1, padding=5):
