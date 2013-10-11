@@ -544,6 +544,10 @@ class _AddonWindow(_AbstractWindow):
         self.title_bar = xbmcgui.ControlLabel(-10, -10, 1, 1, title, alignment=ALIGN_CENTER, textColor='0xFFFFA500',
                                                                         font='font13_title')
         self.addControl(self.title_bar)
+        self.window_close_button = xbmcgui.ControlButton(-100, -100, 60, 30, '',
+                        focusTexture=os.path.join(_images, 'AddonWindow', 'DialogCloseButton-focus.png'),
+                        noFocusTexture=os.path.join(_images, 'AddonWindow', 'DialogCloseButton.png'))
+        self.addControl(self.window_close_button)
 
     def setGeometry(self, width_, height_, rows_, columns_, pos_x=-1, pos_y=-1, padding=5):
         """
@@ -571,6 +575,7 @@ class _AddonWindow(_AbstractWindow):
         self.title_bar.setPosition(self.x + self.X_MARGIN, self.y + self.Y_MARGIN + self.Y_SHIFT)
         self.title_bar.setWidth(self.width - 2 * self.X_MARGIN)
         self.title_bar.setHeight(self.HEADER_HEIGHT)
+        self.window_close_button.setPosition(self.x + self.width - 70, self.y + self.Y_MARGIN + self.Y_SHIFT)
 
     def setGrid(self):
         """
@@ -617,7 +622,10 @@ class _FullWindow(xbmcgui.Window):
         Catch activated controls.
         Control is an instance of xbmcgui.Control class.
         """
-        self.executeConnected(control, self.controls_connected)
+        if control == self.window_close_button:
+            self.close()
+        else:
+            self.executeConnected(control, self.controls_connected)
 
 
 class _DialogWindow(xbmcgui.WindowDialog):
@@ -640,7 +648,10 @@ class _DialogWindow(xbmcgui.WindowDialog):
         Catch activated controls.
         Control is an instance of xbmcgui.Control class.
         """
-        self.executeConnected(control, self.controls_connected)
+        if control == self.window_close_button:
+            self.close()
+        else:
+            self.executeConnected(control, self.controls_connected)
 
 
 class BlankFullWindow(_FullWindow, _AbstractWindow):
