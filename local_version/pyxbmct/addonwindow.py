@@ -10,11 +10,11 @@
 ## @package addonwindow
 #  PyXBMCt framework module
 
-import sys, os
+import os
 import xbmcgui, xbmcaddon
 
 _addon = xbmcaddon.Addon()
-_addon_path = _addon.getAddonInfo('path').decode(sys.getfilesystemencoding())
+_addon_path = _addon.getAddonInfo('path').decode('utf-8')
 _images = os.path.join(_addon_path, 'pyxbmct', 'textures', 'default')
 
 

@@ -3,12 +3,12 @@
 # This is an XBMC addon for demonstrating the capabilities
 # and usage of PyXBMCt framework.
 
-import sys, os
+import os
 import xbmc, xbmcaddon, xbmcgui
 from pyxbmct.addonwindow import *
 
 _addon = xbmcaddon.Addon()
-_addon_path = _addon.getAddonInfo('path').decode(sys.getfilesystemencoding())
+_addon_path = _addon.getAddonInfo('path').decode('utf-8')
 
 
 class MyAddon(AddonDialogWindow):
