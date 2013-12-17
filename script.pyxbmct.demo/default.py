@@ -60,7 +60,7 @@ class MyAddon(AddonDialogWindow):
         radiobutton_label = Label('RadioButton')
         self.placeControl(radiobutton_label, 1, 2)
         # RadioButton
-        self.radiobutton = RadioButton('Switched off')
+        self.radiobutton = RadioButton('Off')
         self.placeControl(self.radiobutton, 1, 3)
         self.connect(self.radiobutton, self.radio_update)
         #
@@ -138,9 +138,9 @@ class MyAddon(AddonDialogWindow):
     def radio_update(self):
         # Update radiobutton caption on toggle
         if self.radiobutton.isSelected():
-            self.radiobutton.setLabel('Switched on')
+            self.radiobutton.setLabel('On')
         else:
-            self.radiobutton.setLabel('Switched off')
+            self.radiobutton.setLabel('Off')
 
     def list_update(self):
         # Update list_item label when navigating through the list.
