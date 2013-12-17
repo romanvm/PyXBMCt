@@ -191,8 +191,11 @@ class RadioButton(xbmcgui.ControlRadioButton):
     angle: integer - angle of control. (+ rotates CCW, - rotates CW)
     shadowColor: hexstring - color of radio button's label's shadow. (e.g. '0xFF000000')
     focusedColor: hexstring - color of focused radio button's label. (e.g. '0xFF00FFFF')
-    TextureRadioFocus: string - filename for radio focus texture.
-    TextureRadioNoFocus: string - filename for radio no focus texture.
+    focusOnTexture: string - filename for radio focused/checked texture.
+    noFocusOnTexture: string - filename for radio not focused/checked texture.
+    focusOffTexture: string - filename for radio focused/unchecked texture.
+    noFocusOffTexture: string - filename for radio not focused/unchecked texture.
+    Note: To customize RadioButton all 4 abovementioned textures need to be provided.
 
     Note:
         After you create the control, you need to add it to the window with placeControl().
@@ -203,8 +206,10 @@ class RadioButton(xbmcgui.ControlRadioButton):
     def __new__(cls, *args, **kwargs):
         textures = {'focusTexture': os.path.join(_images, 'RadioButton', 'MenuItemFO.png'),
                     'noFocusTexture': os.path.join(_images, 'RadioButton', 'MenuItemNF.png'),
-                    'TextureRadioFocus': os.path.join(_images, 'RadioButton', 'radiobutton-focus.png'),
-                    'TextureRadioNoFocus': os.path.join(_images, 'RadioButton', 'radiobutton-nofocus.png')}
+                    'focusOnTexture': os.path.join(_images, 'RadioButton', 'radiobutton-focus.png'),
+                    'noFocusOnTexture': os.path.join(_images, 'RadioButton', 'radiobutton-focus.png'),
+                    'focusOffTexture': os.path.join(_images, 'RadioButton', 'radiobutton-nofocus.png'),
+                    'noFocusOffTexture': os.path.join(_images, 'RadioButton', 'radiobutton-nofocus.png')}
         _set_textures(textures, kwargs)
         return super(RadioButton, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
 
@@ -366,6 +371,7 @@ class _AbstractWindow(object):
         control.setWidth(control_width)
         control.setHeight(control_height)
         self.addControl(control)
+        self.setAnimation(control)
 
     def getX(self):
         """Get X coordinate of the top-left corner of the window."""
@@ -496,6 +502,22 @@ class _AbstractWindow(object):
                 item[1]()
                 break
 
+    def setAnimation(self, control):
+        """
+        This method is called to set animation properties for all controls
+        added to the current addon window instance - both built-in controls
+        (window background, title bar etc.) and controls added with placeControl().
+        It receives a control instance as the 2nd positional argument (besides self).
+        By default the method does nohing, i.e. no animation is set for controls.
+        To add animation you need to re-implement this menthod in your child class.
+
+        E.g:
+        def setAnimation(self, control):
+            control.setAnimations([('WindowOpen', 'effect=fade start=0 end=100 time=1000',),
+                                    ('WindowClose', 'effect=fade start=100 end=0 time=1000',)])
+        """
+        pass
+
 
 class _AddonWindow(_AbstractWindow):
 
@@ -526,7 +548,6 @@ class _AddonWindow(_AbstractWindow):
         """
         # Window background image
         self.background_img = os.path.join(_images, 'AddonWindow', 'ContentPanel.png')
-        print self.background_img
         # Background for a window header
         self.title_background_img = os.path.join(_images, 'AddonWindow', 'dialogheader.png')
         # Horisontal adjustment for a header background if the main background has transparent edges.
@@ -539,15 +560,19 @@ class _AddonWindow(_AbstractWindow):
         self.HEADER_HEIGHT = 35
         self.background = xbmcgui.ControlImage(-10, -10, 1, 1, self.background_img)
         self.addControl(self.background)
+        self.setAnimation(self.background)
         self.title_background = xbmcgui.ControlImage(-10, -10, 1, 1, self.title_background_img)
         self.addControl(self.title_background)
+        self.setAnimation(self.title_background)
         self.title_bar = xbmcgui.ControlLabel(-10, -10, 1, 1, title, alignment=ALIGN_CENTER, textColor='0xFFFFA500',
                                                                         font='font13_title')
         self.addControl(self.title_bar)
+        self.setAnimation(self.title_bar)
         self.window_close_button = xbmcgui.ControlButton(-100, -100, 60, 30, '',
                         focusTexture=os.path.join(_images, 'AddonWindow', 'DialogCloseButton-focus.png'),
                         noFocusTexture=os.path.join(_images, 'AddonWindow', 'DialogCloseButton.png'))
         self.addControl(self.window_close_button)
+        self.setAnimation(self.window_close_button)
 
     def setGeometry(self, width_, height_, rows_, columns_, pos_x=-1, pos_y=-1, padding=5):
         """

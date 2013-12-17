@@ -128,7 +128,7 @@ class MyAddon(AddonDialogWindow):
         self.setFocus(self.radiobutton)
 
     def slider_update(self):
-        # Update slider value label when slider nib moves
+        # Update slider value label when the slider nib moves
         try:
             if self.getFocus() == self.slider:
                 self.slider_value.setLabel('%.1f' % self.slider.getPercent())
@@ -151,6 +151,12 @@ class MyAddon(AddonDialogWindow):
                 self.list_item_label.setLabel('')
         except (RuntimeError, SystemError):
             pass
+
+    def setAnimation(self, control):
+        # Set fade animation for all add-on window controls
+        control.setAnimations([('WindowOpen', 'effect=fade start=0 end=100 time=500',),
+                                ('WindowClose', 'effect=fade start=100 end=0 time=500',)])
+
 
 
 def main():
