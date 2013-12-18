@@ -508,7 +508,7 @@ class _AbstractWindow(object):
         added to the current addon window instance - both built-in controls
         (window background, title bar etc.) and controls added with placeControl().
         It receives a control instance as the 2nd positional argument (besides self).
-        By default the method does nohing, i.e. no animation is set for controls.
+        By default the method does nothing, i.e. no animation is set for controls.
         To add animation you need to re-implement this menthod in your child class.
 
         E.g:
