@@ -11,7 +11,7 @@
 #  PyXBMCt framework module
 
 import os
-import xbmcgui, xbmcaddon
+import xbmc, xbmcgui, xbmcaddon
 
 _addon = xbmcaddon.Addon()
 _addon_path = _addon.getAddonInfo('path').decode('utf-8')
@@ -204,12 +204,18 @@ class RadioButton(xbmcgui.ControlRadioButton):
         self.radiobutton = RadioButton('Status', font='font14')
     """
     def __new__(cls, *args, **kwargs):
-        textures = {'focusTexture': os.path.join(_images, 'RadioButton', 'MenuItemFO.png'),
-                    'noFocusTexture': os.path.join(_images, 'RadioButton', 'MenuItemNF.png'),
-                    'focusOnTexture': os.path.join(_images, 'RadioButton', 'radiobutton-focus.png'),
-                    'noFocusOnTexture': os.path.join(_images, 'RadioButton', 'radiobutton-focus.png'),
-                    'focusOffTexture': os.path.join(_images, 'RadioButton', 'radiobutton-nofocus.png'),
-                    'noFocusOffTexture': os.path.join(_images, 'RadioButton', 'radiobutton-nofocus.png')}
+        if int(xbmc.getInfoLabel('System.BuildVersion')[:2]) >= 13:
+            textures = {'focusTexture': os.path.join(_images, 'RadioButton', 'MenuItemFO.png'),
+                        'noFocusTexture': os.path.join(_images, 'RadioButton', 'MenuItemNF.png'),
+                        'focusOnTexture': os.path.join(_images, 'RadioButton', 'radiobutton-focus.png'),
+                        'noFocusOnTexture': os.path.join(_images, 'RadioButton', 'radiobutton-focus.png'),
+                        'focusOffTexture': os.path.join(_images, 'RadioButton', 'radiobutton-nofocus.png'),
+                        'noFocusOffTexture': os.path.join(_images, 'RadioButton', 'radiobutton-nofocus.png')}
+        else: # This is for compatibility with Frodo and earlier versions.
+            textures = {'focusTexture': os.path.join(_images, 'RadioButton', 'MenuItemFO.png'),
+                        'noFocusTexture': os.path.join(_images, 'RadioButton', 'MenuItemNF.png'),
+                        'TextureRadioFocus': os.path.join(_images, 'RadioButton', 'radiobutton-focus.png'),
+                        'TextureRadioNoFocus': os.path.join(_images, 'RadioButton', 'radiobutton-nofocus.png')}
         _set_textures(textures, kwargs)
         return super(RadioButton, cls).__new__(cls, -10, -10, 1, 1, *args, **kwargs)
 
