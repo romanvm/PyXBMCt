@@ -14,7 +14,7 @@ import os
 import xbmc, xbmcgui, xbmcaddon
 
 _addon = xbmcaddon.Addon()
-_addon_path = _addon.getAddonInfo('path').decode('utf-8')
+_addon_path = _addon.getAddonInfo('path')
 _images = os.path.join(_addon_path, 'pyxbmct', 'textures', 'default')
 
 
