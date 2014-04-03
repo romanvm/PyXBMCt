@@ -8,7 +8,7 @@ import xbmc, xbmcaddon, xbmcgui
 from pyxbmct.addonwindow import *
 
 _addon = xbmcaddon.Addon()
-_addon_path = _addon.getAddonInfo('path').decode('utf-8')
+_addon_path = _addon.getAddonInfo('path')
 
 
 class MyAddon(AddonDialogWindow):
