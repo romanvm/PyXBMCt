@@ -68,6 +68,7 @@ class AddonWindowError(Exception):
 class Label(xbmcgui.ControlLabel):
     """ControlLabel class.
 
+    Implements a simple text label.
     Parameters:
     label: string or unicode - text string.
     font: string - font used for label text. (e.g. 'font13')
@@ -90,6 +91,7 @@ class Label(xbmcgui.ControlLabel):
 class FadeLabel(xbmcgui.ControlFadeLabel):
     """Control that scrolls label text.
 
+    Implements a text label that can auto-scroll very long text.
     Parameters:
     font: string - font used for label text. (e.g. 'font13')
     textColor: hexstring - color of fadelabel's labels. (e.g. '0xFFFFFFFF')
@@ -108,6 +110,8 @@ class FadeLabel(xbmcgui.ControlFadeLabel):
 class TextBox(xbmcgui.ControlTextBox):
     """ControlTextBox class.
 
+    Implements a box for displaying multi-line text.
+    Long text is truncated from below.
     Parameters:
     font: string - font used for text. (e.g. 'font13')
     textColor: hexstring - color of textbox's text. (e.g. '0xFFFFFFFF')
@@ -125,6 +129,7 @@ class TextBox(xbmcgui.ControlTextBox):
 class Image(xbmcgui.ControlImage):
     """ControlImage class.
 
+    Implements a box for displaying .jpg, .png, and .gif images.
     Parameters:
     filename: string - image filename.
     colorKey: hexString - (example, '0xFFFF3300')
@@ -144,6 +149,7 @@ class Image(xbmcgui.ControlImage):
 class Button(xbmcgui.ControlButton):
     """ControlButton class.
 
+    Implements a clickable button.
     Parameters:
     label: string or unicode - text string.
     focusTexture: string - filename for focus texture.
@@ -178,6 +184,7 @@ class Button(xbmcgui.ControlButton):
 class RadioButton(xbmcgui.ControlRadioButton):
     """ControlRadioButton class.
 
+    Implements a 2-state switch.
     Parameters:
     label: string or unicode - text string.
     focusTexture: string - filename for focus texture.
@@ -224,6 +231,8 @@ class Edit(xbmcgui.ControlEdit):
     """
    	ControlEdit class.
 
+    Implements a clickable text entry field with on-screen keyboard.
+
     Edit(label[, font, textColor, disabledColor, alignment, focusTexture, noFocusTexture])
 
     Parameters:
@@ -253,6 +262,7 @@ class Edit(xbmcgui.ControlEdit):
 class List(xbmcgui.ControlList):
     """ControlList class.
 
+    Implements a scrollable list of items.
     Parameters:
     font: string - font used for items label. (e.g. 'font13')
     textColor: hexstring - color of items label. (e.g. '0xFFFFFFFF')
@@ -283,6 +293,7 @@ class List(xbmcgui.ControlList):
 class Slider(xbmcgui.ControlSlider):
     """ControlSlider class.
 
+    Implements a movable slider for adjusting some value.
     Parameters:
     textureback: string - image filename.
     texture: string - image filename.
