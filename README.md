@@ -10,3 +10,9 @@ Support thread on XBMC forum: http://forum.xbmc.org/showthread.php?tid=174859
 The framework uses image textures from XBMC Confluence skin.
 
 Licence: GPL v.3 http://www.gnu.org/licenses/gpl.html
+
+**NOTE!** This is a legacy repository kept only as a hosting for docs. For up-to-date code see the folliwing repos:
+
+PyXBMCt addon module: https://github.com/romanvm/script.module.pyxbmct
+
+PyXBMCt demo addon: https://github.com/romanvm/pyxbmct.demo
