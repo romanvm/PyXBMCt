@@ -3,20 +3,44 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to PyXBMCt's documentation!
-===================================
+Wellcome to PyXBMCt documentation!
+==================================
+A GUI micro-framework for Kodi meidacenter addons
+-------------------------------------------------
 
-Contents:
+PyXBMCt is a Python micro-framework created to simplify creating GUI for `Kodi (XBMC)`_ mediacenter addons.
+It was inspired by PyQt (hence the name) and shares the same basic principles,
+so those who are familiar with PyQt/PySide should feel themselves right at home.
+
+The framework provides 4 base container classes, 9 ready-to-use widgets or, in Kodi terms, controls,
+a Grid layout manager and an event connection manager.
+
+PyXBMCt uses texture images from Kodi’s default Confluence skin to decorate its visual elements.
+Those textures are included in PyXBMCt, so UI based on it will have the same look in different skins.
+
+PyXBMCt is essentially a thin wrapper around several ``xbmcgui`` classes so please consult
+`xbmcgui module documentation`_ on how to use all features of PyXBMCt windows and controls.
+
+.. _Kodi (XBMC): http://www.kodi.tv
+.. _xbmcgui module documentation: http://romanvm.github.io/xbmcstubs/docs/xbmcgui-module.html
+
+**Contents**:
 
 .. toctree::
    :maxdepth: 2
 
+   classes
+   controls
+   grid
+   connection
+   using
+   examples
+   links
+   pyxbmct
 
 
 Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
-

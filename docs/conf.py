@@ -15,11 +15,14 @@
 import sys
 import os
 import shlex
+from mock import MagicMock
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#sys.path.insert(0, os.path.abspath('.'))
+
+sys.path.insert(0, os.path.abspath('../../script.module.pyxbmct/lib'))
+sys.path.insert(0, os.path.abspath('../xbmcstubs'))
 
 # -- General configuration ------------------------------------------------
 
@@ -33,6 +36,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
+    'alabaster',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -118,6 +122,13 @@ html_theme = 'alabaster'
 # further.  For a list of options available for each theme, see the
 # documentation.
 #html_theme_options = {}
+html_theme_options = {
+    'github_button': True,
+    'github_type': 'star&v=2',
+    'github_user': 'romanvm',
+    'github_repo': 'script.module.pyxbmct',
+    'github_banner': True,
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
@@ -158,6 +169,15 @@ html_static_path = ['_static']
 
 # Custom sidebar templates, maps document names to template names.
 #html_sidebars = {}
+html_sidebars = {
+    '**': [
+        'about.html',
+        'navigation.html',
+        'relations.html',
+        'searchbox.html',
+        'donate.html',
+    ]
+}
 
 # Additional templates that should be rendered to pages, maps page names to
 # template names.
@@ -173,7 +193,7 @@ html_static_path = ['_static']
 #html_split_index = False
 
 # If true, links to the reST sources are added to the pages.
-#html_show_sourcelink = True
+html_show_sourcelink = False
 
 # If true, "Created using Sphinx" is shown in the HTML footer. Default is True.
 #html_show_sphinx = True
@@ -286,3 +306,14 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
+
+
+# Needed to document __init__ methods
+def skip(app, what, name, obj, skip, options):
+    if name == '__init__':
+        return False
+    return skip
+
+
+def setup(app):
+    app.connect('autodoc-skip-member', skip)
