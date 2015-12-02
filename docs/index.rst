@@ -15,7 +15,7 @@ so those who are familiar with PyQt/PySide should feel themselves right at home.
 The framework provides 4 base container classes, 9 ready-to-use widgets or, in Kodi terms, controls,
 a Grid layout manager and an event connection manager.
 
-PyXBMCt uses texture images from Kodi’s default Confluence skin to decorate its visual elements.
+PyXBMCt uses texture images from Kodi's default Confluence skin to decorate its visual elements.
 Those textures are included in PyXBMCt, so UI based on it will have the same look in different skins.
 
 PyXBMCt is essentially a thin wrapper around several ``xbmcgui`` classes so please consult
