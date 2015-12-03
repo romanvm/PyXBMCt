@@ -1,5 +1,8 @@
+API
+===
+
 pyxbmct.addonwindow module
-==========================
+--------------------------
 
 .. automodule:: pyxbmct.addonwindow
     :members:

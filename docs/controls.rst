@@ -20,15 +20,27 @@ Label
 
 Simple text label much like ``Tkinter.Label`` or ``QLabel``.
 
+.. autosummary::
+
+    pyxbmct.addonwindow.Label
+
 FadeLabel
 ---------
 
 It is similar to ``Label``, but a very long text string is auto-scrolled.
 
+.. autosummary::
+
+    pyxbmct.addonwindow.FadeLabel
+
 TextBox
 -------
 
 ``TextBox`` can contain multiline text. It can autoscroll very long text.
+
+.. autosummary::
+
+    pyxbmct.addonwindow.TextBox
 
 Image
 -----
@@ -36,15 +48,27 @@ Image
 This control displays images from files (``.jpg``, ``.png``, ``.gif``).
 For ``.gif`` and ``.png`` images animation and transparency are supported.
 
+.. autosummary::
+
+    pyxbmct.addonwindow.Image
+
 Button
 ------
 
 A clickable button. It generates a control event on click.
 
+.. autosummary::
+
+    pyxbmct.addonwindow.Button
+
 RadioButton
 -----------
 
 A 2-state switch. It generates a control event on click.
+
+.. autosummary::
+
+    pyxbmct.addonwindow.RadioButton
 
 Edit
 ----
@@ -52,13 +76,25 @@ Edit
 Text entry field, similar to ``Tkinter.Entry`` or ``QLineEdit``.
 When activated, it opens an on-screen keyboard to enter text.
 
+.. autosummary::
+
+    pyxbmct.addonwindow.Edit
+
 List
 ----
 
 A list of items. The list scrolls when it cannot display all its items within available space.
 It generates a control event when an item is selected.
 
+.. autosummary::
+
+    pyxbmct.addonwindow.List
+
 Slider
 ------
 
 A control for stepless adjusting some value (e.g. volume level).
+
+.. autosummary::
+
+    pyxbmct.addonwindow.Slider

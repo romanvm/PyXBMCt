@@ -26,6 +26,10 @@ The default resolution of UI coordinate grid is always 1280x720 regardless of yo
 This way UI elements have the same visible size no matter what display resolution you use.
 If no explicit coordinates are provided, the control window is placed at the center of the screen.
 
+.. autosummary::
+
+    pyxbmct.addonwindow.AddonDialogWindow
+
 AddonFullWindow
 ---------------
 
@@ -40,6 +44,10 @@ and can hide under video or music visualization.
 
     **AddonFullWindow parent control window**
 
+.. autosummary::
+
+    pyxbmct.addonwindow.AddonFullWindow
+
 BlankDialogWindow and BlankFullWindow
 -------------------------------------
 
@@ -48,3 +56,8 @@ They have no visual elements whatsoever, but, like the 2 previously described cl
 they provide the Grid layout and event connection managers.
 
 Those classes are meant for DIY developers who want full control over the visual appearance of their addons.
+
+.. autosummary::
+
+    pyxbmct.addonwindow.BlankDialogWindow
+    pyxbmct.addonwindow.BlankFullWindow

@@ -40,7 +40,7 @@ and does not require the knowledge of Kodi skinning. PyXBMCt-based GUIs can be c
    using
    examples
    links
-   modules
+   pyxbmct
 
 
 Indices and tables
