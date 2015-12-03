@@ -62,19 +62,3 @@ Slider
 ------
 
 A control for stepless adjusting some value (e.g. volume level).
-
-
-API Reference
--------------
-
-.. autosummary::
-
-    pyxbmct.addonwindow.Label
-    pyxbmct.addonwindow.FadeLabel
-    pyxbmct.addonwindow.TextBox
-    pyxbmct.addonwindow.Image
-    pyxbmct.addonwindow.Button
-    pyxbmct.addonwindow.RadioButton
-    pyxbmct.addonwindow.Edit
-    pyxbmct.addonwindow.List
-    pyxbmct.addonwindow.Slider

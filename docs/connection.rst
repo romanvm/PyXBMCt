@@ -9,7 +9,8 @@ The connection manager is implemented through ``connect`` method of a base PyXBM
 You can only connect the following controls: ``Button``, ``RadioButton`` and ``List``.
 Other controls do not generate any UI events, so connecting them won’t have any effect.
 
-.. warning:: For connection you must provide a function object without brackets ``()``, not a function call!
+.. warning::
+    For connection you must provide a function object without brackets ``()``, not a function call!
 
 Similarly to PyQt’s signal-slot connection, ``lambda`` can be used to connect a function/method with arguments
 known at runtime. The key code ``ACTION_PREVIOUS_MENU`` or ``10`` (bound to ``ESC`` key by default) is already connected

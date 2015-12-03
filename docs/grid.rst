@@ -10,9 +10,11 @@ This eliminates the need to provide exact coordinates for each control and then 
 If a control needs to occupy several grid cells, you can provide rowspan and/or columspan parameters to specify
 how many cells it should take.
 
-.. note:: Row and column numbers start from zero, i.e. the top-left cell will have row# = ``0``, column# = ``0``.
+.. note::
+    Row and column numbers start from zero, i.e. the top-left cell will have row# = ``0``, column# = ``0``.
 
-.. warning:: Currently PyXBMCt does not support changing window geometry at runtime so you must call ``setGeometry``
+.. warning::
+    Currently PyXBMCt does not support changing window geometry at runtime so you must call ``setGeometry``
     method only once.
 
 The Grid layout manager does not check if a control will actually be placed within the parent window.
@@ -23,4 +25,4 @@ The Grid layout manager also works with xbmcgui controls, but when instantiating
 to provide it with fake coordinates and size. Any integer values will do.
 
 **Hint**: the size and aspect of an individual control can be adjusted with ``pad_x`` and ``pad_y`` parameters
-of ``placeControl`` method. By default, both padding values equal 5.
+of ``placeControl`` method. By default, both padding values equal ``5``.

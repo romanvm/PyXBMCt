@@ -542,7 +542,7 @@ class Window(object):
         * RES_DESKTOP        = 16,  Desktop resolution for primary screen
         * RES_CUSTOM         = 16 + 1
 
-        See: https://github.com/xbmc/xbmc/guilib/Resolution.h
+        See: https://github.com/xbmc/xbmc/blob/master/xbmc/guilib/Resolution.h
         """
         return long
 
@@ -574,7 +574,7 @@ class Window(object):
         * RES_DESKTOP        = 16,  Desktop resolution for primary screen
         * RES_CUSTOM         = 16 + 1
 
-        See: https://github.com/xbmc/xbmc/guilib/Resolution.h
+        See: https://github.com/xbmc/xbmc/blob/master/xbmc/guilib/Resolution.h
         """
         pass
 
