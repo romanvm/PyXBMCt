@@ -9,7 +9,7 @@ Now let’s take a look at some examples. As always, we’ll start with "Hello, 
 The simplest code which will display a window with "Hello, World!" header looks like this::
 
     # Import PyXBMCt module.
-    import pyxbmct.addonwindow as pyxbmct
+    import pyxbmct
 
     # Create a window instance.
     window = pyxbmct.AddonDialogWindow('Hello, World!')
