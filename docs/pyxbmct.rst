@@ -6,6 +6,6 @@ pyxbmct.addonwindow module
 
 .. automodule:: pyxbmct.addonwindow
     :members:
-    :private-members:
-    :undoc-members:
+    :inherited-members:
     :show-inheritance:
+

@@ -48,3 +48,14 @@ They have no visual elements whatsoever, but, like the 2 previously described cl
 they provide the Grid layout and event connection managers.
 
 Those classes are meant for DIY developers who want full control over the visual appearance of their addons.
+
+
+API Reference
+-------------
+
+.. autosummary::
+
+    pyxbmct.addonwindow.AddonDialogWindow
+    pyxbmct.addonwindow.AddonFullWindow
+    pyxbmct.addonwindow.BlankDialogWindow
+    pyxbmct.addonwindow.BlankFullWindow

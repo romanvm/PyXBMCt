@@ -36,8 +36,11 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
+    'sphinx.ext.autosummary',
     'alabaster',
 ]
+
+autodoc_member_order = 'bysource'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -309,11 +312,11 @@ texinfo_documents = [
 
 
 # Needed to document __init__ methods
-def skip(app, what, name, obj, skip, options):
-    if name == '__init__':
-        return False
-    return skip
-
-
-def setup(app):
-    app.connect('autodoc-skip-member', skip)
+# def skip(app, what, name, obj, skip, options):
+#     if name == '__init__':
+#         return False
+#     return skip
+#
+#
+# def setup(app):
+#     app.connect('autodoc-skip-member', skip)

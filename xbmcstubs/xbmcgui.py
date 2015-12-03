@@ -330,9 +330,8 @@ class Window(object):
 
         Specify an id to use an existing window.
 
-        Raises:
-        ValueError: If supplied window Id does not exist.
-        Exception: If more then 200 windows are created.
+        :raises: ``ValueError``: If supplied window Id does not exist.
+        :raises: ``Exception``: If more then 200 windows are created.
 
         Deleting this window will activate the old window that was active
         and resets (not delete) all controls that are associated with this window.
@@ -344,9 +343,8 @@ class Window(object):
 
         Shows this window by activating it, calling close() after it wil activate the current window again.
 
-        Note:
-            If your script ends this window will be closed to. To show it forever,
-            make a loop at the end of your script and use doModal() instead.
+        .. note:: If your script ends this window will be closed to. To show it forever,
+            make a loop at the end of your script and use ``doModal()`` instead.
         """
         pass
 
@@ -362,9 +360,10 @@ class Window(object):
         """onAction method.
 
         This method will recieve all actions that the main program will send to this window.
-        By default, only the PREVIOUS_MENU action is handled.
+        By default, only the ``PREVIOUS_MENU`` action is handled.
         Overwrite this method to let your script handle all actions.
-        Don't forget to capture ACTION_PREVIOUS_MENU, else the user can't close this window.
+
+        Don't forget to capture ``ACTION_PREVIOUS_MENU``, else the user can't close this window.
         """
         pass
 
@@ -377,7 +376,7 @@ class Window(object):
 
     def onDoubleClick(self, controlId):
         """
-        onDoubleClick(self, int controlId)--onClick method.
+        onClick method.
 
         This method will recieve all double click events that the main program will send
         to this window.
@@ -408,100 +407,92 @@ class Window(object):
         pass
 
     def doModal(self):
-        """Display this window until close() is called."""
+        """Display this window until ``close()`` is called."""
         pass
 
     def addControl(self, pControl):
         """Add a Control to this window.
 
-        Raises:
-            TypeError: If supplied argument is not a Control type.
-            ReferenceError: If control is already used in another window.
-            RuntimeError: Should not happen :-)
+        :raises: ``TypeError``: If supplied argument is not a Control type.
+        :raises: ``ReferenceError``: If control is already used in another window.
+        :raises: ``RuntimeError``: Should not happen :-)
 
         The next controls can be added to a window atm:
-            ControlLabel
-            ControlFadeLabel
-            ControlTextBox
-            ControlButton
-            ControlCheckMark
-            ControlList
-            ControlGroup
-            ControlImage
-            ControlRadioButton
-            ControlProgress
+
+            * ``ControlLabel``
+            * ``ControlFadeLabel``
+            * ``ControlTextBox``
+            * ``ControlButton``
+            * ``ControlCheckMark``
+            * ``ControlList``
+            * ``ControlGroup``
+            * ``ControlImage``
+            * ``ControlRadioButton``
+            * ``ControlProgress``
         """
         pass
 
     def addControls(self, pControls):
         """
-        addControls(self, List)--Add a list of Controls to this window.
+        Add a list of Controls to this window.
 
-        *Throws:
-        - TypeError, if supplied argument is not ofList type, or a control is not ofControl type
-        - ReferenceError, if control is already used in another window
-        - RuntimeError, should not happen :-)
+        :raises: ``TypeError``, if supplied argument is not ofList type, or a control is not ofControl type
+        :raises: ``ReferenceError``, if control is already used in another window
+        :raises: ``RuntimeError``, should not happen :-)
         """
         pass
 
     def getControl(self, iControlId):
         """Get's the control from this window.
 
-        Raises:
-            Exception: If Control doesn't exist
+        :raises: ``Exception``: If Control doesn't exist
 
         controlId doesn't have to be a python control, it can be a control id
         from a xbmc window too (you can find id's in the xml files).
 
-        Note:
-            Not python controls are not completely usable yet.
-            You can only use the Control functions.
+        .. note:: Non-Python controls are not completely usable yet.
+            You can only use the ``Control`` functions.
         """
         return object
 
     def setFocus(self, pControl):
         """Give the supplied control focus.
 
-        Raises:
-            TypeError: If supplied argument is not a Control type.
-            SystemError: On Internal error.
-            RuntimeError: If control is not added to a window.
+        :raises: ``TypeError``: If supplied argument is not a Control type.
+        :raises: ``SystemError``: On Internal error.
+        :raises: ``RuntimeError``: If control is not added to a window.
         """
         pass
 
     def setFocusId(self, iControlId):
         """Gives the control with the supplied focus.
 
-        Raises:
-            SystemError: On Internal error.
-            RuntimeError: If control is not added to a window.
+        :raises: ``SystemError``: On Internal error.
+        :raises: ``RuntimeError``: If control is not added to a window.
         """
         pass
 
     def getFocus(self):
         """Returns the control which is focused.
 
-        Raises:
-            SystemError: On Internal error.
-            RuntimeError: If no control has focus.
+        :raises: ``SystemError``: On Internal error.
+        :raises: ``RuntimeError``: If no control has focus.
         """
         return Control
 
     def getFocusId(self):
         """Returns the id of the control which is focused.
 
-        Raises:
-            SystemError: On Internal error.
-            RuntimeError: If no control has focus.
+        :raises: ``SystemError``: On Internal error.
+        :raises: ``RuntimeError``: If no control has focus.
         """
         return long
 
     def removeControl(self, pControl):
         """Removes the control from this window.
 
-        Raises:
-            TypeError: If supplied argument is not a Control type.
-            RuntimeError: If control is not added to this window.
+        :raises: ``TypeError``: If supplied argument is not a Control type.
+        :raises: ``RuntimeError``: If control is not added to this window.
 
         This will not delete the control. It is only removed from the window.
         """
@@ -511,9 +502,8 @@ class Window(object):
         """
         removeControls(self, List)--Removes a list of controls from this window.
 
-        Throws:
-            - TypeError, if supplied argument is not aControl type
-            - RuntimeError, if control is not added to this window
+        :raises: ``TypeError``, if supplied argument is not aControl type
+        :raises: ``RuntimeError``, if control is not added to this window
 
         This will not delete the controls. They are only removed from the window.
         """
@@ -531,26 +521,28 @@ class Window(object):
         """Returns the resolution of the screen.
 
         The returned value is one of the following:
-              RES_INVALID        = -1,
-              RES_HDTV_1080i     =  0,
-              RES_HDTV_720pSBS   =  1,
-              RES_HDTV_720pTB    =  2,
-              RES_HDTV_1080pSBS  =  3,
-              RES_HDTV_1080pTB   =  4,
-              RES_HDTV_720p      =  5,
-              RES_HDTV_480p_4x3  =  6,
-              RES_HDTV_480p_16x9 =  7,
-              RES_NTSC_4x3       =  8,
-              RES_NTSC_16x9      =  9,
-              RES_PAL_4x3        = 10,
-              RES_PAL_16x9       = 11,
-              RES_PAL60_4x3      = 12,
-              RES_PAL60_16x9     = 13,
-              RES_AUTORES        = 14,
-              RES_WINDOW         = 15,
-              RES_DESKTOP        = 16,          Desktop resolution for primary screen
-              RES_CUSTOM         = 16 + 1
-              See: /xbmc/guilib/Resolution.h
+
+        * RES_INVALID        = -1,
+        * RES_HDTV_1080i     =  0,
+        * RES_HDTV_720pSBS   =  1,
+        * RES_HDTV_720pTB    =  2,
+        * RES_HDTV_1080pSBS  =  3,
+        * RES_HDTV_1080pTB   =  4,
+        * RES_HDTV_720p      =  5,
+        * RES_HDTV_480p_4x3  =  6,
+        * RES_HDTV_480p_16x9 =  7,
+        * RES_NTSC_4x3       =  8,
+        * RES_NTSC_16x9      =  9,
+        * RES_PAL_4x3        = 10,
+        * RES_PAL_16x9       = 11,
+        * RES_PAL60_4x3      = 12,
+        * RES_PAL60_16x9     = 13,
+        * RES_AUTORES        = 14,
+        * RES_WINDOW         = 15,
+        * RES_DESKTOP        = 16,  Desktop resolution for primary screen
+        * RES_CUSTOM         = 16 + 1
+
+        See: https://github.com/xbmc/xbmc/guilib/Resolution.h
         """
         return long
 
@@ -561,39 +553,41 @@ class Window(object):
         XBMC is currently using.
 
         resolution is one of the following:
-              RES_INVALID        = -1,
-              RES_HDTV_1080i     =  0,
-              RES_HDTV_720pSBS   =  1,
-              RES_HDTV_720pTB    =  2,
-              RES_HDTV_1080pSBS  =  3,
-              RES_HDTV_1080pTB   =  4,
-              RES_HDTV_720p      =  5,
-              RES_HDTV_480p_4x3  =  6,
-              RES_HDTV_480p_16x9 =  7,
-              RES_NTSC_4x3       =  8,
-              RES_NTSC_16x9      =  9,
-              RES_PAL_4x3        = 10,
-              RES_PAL_16x9       = 11,
-              RES_PAL60_4x3      = 12,
-              RES_PAL60_16x9     = 13,
-              RES_AUTORES        = 14,
-              RES_WINDOW         = 15,
-              RES_DESKTOP        = 16,          Desktop resolution for primary screen
-              RES_CUSTOM         = 16 + 1
-              See: /xbmc/guilib/Resolution.h
+
+        * RES_INVALID        = -1,
+        * RES_HDTV_1080i     =  0,
+        * RES_HDTV_720pSBS   =  1,
+        * RES_HDTV_720pTB    =  2,
+        * RES_HDTV_1080pSBS  =  3,
+        * RES_HDTV_1080pTB   =  4,
+        * RES_HDTV_720p      =  5,
+        * RES_HDTV_480p_4x3  =  6,
+        * RES_HDTV_480p_16x9 =  7,
+        * RES_NTSC_4x3       =  8,
+        * RES_NTSC_16x9      =  9,
+        * RES_PAL_4x3        = 10,
+        * RES_PAL_16x9       = 11,
+        * RES_PAL60_4x3      = 12,
+        * RES_PAL60_16x9     = 13,
+        * RES_AUTORES        = 14,
+        * RES_WINDOW         = 15,
+        * RES_DESKTOP        = 16,  Desktop resolution for primary screen
+        * RES_CUSTOM         = 16 + 1
+
+        See: https://github.com/xbmc/xbmc/guilib/Resolution.h
         """
         pass
 
     def setProperty(self, key, value):
         """Sets a window property, similar to an infolabel.
 
-        key: string - property name.
-        value: string or unicode - value of property.
+        :param key: string - property name.
+        :param value: string or unicode - value of property.
 
-        Note:
-            key is NOT case sensitive. Setting value to an empty string is equivalent to clearProperty(key).
+        .. note:: key is NOT case sensitive. Setting value to an empty string is equivalent to clearProperty(key).
 
-        Example:
+        Example::
+
             win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
             win.setProperty('Category', 'Newest')
         """
@@ -602,12 +596,12 @@ class Window(object):
     def getProperty(self, key):
         """Returns a window property as a string, similar to an infolabel.
 
-        key: string - property name.
+        :param key: string - property name.
 
-        Note:
-            key is NOT case sensitive.
+        .. note:: key is NOT case sensitive.
 
-        Example:
+        Example::
+
             win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
             category = win.getProperty('Category')
         """
@@ -616,12 +610,12 @@ class Window(object):
     def clearProperty(self, key):
         """Clears the specific window property.
 
-        key: string - property name.
+        :param key: string - property name.
 
-        Note:
-            key is NOT case sensitive. Equivalent to setProperty(key,'').
+        .. note:: key is NOT case sensitive. Equivalent to setProperty(key,'').
 
-        Example:
+        Example::
+
             win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
             win.clearProperty('Category')
         """
@@ -630,7 +624,8 @@ class Window(object):
     def clearProperties(self):
         """Clears all window properties.
 
-        Example:
+        Example::
+
             win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
             win.clearProperties()
         """
@@ -651,54 +646,51 @@ class WindowXML(Window):
     """
     WindowXML class.
 
-    WindowXML(self, xmlFilename, scriptPath[, defaultSkin, defaultRes])--Create a newWindowXML script.
+    Example::
 
-    xmlFilename : string - the name of the xml file to look for.
-    scriptPath : string - path to script. used to fallback to if the xml doesn't exist in the current skin. (eg os.getcwd())
-    defaultSkin : [opt] string - name of the folder in the skins path to look in for the xml. (default='Default')
-    defaultRes : [opt] string - default skins resolution. (default='720p')
-
-    *Note, skin folder structure is eg(resources/skins/Default/720p)
-
-    example:
-
-        - ui = GUI('script-Lyrics-main.xml', os.getcwd(), 'LCARS', 'PAL')
-    ui.doModal()
-    del ui
+        ui = GUI('script-Lyrics-main.xml', os.getcwd(), 'LCARS', 'PAL')
+        ui.doModal()
+        del ui
     """
 
     def __init__(self, xmlFilename, scriptPath, defaultSkin='Default', defaultRes='720p'):
         """
-        xmlFilename: string - the name of the xml file to look for.
-        scriptPath: string - path to script. used to fallback to if the xml doesn't exist in the current skin.
-        (eg os.getcwd())
-        defaultSkin: string - name of the folder in the skins path to look in for the xml.
-        defaultRes: string - default skins resolution.
+        Class constructor
 
-        Note:
-        Skin folder structure is eg(resources/skins/Default/720p).
+        :param xmlFilename: string - the name of the xml file to look for.
+        :param: scriptPath: string - path to script. used to fallback to if the xml doesn't exist in the current skin.
+            (eg os.getcwd())
+        :param defaultSkin: string - name of the folder in the skins path to look in for the xml.
+        :param defaultRes: string - default skins resolution.
 
-        Example:
-        ui = GUI('script-Lyrics-main.xml', os.getcwd(), 'LCARS', 'PAL')
-        ui.doModal()
-        del ui
+        .. note:: Skin folder structure is eg (resources/skins/Default/720p).
+
+        Example::
+
+            ui = GUI('script-Lyrics-main.xml', os.getcwd(), 'LCARS', 'PAL')
+            ui.doModal()
+            del ui
         """
         pass
 
     def removeItem(self, position):
         """Removes a specified item based on position, from the Window List.
 
-        position: integer - position of item to remove.
+        :param position: integer - position of item to remove.
         """
         pass
 
     def addItem(self, item, position=32767):
         """Add a new item to this Window List.
 
-        item: string, unicode or ListItem - item to add.
-        position: integer - position of item to add. (NO Int = Adds to bottom,0 adds to top, 1 adds to one below from top,-1 adds to one above from bottom etc etc)
-                  If integer positions are greater than list size, negative positions will add to top of list, positive positions will add to bottom of list.
-        Example:
+        :param item: string, unicode or ListItem - item to add.
+        :param position: integer - position of item to add.
+            (NO Int = Adds to bottom,0 adds to top, 1 adds to one below from top,-1 adds to one above from bottom etc etc)
+            If integer positions are greater than list size, negative positions will add to top of list,
+            positive positions will add to bottom of list.
+
+        Example::
+
             self.addItem('Reboot XBMC', 0)
         """
         pass
@@ -710,7 +702,7 @@ class WindowXML(Window):
     def setCurrentListPosition(self, position):
         """Set the current position in the Window List.
 
-        position: integer - position of item to set.
+        :param position: integer - position of item to set.
         """
         pass
 
@@ -721,7 +713,7 @@ class WindowXML(Window):
     def getListItem(self, position):
         """Returns a given ListItem in this Window List.
 
-        position: integer - position of item to return.
+        :param position: integer - position of item to return.
         """
         return ListItem
 
@@ -732,13 +724,13 @@ class WindowXML(Window):
     def setProperty(self, strProperty, strValue):
         """Sets a container property, similar to an infolabel.
 
-        key: string - property name.
-        value: string or unicode - value of property.
+        :param strProperty: string - property name.
+        :param strValue: string or unicode - value of property.
 
-        Note:
-            Key is NOT case sensitive.
+        .. note:: ``strProperty`` is NOT case sensitive.
 
-        Example:
+        Example::
+
             self.setProperty('Category', 'Newest')
         """
         pass
@@ -748,20 +740,11 @@ class WindowXMLDialog(WindowXML):
     """
     WindowXMLDialog class.
 
-    WindowXMLDialog(self, xmlFilename, scriptPath[, defaultSkin, defaultRes])--Create a newWindowXMLDialog script.
+    Example::
 
-    xmlFilename : string - the name of the xml file to look for.
-    scriptPath : string - path to script. used to fallback to if the xml doesn't exist in the current skin.
-    (eg os.getcwd())
-    defaultSkin : [opt] string - name of the folder in the skins path to look in for the xml. (default='Default')
-    defaultRes : [opt] string - default skins resolution. (default='720p')
-
-    *Note, skin folder structure is eg(resources/skins/Default/720p)
-
-    example:
-        - ui = GUI('script-Lyrics-main.xml', os.getcwd(), 'LCARS', 'PAL')
-        - ui.doModal()
-        - del ui
+        ui = GUI('script-Lyrics-main.xml', os.getcwd(), 'LCARS', 'PAL')
+        ui.doModal()
+        del ui
     """
     pass
 
@@ -771,21 +754,28 @@ class Control(object):
     Parent for control classes.
 
     The problem here is that Python uses references to this class in a dynamic typing way.
-    For example, you will find this type of python code frequently:
+    For example, you will find this type of python code frequently::
+
     window.getControl( 100 ).setLabel( "Stupid Dynamic Type")
+
     Notice that the 'getControl' call returns a 'Control ' object.
+
     In a dynamically typed language, the subsequent call to setLabel works if the specific type of control has the method.
     The script writer is often in a position to know more than the code about the specificControl type
     (in the example, that control id 100 is a 'ControlLabel ') where the C++ code is not.
+
     SWIG doesn't support this type of dynamic typing. The 'Control ' wrapper that's returned will wrap aControlLabel
     but will not have the 'setLabel' method on it. The only way to handle this is to add all possible subclass methods
     to the parent class. This is ugly but the alternative is nearly as ugly.
     It's particularly ugly here because the majority of the methods are unique to the particular subclass.
+
     If anyone thinks they have a solution then let me know. The alternative would be to have a set of 'getContol'
     methods, each one coresponding to a type so that the downcast can be done in the native code.
+
     IOW rather than a simple 'getControl' there would be a 'getControlLabel', 'getControlRadioButton',
     'getControlButton', etc.
-    TODO:This later solution should be implemented for future scripting languages
+
+    TODO: This later solution should be implemented for future scripting languages
     while the former will remain as deprecated functionality for Python.
     """
     def addItem(self):
@@ -799,103 +789,109 @@ class Control(object):
 
     def controlDown(self, control):
         """
-        controlDown(control)--Set's the controls down navigation.
+        Set's the controls down navigation.
 
-        control : control object - control to navigate to on down.
-        *Note, You can also usesetNavigation() . Set to self to disable navigation.
+        :param control: control object - control to navigate to on down.
 
-        Throws:
-         - TypeError, if one of the supplied arguments is not a control type.
-         - ReferenceError, if one of the controls is not added to a window.
-        example:
-         - self.button.controlDown(self.button1)
+        .. note:: You can also usesetNavigation() . Set to self to disable navigation.
+
+        :raises: TypeError, if one of the supplied arguments is not a control type.
+        :raises: ReferenceError, if one of the controls is not added to a window.
+
+        example::
+
+            self.button.controlDown(self.button1)
         """
         pass
 
     def controlLeft(self, control):
         """
-        controlLeft(control)--Set's the controls left navigation.
+        Set's the controls left navigation.
 
-        control : control object - control to navigate to on left.
+        :param control: control object - control to navigate to on left.
 
-        *Note, You can also usesetNavigation() . Set to self to disable navigation.
+        .. note:: You can also usesetNavigation(). Set to self to disable navigation.
 
-        Throws:
-        - TypeError, if one of the supplied arguments is not a control type.
-        - ReferenceError, if one of the controls is not added to a window.
+        :raises: TypeError, if one of the supplied arguments is not a control type.
+        :raises: ReferenceError, if one of the controls is not added to a window.
 
+        example::
 
-        example:
-        - self.button.controlLeft(self.button1)
+            self.button.controlLeft(self.button1)
         """
         pass
 
     def controlRight(self, control):
         """
-        controlRight(control)--Set's the controls right navigation.
+        Set's the controls right navigation.
 
-        control : control object - control to navigate to on right.
+        :param control: control object - control to navigate to on right.
 
-        *Note, You can also usesetNavigation() . Set to self to disable navigation.
+        .. note:: You can also usesetNavigation(). Set to self to disable navigation.
 
-        Throws:
-        - TypeError, if one of the supplied arguments is not a control type.
-        - ReferenceError, if one of the controls is not added to a window.
+        :raises: TypeError, if one of the supplied arguments is not a control type.
+        :raises: ReferenceError, if one of the controls is not added to a window.
 
-        example:
-        - self.button.controlRight(self.button1)
+        example::
+
+            self.button.controlRight(self.button1)
         """
         pass
 
     def controlUp(self, control):
         """
-        controlUp(control)--Set's the controls up navigation.
+        Set's the controls up navigation.
 
-        control : control object - control to navigate to on up.
+        :param control: control object - control to navigate to on up.
 
-        *Note, You can also usesetNavigation() . Set to self to disable navigation.
+        .. note:: You can also usesetNavigation() . Set to self to disable navigation.
 
-        Throws:
-        - TypeError, if one of the supplied arguments is not a control type.
-        - ReferenceError, if one of the controls is not added to a window.
-        example:
-         - self.button.controlUp(self.button1)
+        :raises: TypeError, if one of the supplied arguments is not a control type.
+        :raises: ReferenceError, if one of the controls is not added to a window.
+
+        example::
+
+            self.button.controlUp(self.button1)
          """
         pass
 
     def getHeight(self):
         """
-        getHeight() --Returns the control's current height as an integer.
+        Returns the control's current height as an integer.
 
-        example:
-        - height = self.button.getHeight()
+        example::
+
+            height = self.button.getHeight()
         """
         return int
 
     def getId(self):
         """
-        getId() --Returns the control's current id as an integer.
+        Returns the control's current id as an integer.
 
-        example:
-        - id = self.button.getId()
+        example::
+
+            id = self.button.getId()
         """
         return int
 
     def getPosition(self):
         """
-        getPosition() --Returns the control's current position as a x,y integer tuple.
+        Returns the control's current position as a x,y integer tuple.
 
-        example:
-        - pos = self.button.getPosition()
+        example::
+
+            pos = self.button.getPosition()
         """
         return int, int
 
     def getWidth(self):
         """
-        getWidth() --Returns the control's current width as an integer.
+        Returns the control's current width as an integer.
 
-        example:
-        - width = self.button.getWidth()
+        example::
+
+            width = self.button.getWidth()
         """
         return int
     def getX(self):
@@ -912,127 +908,135 @@ class Control(object):
 
     def setAnimations(self, eventAttr):
         """
-        setAnimations([(event, attr,)*])--Set's the control's animations.
+        Set's the control's animations.
 
-        [(event,attr,)*] : list - A list of tuples consisting of event and attributes pairs.
-        - event : string - The event to animate.
-        - attr : string - The whole attribute string separated by spaces.
+        :param eventAttr: list -- A list of tuples [(event,attr,)*] consisting of event and attributes pairs.
 
+        ``event`` : string - The event to animate.
+        ``attr`` : string - The whole attribute string separated by spaces.
 
         Animating your skin -http://wiki.xbmc.org/?title=Animating_Your_Skin
 
-        example:
-        - self.button.setAnimations([('focus', 'effect=zoom end=90,247,220,56 time=0',)])
+        example::
+
+            self.button.setAnimations([('focus', 'effect=zoom end=90,247,220,56 time=0',)])
         """
         pass
 
     def setEnableCondition(self, enable):
         """
-        setEnableCondition(enable)--Set's the control's enabled condition.
+        Set's the control's enabled condition.
 
         Allows XBMC to control the enabled status of the control.
 
-        enable : string - Enable condition.
+        :param enable: string - Enable condition.
 
-        List of Conditions -http://wiki.xbmc.org/index.php?title=List_of_Boolean_Conditions
+        List of Conditions: http://wiki.xbmc.org/index.php?title=List_of_Boolean_Conditions
 
-        example:
-        - self.button.setEnableCondition('System.InternetState')
+        example::
+
+            self.button.setEnableCondition('System.InternetState')
         """
         pass
 
     def setEnabled(self, enabled):
         """
-        setEnabled(enabled)--Set's the control's enabled/disabled state.
+        Set's the control's enabled/disabled state.
 
-        enabled : bool - True=enabled / False=disabled.
+        :param enabled: bool - True=enabled / False=disabled.
 
-        example:
-        - self.button.setEnabled(False)
+        example::
+
+            self.button.setEnabled(False)
         """
         pass
 
     def setHeight(self, height):
         """
-        setHeight(height)--Set's the controls height.
+        Set's the controls height.
 
-        height : integer - height of control.
+        :param height: integer - height of control.
 
-        example:
-        - self.image.setHeight(100)
+        example::
+
+            self.image.setHeight(100)
         """
         pass
 
     def setNavigation(self, up, down, left, right):
         """
-        setNavigation(up, down, left, right)--Set's the controls navigation.
+        Set's the controls navigation.
 
-        up : control object - control to navigate to on up.
-        down : control object - control to navigate to on down.
-        left : control object - control to navigate to on left.
-        right : control object - control to navigate to on right.
+        :param up: control object - control to navigate to on up.
+        :param down: control object - control to navigate to on down.
+        :param left: control object - control to navigate to on left.
+        :param right: control object - control to navigate to on right.
 
-        *Note, Same ascontrolUp() ,controlDown() ,controlLeft() ,controlRight() . Set to self to disable navigation for that direction.
+        .. note:: Same ascontrolUp() ,controlDown() ,controlLeft() ,controlRight().
+            Set to self to disable navigation for that direction.
 
-        Throws:
-        - TypeError, if one of the supplied arguments is not a control type.
-        - ReferenceError, if one of the controls is not added to a window.
+        :raises: TypeError, if one of the supplied arguments is not a control type.
+        :raises: ReferenceError, if one of the controls is not added to a window.
 
+        example::
 
-        example:
-        - self.button.setNavigation(self.button1, self.button2, self.button3, self.button4)
+            self.button.setNavigation(self.button1, self.button2, self.button3, self.button4)
         """
         pass
 
     def setPosition(self, x, y):
         """
-        setPosition(x, y)--Set's the controls position.
+        Set's the controls position.
 
-        x : integer - x coordinate of control.
-        y : integer - y coordinate of control.
+        :param x: integer - x coordinate of control.
+        :param y: integer - y coordinate of control.
 
-        *Note, You may use negative integers. (e.g sliding a control into view)
+        .. note:: You may use negative integers. (e.g sliding a control into view)
 
-        example:
-        - self.button.setPosition(100, 250)
+        example::
+
+            self.button.setPosition(100, 250)
         """
         pass
 
     def setVisible(self, visible):
         """
-        setVisible(visible)--Set's the control's visible/hidden state.
+        Set's the control's visible/hidden state.
 
-        visible : bool - True=visible / False=hidden.
+        :param visible: bool - True=visible / False=hidden.
 
-        example:
-        - self.button.setVisible(False)
+        example::
+
+            self.button.setVisible(False)
         """
         pass
 
     def setVisibleCondition(self, condition, allowHiddenFocus=False):
         """
-        setVisibleCondition(visible[,allowHiddenFocus])--Set's the control's visible condition.
+        Set's the control's visible condition.
 
         Allows XBMC to control the visible status of the control.
 
-        visible : string - Visible condition.
-        allowHiddenFocus : bool - True=gains focus even if hidden.
+        :param condition: string - Visible condition.
+        :param: allowHiddenFocus: bool - True=gains focus even if hidden.
 
-        List of Conditions -http://wiki.xbmc.org/index.php?title=List_of_Boolean_Conditions
+        List of Conditions: http://wiki.xbmc.org/index.php?title=List_of_Boolean_Conditions
 
-        example:
-        - self.button.setVisibleCondition('[Control.IsVisible(41) + !Control.IsVisible(12)]', True)
+        example::
+
+            self.button.setVisibleCondition('[Control.IsVisible(41) + !Control.IsVisible(12)]', True)
         """
         pass
 
     def setWidth(self, width):
         """
-        setWidth(width)--Set's the controls width.
+        Set's the controls width.
 
-        width : integer - width of control.
+        :param width: integer - width of control.
 
-        example:
-        - self.image.setWidth(100)
+        example::
+
+            self.image.setWidth(100)
         """
         pass
 
@@ -1059,44 +1063,48 @@ class ListItem(object):
         """
         addStreamInfo(type, values) -- Add a stream with details.
 
-        type              : string - type of stream(video/audio/subtitle).
-        values            : dictionary - pairs of { label: value }.
+        :param cType: string - type of stream(video/audio/subtitle).
+        :param dictionary: dictionary - pairs of { label: value }.
 
-        Video Values:
-        codec         : string (h264)
-        aspect        : float (1.78)
-        width         : integer (1280)
-        height        : integer (720)
-        duration      : integer (seconds)
+        Video Values::
 
-        Audio Values:
-        codec         : string (dts)
-        language      : string (en)
-        channels      : integer (2)
+            codec         : string (h264)
+            aspect        : float (1.78)
+            width         : integer (1280)
+            height        : integer (720)
+            duration      : integer (seconds)
 
-        Subtitle Values:
-        language      : string (en)
+        Audio Values::
 
-        example:
-        - self.list.getSelectedItem().addStreamInfo('video', { 'Codec': 'h264', 'Width' : 1280 })
+            codec         : string (dts)
+            language      : string (en)
+            channels      : integer (2)
+
+        Subtitle Values::
+
+            language      : string (en)
+
+        example::
+
+            self.list.getSelectedItem().addStreamInfo('video', { 'Codec': 'h264', 'Width' : 1280 })
         """
         pass
 
     def getdescription(self):
         """
-        getdescription() --Returns the description of this PlayListItem.
+        Returns the description of this PlayListItem.
         """
         return str
 
     def getduration(self):
         """
-        getduration() --Returns the duration of this PlayListItem
+        Returns the duration of this PlayListItem
         """
         return str
 
     def getfilename(self):
         """
-        getfilename() --Returns the filename of this PlayListItem.
+        Returns the filename of this PlayListItem.
         """
         return str
 
@@ -1111,35 +1119,35 @@ class ListItem(object):
     def setLabel(self, label):
         """Sets the listitem's label.
 
-        label: string or unicode - text string.
+        :param label: string or unicode - text string.
         """
         pass
 
     def setLabel2(self, label2):
         """Sets the listitem's second label.
 
-        label2: string or unicode - text string.
+        :param label2: string or unicode - text string.
         """
         pass
 
     def setIconImage(self, iconImage):
         """Sets the listitem's icon image.
 
-        icon: string or unicode - image filename.
+        :param iconImage: string or unicode - image filename.
         """
         pass
 
     def setThumbnailImage(self, thumbFilename):
         """Sets the listitem's thumbnail image.
 
-        thumb: string or unicode - image filename.
+        :param thumbFilename: string or unicode - image filename.
         """
         pass
 
     def select(self, selected):
         """Sets the listitem's selected status.
 
-        selected: bool - True=selected/False=not selected.
+        :param selected: bool - True=selected/False=not selected.
         """
         pass
 
@@ -1366,7 +1374,7 @@ class ControlLabel(Control):
                  focusedColor=None, label2=''):
         """Set's text for this label.
 
-        label: string or unicode - text string.
+        :param label: string or unicode - text string.
         """
         pass
 
@@ -1381,7 +1389,7 @@ class ControlFadeLabel(Control):
 
     def __init__(self, x, y, width, height, font=None, textColor=None, _alignment=0):
         """
-         x: integer - x coordinate of control.
+        x: integer - x coordinate of control.
         y: integer - y coordinate of control.
         width: integer - width of control.
         height: integer - height of control.
@@ -1392,15 +1400,16 @@ class ControlFadeLabel(Control):
         Note:
             After you create the control, you need to add it to the window with addControl().
 
-        Example:
-        self.fadelabel = xbmcgui.ControlFadeLabel(100, 250, 200, 50, textColor='0xFFFFFFFF')
+        Example::
+
+            self.fadelabel = xbmcgui.ControlFadeLabel(100, 250, 200, 50, textColor='0xFFFFFFFF')
         """
         pass
 
     def addLabel(self, label):
         """Add a label to this control for scrolling.
 
-        label: string or unicode - text string.
+        :param label: string or unicode - text string.
         """
         pass
 
@@ -1436,37 +1445,39 @@ class ControlTextBox(Control):
 
     def autoScroll(self, delay, time, repeat):
         """
-        autoScroll(delay, time, repeat)--Set autoscrolling times.
+        Set autoscrolling times.
 
-        delay : integer - Scroll delay (in ms)
-        time : integer - Scroll time (in ms)
-        repeat : integer - Repeat time
+        :param delay: integer - Scroll delay (in ms)
+        :param time: integer - Scroll time (in ms)
+        :param repeat: integer - Repeat time
 
-        example:
-            - self.textbox.autoScroll(1, 2, 1)
+        example::
+
+            self.textbox.autoScroll(1, 2, 1)
         """
         pass
 
     def getText(self):
         """
-        getText() --Returns the text value for this textbox.
+        Returns the text value for this textbox.
 
-        example:
-            - text = self.text.getText()
+        example::
+
+            text = self.text.getText()
         """
         return unicode
 
     def setText(self, text):
         """Set's the text for this textbox.
 
-        text: string or unicode - text string.
+        :param text: string or unicode - text string.
         """
         pass
 
     def scroll(self, id):
         """Scrolls to the given position.
 
-        id: integer - position to scroll to.
+        :param id: integer - position to scroll to.
         """
         pass
 
@@ -1517,7 +1528,7 @@ class ControlButton(Control):
     def setDisabledColor(self, color):
         """Set's this buttons disabled color.
 
-        disabledColor: hexstring - color of disabled button's label. (e.g. '0xFFFF3300')
+        :param color: hexstring - color of disabled button's label. (e.g. '0xFFFF3300')
         """
         pass
 
@@ -1525,15 +1536,16 @@ class ControlButton(Control):
                  focusedColor=None, label2=''):
         """Set's this buttons text attributes.
 
-        label: string or unicode - text string.
-        font: string - font used for label text. (e.g. 'font13')
-        textColor: hexstring - color of enabled button's label. (e.g. '0xFFFFFFFF')
-        disabledColor: hexstring - color of disabled button's label. (e.g. '0xFFFF3300')
-        shadowColor: hexstring - color of button's label's shadow. (e.g. '0xFF000000')
-        focusedColor: hexstring - color of focused button's label. (e.g. '0xFFFFFF00')
-        label2: string or unicode - text string.
+        :param label: string or unicode - text string.
+        :param font: string - font used for label text. (e.g. 'font13')
+        :param textColor: hexstring - color of enabled button's label. (e.g. '0xFFFFFFFF')
+        :param disabledColor: hexstring - color of disabled button's label. (e.g. '0xFFFF3300')
+        :param shadowColor: hexstring - color of button's label's shadow. (e.g. '0xFF000000')
+        :param focusedColor: hexstring - color of focused button's label. (e.g. '0xFFFFFF00')
+        :param label2: string or unicode - text string.
 
-        Example:
+        Example::
+
             self.button.setLabel('Status', 'font14', '0xFFFFFFFF', '0xFFFF3300', '0xFF000000')
         """
         pass
@@ -1656,21 +1668,21 @@ class ControlList(Control):
     def addItem(self, item, sendMessage=True):
         """Add a new item to this list control.
 
-        item: string, unicode or ListItem - item to add.
+        :param item: string, unicode or ListItem - item to add.
         """
         pass
 
     def addItems(self, items):
         """Adds a list of listitems or strings to this list control.
 
-        items: List - list of strings, unicode objects or ListItems to add.
+        :param items: List - list of strings, unicode objects or ListItems to add.
         """
         pass
 
     def selectItem(self, item):
         """Select an item by index number.
 
-        item: integer - index number of the item to select.
+        :param item: integer - index number of the item to select.
         """
         pass
 
@@ -1681,8 +1693,7 @@ class ControlList(Control):
     def getSpinControl(self):
         """Returns the associated ControlSpin object.
 
-        Note:
-            Not working completely yet -
+        .. warning:: Not working completely yet.
             After adding this control list to a window it is not possible to change
             the settings of this spin control.
         """
@@ -1691,46 +1702,44 @@ class ControlList(Control):
     def setImageDimensions(self, imageWidth, imageHeight):
         """Sets the width/height of items icon or thumbnail.
 
-        imageWidth: integer - width of items icon or thumbnail.
-        imageHeight: integer - height of items icon or thumbnail.
+        :param imageWidth: integer - width of items icon or thumbnail.
+        :param imageHeight: integer - height of items icon or thumbnail.
         """
         pass
 
     def setItemHeight(self, itemHeight):
         """Sets the height of items.
 
-        itemHeight: integer - height of items.
+        :param itemHeight: integer - height of items.
         """
         pass
 
     def setPageControlVisible(self, visible):
         """Sets the spin control's visible/hidden state.
 
-        visible: boolean - True=visible / False=hidden.
+        :param visible: boolean - True=visible / False=hidden.
         """
         pass
 
     def setSpace(self, space):
         """Set's the space between items.
 
-        space: integer - space between items.
+        :param space: integer - space between items.
         """
         pass
 
     def getSelectedPosition(self):
         """Returns the position of the selected item as an integer.
 
-        Note:
-            Returns -1 for empty lists.
+        .. note:: Returns ``-1`` for empty lists.
         """
         return int
 
     def getSelectedItem(self):
         """Returns the selected item as a ListItem object.
 
-        Note:
-            Same as getSelectedPosition(), but instead of an integer a ListItem object is returned. Returns None for empty lists.
-            See windowexample.py on how to use this.
+       .. note:: Same as ``getSelectedPosition()``, but instead of an integer a ``ListItem`` object is returned.
+            Returns ``None`` for empty lists.
         """
         return ListItem
 
@@ -1741,10 +1750,9 @@ class ControlList(Control):
     def getListItem(self, index):
         """Returns a given ListItem in this List.
 
-        index: integer - index number of item to return.
+        :param index: integer - index number of item to return.
 
-        Raises:
-            ValueError: If index is out of range.
+        :raises ValueError: If index is out of range.
         """
         return ListItem
 
@@ -1759,7 +1767,7 @@ class ControlList(Control):
     def setStaticContent(self, items):
         """Fills a static list with a list of listitems.
 
-        items: List - list of listitems to add.
+        :param items: List - list of listitems to add.
         """
         pass
 
@@ -1767,9 +1775,11 @@ class ControlList(Control):
         """
         Remove an item by index number.
 
-        index : integer - index number of the item to remove.
-        example:
-        my_list.removeItem(12)
+        :param index: integer - index number of the item to remove.
+
+        example::
+
+            my_list.removeItem(12)
         """
         pass
 
@@ -1804,14 +1814,14 @@ class ControlImage(Control):
     def setImage(self, imageFilename, useCache=True):
         """Changes the image.
 
-        filename: string - image filename.
+        :param imageFilename: string - image filename.
         """
         pass
 
     def setColorDiffuse(self, hexString):
         """Changes the images color.
 
-        colorDiffuse: hexString - (example, '0xC0FF0000' (red tint)).
+        :param hexString: - example -- '0xC0FF0000' (red tint).
         """
         pass
 
@@ -1891,7 +1901,10 @@ class ControlSlider(Control):
         return float
 
     def setPercent(self, percent):
-        """Sets the percent of the slider."""
+        """Sets the percent of the slider.
+
+        :param percent: float -- slider % value
+        """
         pass
 
 
@@ -1949,40 +1962,46 @@ class ControlEdit(Control):
 
     def getLabel(self):
         """
-        getLabel() -- Returns the text heading for this edit control.
+       Returns the text heading for this edit control.
 
-        example:
-        - label = self.edit.getLabel()
+        example::
+
+            label = self.edit.getLabel()
         """
         return unicode
 
     def getText(self):
         """
-        getText() -- Returns the text value for this edit control.
+        Returns the text value for this edit control.
 
-        example:
-        - value = self.edit.getText()
+        example::
+
+            value = self.edit.getText()
         """
         return unicode
 
     def setLabel(self, label='', font=None, textColor=None, disabledColor=None, shadowColor=None,
                  focusedColor=None, label2=''):
         """
-        setLabel(label) -- Set's text heading for this edit control.
+        Set's text heading for this edit control.
 
-        label          : string or unicode - text string.
-        example:
-        - self.edit.setLabel('Status')
+        :param label: string or unicode - text string.
+
+        example::
+
+            self.edit.setLabel('Status')
         """
         pass
 
     def setText(self, text):
         """
-        setText(text) -- Set's text value for this edit control.
+        Set's text value for this edit control.
 
-        text - string or unicode - text string.
-        example:
-        - self.edit.setText('online')
+        :param text: - string or unicode - text string.
+
+        example::
+
+            self.edit.setText('online')
         """
         pass
 
@@ -2033,7 +2052,7 @@ class ControlRadioButton(Control):
     def setSelected(self, selected):
         """Sets the radio buttons's selected status.
 
-        selected: bool - True=selected (on) / False=not selected (off)
+        :param selected: bool - True=selected (on) / False=not selected (off)
         """
         pass
 
@@ -2044,14 +2063,15 @@ class ControlRadioButton(Control):
     def setLabel(self, label, font=None, textColor=None, disabledColor=None, shadowColor=None, focusedColor=None):
         """Set's the radio buttons text attributes.
 
-        label: string or unicode - text string.
-        font: string - font used for label text. (e.g. 'font13')
-        textColor: hexstring - color of enabled radio button's label. (e.g. '0xFFFFFFFF')
-        disabledColor: hexstring - color of disabled radio button's label. (e.g. '0xFFFF3300')
-        shadowColor: hexstring - color of radio button's label's shadow. (e.g. '0xFF000000')
-        focusedColor: hexstring - color of focused radio button's label. (e.g. '0xFFFFFF00')
+        :param label: string or unicode - text string.
+        :param font: string - font used for label text. (e.g. 'font13')
+        :param textColor: hexstring - color of enabled radio button's label. (e.g. '0xFFFFFFFF')
+        :param disabledColor: hexstring - color of disabled radio button's label. (e.g. '0xFFFF3300')
+        :param shadowColor: hexstring - color of radio button's label's shadow. (e.g. '0xFF000000')
+        :param focusedColor: hexstring - color of focused radio button's label. (e.g. '0xFFFFFF00')
 
-        Example:
+        Example::
+
             self.radiobutton.setLabel('Status', 'font14', '0xFFFFFFFF', '0xFFFF3300', '0xFF000000')
         """
         pass
@@ -2059,13 +2079,14 @@ class ControlRadioButton(Control):
     def setRadioDimension(self, x, y, width, height):
         """Sets the radio buttons's radio texture's position and size.
 
-        x: integer - x coordinate of radio texture.
-        y: integer - y coordinate of radio texture.
-        width: integer - width of radio texture.
-        height: integer - height of radio texture.
+        :param x: integer - x coordinate of radio texture.
+        :param y: integer - y coordinate of radio texture.
+        :param width: integer - width of radio texture.
+        :param height: integer - height of radio texture.
 
-        Example:
-            self.radiobutton.setRadioDimension(x=100, y=5, width=20, height=20)
+        Example::
+
+            radiobutton.setRadioDimension(x=100, y=5, width=20, height=20)
         """
         pass
 
