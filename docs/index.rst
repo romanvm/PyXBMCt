@@ -33,7 +33,7 @@ and does not require the knowledge of Kodi skinning. PyXBMCt-based GUIs can be c
 .. toctree::
    :maxdepth: 2
 
-   classes
+   classes.rst
    controls
    grid
    connection
