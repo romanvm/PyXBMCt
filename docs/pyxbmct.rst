@@ -1,11 +1,7 @@
 API
 ===
 
-pyxbmct.addonwindow module
---------------------------
+.. autosummary::
+    :toctree: _autosummary
 
-.. automodule:: pyxbmct.addonwindow
-    :members:
-    :inherited-members:
-    :show-inheritance:
-
+    pyxbmct.addonwindow

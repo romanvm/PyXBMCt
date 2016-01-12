@@ -14,8 +14,6 @@
 
 import sys
 import os
-import shlex
-from mock import MagicMock
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -37,10 +35,14 @@ extensions = [
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
     'sphinx.ext.autosummary',
+    'sphinx.ext.intersphinx',
     'alabaster',
 ]
 
 autodoc_member_order = 'bysource'
+autodoc_default_flags = ['members', 'inherited-members', 'show-inheritance']
+autosummary_generate = True
+intersphinx_mapping = {'https://docs.python.org/2.7': None}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
