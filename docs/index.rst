@@ -26,7 +26,7 @@ PyXBMCt does not provide as many features and customization capabilites as skine
 and does not require the knowledge of Kodi skinning. PyXBMCt-based GUIs can be created entirely in Python.
 
 .. _Kodi (XBMC): http://www.kodi.tv
-.. _xbmcgui module documentation: http://romanvm.github.io/xbmcstubs/docs/xbmcgui-module.html
+.. _xbmcgui module documentation: http://romanvm.github.io/Kodistubs/_autosummary/xbmcgui.html
 
 Contents:
 
