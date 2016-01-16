@@ -6,7 +6,7 @@ PyXBMCt is a mini-framework which simplifies UI creation for Kodi (XBMC) addons.
 The main windows serves as a parent widget for the controls much like QtGui.QWidget class and provides a grid layout
 manager to place the controls.
 
-PyXBMCt documentation: http://romanvm.github.io/PyXBMCt/docs
+PyXBMCt documentation: http://romanvm.github.io/PyXBMCt
 
 Support thread on Kodi forum: http://forum.xbmc.org/showthread.php?tid=174859
 
