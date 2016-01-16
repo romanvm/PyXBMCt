@@ -1,11 +1,9 @@
-## @package xbmcgui
-#  Classes and functions to work with Kodi GUI.
-#
+# coding: utf-8
 """
 Classes and functions to work with Kodi GUI
 """
 
-import xbmc
+import xbmc as _xbmc
 
 ACTION_ANALOG_FORWARD = 113
 ACTION_ANALOG_MOVE = 49
@@ -322,7 +320,19 @@ __version__ = '2.20.0'
 
 
 class Window(object):
-    """Create a new Window to draw on."""
+    """
+    Window(existingWindowId=-1)
+
+    Create a new Window to draw on.
+
+    Specify an id to use an existing window.
+
+    :raises: ``ValueError``: If supplied window Id does not exist.
+    :raises: ``Exception``: If more then 200 windows are created.
+
+    Deleting this window will activate the old window that was active
+    and resets (not delete) all controls that are associated with this window.
+    """
 
     def __init__(self, existingWindowId=-1):
         """
@@ -453,7 +463,7 @@ class Window(object):
         .. note:: Non-Python controls are not completely usable yet.
             You can only use the ``Control`` functions.
         """
-        return object
+        return Control()
 
     def setFocus(self, pControl):
         """Give the supplied control focus.
@@ -486,7 +496,7 @@ class Window(object):
         :raises: ``SystemError``: On Internal error.
         :raises: ``RuntimeError``: If no control has focus.
         """
-        return long
+        return long()
 
     def removeControl(self, pControl):
         """Removes the control from this window.
@@ -511,11 +521,11 @@ class Window(object):
 
     def getHeight(self):
         """Returns the height of this screen."""
-        return long
+        return long()
 
     def getWidth(self):
         """Returns the width of this screen."""
-        return long
+        return long()
 
     def getResolution(self):
         """Returns the resolution of the screen.
@@ -544,7 +554,7 @@ class Window(object):
 
         See: https://github.com/xbmc/xbmc/blob/master/xbmc/guilib/Resolution.h
         """
-        return long
+        return long()
 
     def setCoordinateResolution(self, res):
         """Sets the resolution that the coordinates of all controls are defined in.
@@ -605,7 +615,7 @@ class Window(object):
             win = xbmcgui.Window(xbmcgui.getCurrentWindowId())
             category = win.getProperty('Category')
         """
-        return str
+        return str()
 
     def clearProperty(self, key):
         """Clears the specific window property.
@@ -634,6 +644,8 @@ class Window(object):
 
 class WindowDialog(Window):
     """
+    WindowDialog()
+
     Create a new WindowDialog with transparent background.
 
     Unlike Window, WindowDialog always stays on top of XBMC UI.
@@ -644,11 +656,21 @@ class WindowDialog(Window):
 
 class WindowXML(Window):
     """
+    WindowXML(xmlFilename, scriptPath, defaultSkin='Default', defaultRes='720p'):
+
     WindowXML class.
+
+    :param xmlFilename: string - the name of the xml file to look for.
+    :param: scriptPath: string - path to script. used to fallback to if the xml doesn't exist in the current skin.
+        (eg ``os.getcwd()``)
+    :param defaultSkin: string - name of the folder in the skins path to look in for the xml.
+    :param defaultRes: string - default skins resolution.
+
+    .. note:: Skin folder structure is eg (resources/skins/Default/720p).
 
     Example::
 
-        ui = GUI('script-Lyrics-main.xml', os.getcwd(), 'LCARS', 'PAL')
+        ui = WindowXML('script-Lyrics-main.xml', os.getcwd(), 'LCARS', 'PAL')
         ui.doModal()
         del ui
     """
@@ -659,7 +681,7 @@ class WindowXML(Window):
 
         :param xmlFilename: string - the name of the xml file to look for.
         :param: scriptPath: string - path to script. used to fallback to if the xml doesn't exist in the current skin.
-            (eg os.getcwd())
+            (eg ``os.getcwd()``)
         :param defaultSkin: string - name of the folder in the skins path to look in for the xml.
         :param defaultRes: string - default skins resolution.
 
@@ -667,7 +689,7 @@ class WindowXML(Window):
 
         Example::
 
-            ui = GUI('script-Lyrics-main.xml', os.getcwd(), 'LCARS', 'PAL')
+            ui = WindowXML('script-Lyrics-main.xml', os.getcwd(), 'LCARS', 'PAL')
             ui.doModal()
             del ui
         """
@@ -708,18 +730,18 @@ class WindowXML(Window):
 
     def getCurrentListPosition(self):
         """Gets the current position in the Window List."""
-        return int
+        return int()
 
     def getListItem(self, position):
         """Returns a given ListItem in this Window List.
 
         :param position: integer - position of item to return.
         """
-        return ListItem
+        return ListItem()
 
     def getListSize(self):
         """Returns the number of items in this Window List."""
-        return int
+        return int()
 
     def setProperty(self, strProperty, strValue):
         """Sets a container property, similar to an infolabel.
@@ -738,11 +760,21 @@ class WindowXML(Window):
 
 class WindowXMLDialog(WindowXML):
     """
+    WindowXMLDialog(xmlFilename, scriptPath, defaultSkin='Default', defaultRes='720p'):
+
     WindowXMLDialog class.
+
+    :param xmlFilename: string - the name of the xml file to look for.
+    :param: scriptPath: string - path to script. used to fallback to if the xml doesn't exist in the current skin.
+        (eg ``os.getcwd()``)
+    :param defaultSkin: string - name of the folder in the skins path to look in for the xml.
+    :param defaultRes: string - default skins resolution.
+
+    .. note:: Skin folder structure is eg (resources/skins/Default/720p).
 
     Example::
 
-        ui = GUI('script-Lyrics-main.xml', os.getcwd(), 'LCARS', 'PAL')
+        ui = WindowXMLDialog('script-Lyrics-main.xml', os.getcwd(), 'LCARS', 'PAL')
         ui.doModal()
         del ui
     """
@@ -863,7 +895,7 @@ class Control(object):
 
             height = self.button.getHeight()
         """
-        return int
+        return long()
 
     def getId(self):
         """
@@ -873,7 +905,7 @@ class Control(object):
 
             id = self.button.getId()
         """
-        return int
+        return long()
 
     def getPosition(self):
         """
@@ -883,7 +915,7 @@ class Control(object):
 
             pos = self.button.getPosition()
         """
-        return int, int
+        return long(), long()
 
     def getWidth(self):
         """
@@ -893,18 +925,19 @@ class Control(object):
 
             width = self.button.getWidth()
         """
-        return int
+        return long()
+
     def getX(self):
         """
         Get X coordinate of a control as an integer.
         """
-        return int
+        return long()
 
     def getY(self):
         """
         Get Y coordinate of a control as an integer.
         """
-        return int
+        return long()
 
     def setAnimations(self, eventAttr):
         """
@@ -1041,21 +1074,41 @@ class Control(object):
         pass
 
 
-#noinspection PyUnusedLocal
 class ListItem(object):
+    """
+    ListItem(self, label='', label2='', iconImage=None, thumbnailImage=None, path=None)
 
-    """Creates a new ListItem."""
+    Creates a new ListItem.
+
+    :param label: string or unicode - label1 text.
+    :param label2: string or unicode - label2 text.
+    :param iconImage: string - icon filename.
+    :param thumbnailImage: string - thumbnail filename.
+    :param path: string or unicode - listitem's path.
+
+    .. warning:: Starting from 16.0 (Jarvis) all image-related parameters and methods will be depreciated,
+        and :func:`setArt` will become the only method for setting ListItem's images.
+
+    Example::
+
+        listitem = xbmcgui.ListItem('Casino Royale', '[PG-13]',
+                    'blank-poster.tbn', 'poster.tbn',
+                    path='f:\\movies\\casino_royale.mov')
+    """
 
     def __init__(self, label='', label2='', iconImage=None, thumbnailImage=None, path=None):
         """
-        label: string or unicode - label1 text.
-        label2: string or unicode - label2 text.
-        iconImage: string - icon filename.
-        thumbnailImage: string - thumbnail filename.
-        path: string or unicode - listitem's path.
+        :param label: string or unicode - label1 text.
+        :param label2: string or unicode - label2 text.
+        :param iconImage: string - icon filename.
+        :param thumbnailImage: string - thumbnail filename.
+        :param path: string or unicode - listitem's path.
 
-        Example:
-        listitem = xbmcgui.ListItem('Casino Royale', '[PG-13]', 'blank-poster.tbn', 'poster.tbn', path='f:\\movies\\casino_royale.mov')
+        Example::
+
+            listitem = xbmcgui.ListItem('Casino Royale', '[PG-13]',
+                        'blank-poster.tbn', 'poster.tbn',
+                        path='f:\\movies\\casino_royale.mov')
         """
         pass
 
@@ -1094,27 +1147,27 @@ class ListItem(object):
         """
         Returns the description of this PlayListItem.
         """
-        return str
+        return str()
 
     def getduration(self):
         """
         Returns the duration of this PlayListItem
         """
-        return str
+        return str()
 
     def getfilename(self):
         """
         Returns the filename of this PlayListItem.
         """
-        return str
+        return str()
 
     def getLabel(self):
         """Returns the listitem label."""
-        return str
+        return str()
 
     def getLabel2(self):
         """Returns the listitem's second label."""
-        return str
+        return str()
 
     def setLabel(self, label):
         """Sets the listitem's label.
@@ -1158,20 +1211,22 @@ class ListItem(object):
     def setInfo(self, type, infoLabels):
         """Sets the listitem's infoLabels.
 
-        type: string - type of media(video/music/pictures).
-        infoLabels: dictionary - pairs of { label: value }.
+        :param type: string - type of media(video/music/pictures).
+        :param infoLabels: dictionary - pairs of { label: value }.
 
-        Note:
+        .. note::
             To set pictures exif info, prepend 'exif:' to the label. Exif values must be passed
             as strings, separate value pairs with a comma. (eg. {'exif:resolution': '720,480'}
             See CPictureInfoTag::TranslateString in PictureInfoTag.cpp for valid strings.
 
         General Values that apply to all types:
-            count: integer (12) - can be used to store an id for later, or for sorting purposes
-            size: long (1024) - size in bytes
-            date: string (%d.%m.%Y / 01.01.2009) - file date
 
-        Video Values:
+            * count: integer (12) - can be used to store an id for later, or for sorting purposes
+            * size: long (1024) - size in bytes
+            * date: string (%d.%m.%Y / 01.01.2009) - file date
+
+        Video Values::
+
             genre: string (Comedy)
             year: integer (2009)
             episode: integer (4)
@@ -1205,7 +1260,8 @@ class ListItem(object):
             votes: string (12345 votes)
             trailer: string (/home/user/trailer.avi)
 
-        Music Values:
+        Music Values::
+
             tracknumber: integer (8)
             duration: integer (245) - duration in seconds
             year: integer (1998)
@@ -1218,12 +1274,14 @@ class ListItem(object):
             playcount: integer (2) - number of times this item has been played
             lastplayed: string (%Y-%m-%d %h:%m:%s = 2009-04-05 23:16:04)
 
-        Picture Values:
+        Picture Values::
+
             title: string (In the last summer-1)
             picturepath: string (/home/username/pictures/img001.jpg)
-            exif*: string (See CPictureInfoTag::TranslateString in PictureInfoTag.cpp for valid strings)
+            exif: string (See CPictureInfoTag::TranslateString in PictureInfoTag.cpp for valid strings)
 
-        Example:
+        Example::
+
             self.list.getSelectedItem().setInfo('video', { 'Genre': 'Comedy' })
         """
         pass
@@ -1231,17 +1289,18 @@ class ListItem(object):
     def setProperty(self, key, value):
         """Sets a listitem property, similar to an infolabel.
 
-        key: string - property name.
-        value: string or unicode - value of property.
+        :param key: string - property name.
+        :param value: string or unicode - value of property.
 
-        Note:
+        .. note::
             Key is NOT case sensitive.
 
         Some of these are treated internally by XBMC, such as the 'StartOffset' property, which is
         the offset in seconds at which to start playback of an item.  Others may be used in the skin
         to add extra information, such as 'WatchedCount' for tvshow items
 
-        Example:
+        Example::
+
             self.list.getSelectedItem().setProperty('AspectRatio', '1.85 : 1')
             self.list.getSelectedItem().setProperty('StartOffset', '256.4')
         """
@@ -1250,90 +1309,100 @@ class ListItem(object):
     def getProperty(self, key):
         """Returns a listitem property as a string, similar to an infolabel.
 
-        key: string - property name.
+        :param key: string - property name.
 
-        Note:
+        .. note::
             Key is NOT case sensitive.
         """
-        return str
+        return str()
 
     def addContextMenuItems(self, items, replaceItems=False):
         """Adds item(s) to the context menu for media lists.
 
-        items: list - [(label, action)] A list of tuples consisting of label and action pairs.
+        :param items: list - [(label, action)] A list of tuples consisting of label and action pairs.
             label: string or unicode - item's label.
             action: string or unicode - any built-in function to perform.
-        replaceItems: bool - True=only your items will show/False=your items will be added to context menu.
+        :param replaceItems: bool - True=only your items will show/False=your items will be added to context menu.
 
         List of functions: http://wiki.xbmc.org/?title=List_of_Built_In_Functions
 
-        Example:
-            listitem.addContextMenuItems([('Theater Showtimes', 'XBMC.RunScript(special://home/scripts/showtimes/default.py,Iron Man)')])
+        Example::
+
+            listitem.addContextMenuItems([('Theater Showtimes',
+                    'XBMC.RunScript(special://home/scripts/showtimes/default.py,Iron Man)')])
         """
         pass
 
     def setPath(self, path):
         """
-        setPath(path) -- Sets the listitem's path.
+        Sets the listitem's path.
 
-        path           : string or unicode - path, activated when item is clicked.
-        *Note, You can use the above as keywords for arguments.
+        :param path: string or unicode - path, activated when item is clicked.
 
-        example:
-        - self.list.getSelectedItem().setPath(path='ActivateWindow(Weather)')
+        .. note:: You can use the above as keywords for arguments.
+
+        example::
+
+            self.list.getSelectedItem().setPath(path='ActivateWindow(Weather)')
         """
         pass
 
     def setArt(self, dictionary):
         """
-        setArt(dictionary) -- Sets the listitem's art
+        Sets the listitem's art
 
-        dictionary : dict - pairs of { label: value }.
+        :param dictionary: dict - pairs of { label: value }.
 
-        - Some default art values (any string possible):
-        - thumb : string - image filename
-        - poster : string - image filename
-        - banner : string - image filename
-        - fanart : string - image filename
-        - clearart : string - image filename
-        - clearlogo : string - image filename
-        - landscape : string - image filename
+        Some default art values (any string possible):
 
-        example:
-        - self.list.getSelectedItem().setArt({ 'poster': 'poster.png', 'banner' : 'banner.png' })
+        * thumb : string - image filename
+        * poster : string - image filename
+        * banner : string - image filename
+        * fanart : string - image filename
+        * clearart : string - image filename
+        * clearlogo : string - image filename
+        * landscape : string - image filename
+
+        .. warning:: Starting from 16.0 (Jarvis) all image-related parameters and methods will be depreciated,
+            and ``setArt`` will become the only method for setting ListItem's images.
+
+        example::
+
+            self.list.getSelectedItem().setArt({ 'poster': 'poster.png', 'banner' : 'banner.png' })
         """
         pass
 
     def getMusicInfoTag(self):
         """
-        getMusicInfoTag() --returns the MusicInfoTag for this item.
+        returns the MusicInfoTag for this item.
         """
-        return xbmc.InfoTagMusic
+        return _xbmc.InfoTagMusic()
 
     def getVideoInfoTag(self):
         """
-        getVideoInfoTag() --returns the VideoInfoTag for this item.
+        returns the VideoInfoTag for this item.
         """
-        return xbmc.InfoTagVideo
+        return _xbmc.InfoTagVideo()
 
     def setMimeType(self, mimetype):
         """
-        setMimeType(mimetype)--Sets the listitem's mimetype if known.
+        Sets the listitem's mimetype if known.
 
-        mimetype : string or unicode - mimetype.
+        :param mimetype : string or unicode - mimetype.
 
-        *If known prehand, this can avoid xbmc doing HEAD requests to http servers to figure out file type.
+        If known prehand, this can avoid xbmc doing ``HEAD`` requests to http servers to figure out file type.
         """
         pass
 
     def setSubtitles(self, subtitleFiles):
         """
-        setSubtitles(subtitleFiles) --Sets subtitles for this listitem.
+        Sets subtitles for this listitem.
 
-        subtitleFiles - list of subtitle paths
+        :param subtitleFiles: - list of subtitle paths
 
-        example:
-        - listitem.setSubtitles(['special://temp/example.srt', 'http://example.com/example.srt' ])
+        example::
+
+            listitem.setSubtitles(['special://temp/example.srt', 'http://example.com/example.srt' ])
         """
         pass
 
@@ -1341,31 +1410,53 @@ class ListItem(object):
 class ControlLabel(Control):
 
     """
+    ControlLabel(x, y, width, height, label, font=None, textColor=None, disabledColor=None, alignment=0, hasPath=False, angle=0)
+
     ControlLabel class.
 
     Creates a text label.
+
+    :param x: integer -- x coordinate of control.
+    :param y: integer -- y coordinate of control.
+    :param width: integer -- width of control.
+    :param height: integer -- height of control.
+    :param label: string or unicode -- text string.
+    :param font: string -- font used for label text. (e.g. 'font13')
+    :param textColor: hexstring -- color of enabled label's label. (e.g. '0xFFFFFFFF')
+    :param disabledColor: hexstring -- color of disabled label's label. (e.g. '0xFFFF3300')
+    :param alignment: integer -- alignment of label -- *Note, see xbfont.h
+    :param hasPath: bool -- True=stores a path / False=no path.
+    :param angle: integer -- angle of control. (+ rotates CCW, - rotates CW)
+
+    .. note::
+        After you create the control, you need to add it to the window with addControl().
+
+    Example::
+
+        self.label = xbmcgui.ControlLabel(100, 250, 125, 75, 'Status', angle=45)
     """
 
     def __init__(self, x, y, width, height, label,
                  font=None, textColor=None, disabledColor=None, alignment=0,
                  hasPath=False, angle=0):
         """
-        x: integer - x coordinate of control.
-        y: integer - y coordinate of control.
-        width: integer - width of control.
-        height: integer - height of control.
-        label: string or unicode - text string.
-        font: string - font used for label text. (e.g. 'font13')
-        textColor: hexstring - color of enabled label's label. (e.g. '0xFFFFFFFF')
-        disabledColor: hexstring - color of disabled label's label. (e.g. '0xFFFF3300')
-        alignment: integer - alignment of label - *Note, see xbfont.h
-        hasPath: bool - True=stores a path / False=no path.
-        angle: integer - angle of control. (+ rotates CCW, - rotates CW)"
+        :param x: integer -- x coordinate of control.
+        :param y: integer -- y coordinate of control.
+        :param width: integer -- width of control.
+        :param height: integer -- height of control.
+        :param label: string or unicode -- text string.
+        :param font: string -- font used for label text. (e.g. 'font13')
+        :param textColor: hexstring -- color of enabled label's label. (e.g. '0xFFFFFFFF')
+        :param disabledColor: hexstring -- color of disabled label's label. (e.g. '0xFFFF3300')
+        :param alignment: integer -- alignment of label -- *Note, see xbfont.h
+        :param hasPath: bool -- True=stores a path / False=no path.
+        :param angle: integer -- angle of control. (+ rotates CCW, - rotates CW)
 
-        Note:
+        .. note::
             After you create the control, you need to add it to the window with addControl().
 
-        Example:
+        Example::
+
             self.label = xbmcgui.ControlLabel(100, 250, 125, 75, 'Status', angle=45)
         """
         pass
@@ -1380,24 +1471,43 @@ class ControlLabel(Control):
 
     def getLabel(self):
         """Returns the text value for this label."""
-        return unicode
+        return unicode()
 
 
 class ControlFadeLabel(Control):
 
-    """Control which scrolls long label text."""
+    """
+    ControlFadeLabel(x, y, width, height, font=None, textColor=None, _alignment=0)
+
+    Control which scrolls long label text.
+
+    :param x: integer - x coordinate of control.
+    :param y: integer - y coordinate of control.
+    :param width: integer - width of control.
+    :param height: integer - height of control.
+    :param font: string - font used for label text. (e.g. 'font13')
+    :param textColor: hexstring - color of fadelabel's labels. (e.g. '0xFFFFFFFF')
+    :param _alignment: integer - alignment of label - *Note, see xbfont.h
+
+    .. note::
+        After you create the control, you need to add it to the window with addControl().
+
+    Example::
+
+        self.fadelabel = xbmcgui.ControlFadeLabel(100, 250, 200, 50, textColor='0xFFFFFFFF')
+    """
 
     def __init__(self, x, y, width, height, font=None, textColor=None, _alignment=0):
         """
-        x: integer - x coordinate of control.
-        y: integer - y coordinate of control.
-        width: integer - width of control.
-        height: integer - height of control.
-        font: string - font used for label text. (e.g. 'font13')
-        textColor: hexstring - color of fadelabel's labels. (e.g. '0xFFFFFFFF')
-        _alignment: integer - alignment of label - *Note, see xbfont.h
+        :param x: integer - x coordinate of control.
+        :param y: integer - y coordinate of control.
+        :param width: integer - width of control.
+        :param height: integer - height of control.
+        :param font: string - font used for label text. (e.g. 'font13')
+        :param textColor: hexstring - color of fadelabel's labels. (e.g. '0xFFFFFFFF')
+        :param _alignment: integer - alignment of label - *Note, see xbfont.h
 
-        Note:
+        .. note::
             After you create the control, you need to add it to the window with addControl().
 
         Example::
@@ -1421,24 +1531,41 @@ class ControlFadeLabel(Control):
 class ControlTextBox(Control):
 
     """
+    ControlTextBox(x, y, width, height, font=None, textColor=None)
+
     ControlTextBox class.
 
     Creates a box for multi-line text.
+
+    :param x: integer - x coordinate of control.
+    :param y: integer - y coordinate of control.
+    :param width: integer - width of control.
+    :param height: integer - height of control.
+    :param font: string - font used for text. (e.g. 'font13')
+    :param textColor: hexstring - color of textbox's text. (e.g. '0xFFFFFFFF')
+
+    .. note::
+        After you create the control, you need to add it to the window with addControl().
+
+    Example::
+
+        self.textbox = xbmcgui.ControlTextBox(100, 250, 300, 300, textColor='0xFFFFFFFF')
     """
 
     def __init__(self, x, y, width, height, font=None, textColor=None):
         """
-        x: integer - x coordinate of control.
-        y: integer - y coordinate of control.
-        width: integer - width of control.
-        height: integer - height of control.
-        font: string - font used for text. (e.g. 'font13')
-        textColor: hexstring - color of textbox's text. (e.g. '0xFFFFFFFF')
+        :param x: integer - x coordinate of control.
+        :param y: integer - y coordinate of control.
+        :param width: integer - width of control.
+        :param height: integer - height of control.
+        :param font: string - font used for text. (e.g. 'font13')
+        :param textColor: hexstring - color of textbox's text. (e.g. '0xFFFFFFFF')
 
-        Note:
+        .. note::
             After you create the control, you need to add it to the window with addControl().
 
-        Example:
+        Example::
+
             self.textbox = xbmcgui.ControlTextBox(100, 250, 300, 300, textColor='0xFFFFFFFF')
         """
         pass
@@ -1465,7 +1592,7 @@ class ControlTextBox(Control):
 
             text = self.text.getText()
         """
-        return unicode
+        return unicode()
 
     def setText(self, text):
         """Set's the text for this textbox.
@@ -1489,8 +1616,35 @@ class ControlTextBox(Control):
 class ControlButton(Control):
 
     """
+    ControlButton(x, y, width, height, label, focusTexture=None, noFocusTexture=None, textOffsetX=CONTROL_TEXT_OFFSET_X, textOffsetY=CONTROL_TEXT_OFFSET_Y, alignment=4, font=None, textColor=None, disabledColor=None, angle=0, shadowColor=None, focusedColor=None)
+
     ControlButton class.
+
     Creates a clickable button.
+
+    :param x: integer - x coordinate of control.
+    :param y: integer - y coordinate of control.
+    :param width: integer - width of control.
+    :param height: integer - height of control.
+    :param label: string or unicode - text string.
+    :param focusTexture: string - filename for focus texture.
+    :param noFocusTexture: string - filename for no focus texture.
+    :param textOffsetX: integer - x offset of label.
+    :param textOffsetY: integer - y offset of label.
+    :param alignment: integer - alignment of label - *Note, see xbfont.h
+    :param font: string - font used for label text. (e.g. 'font13')
+    :param textColor: hexstring - color of enabled button's label. (e.g. '0xFFFFFFFF')
+    :param disabledColor: hexstring - color of disabled button's label. (e.g. '0xFFFF3300')
+    :param angle: integer - angle of control. (+ rotates CCW, - rotates CW)
+    :param shadowColor: hexstring - color of button's label's shadow. (e.g. '0xFF000000')
+    :param focusedColor: hexstring - color of focused button's label. (e.g. '0xFF00FFFF')
+
+    .. note::
+        After you create the control, you need to add it to the window with addControl().
+
+    Example::
+
+        self.button = xbmcgui.ControlButton(100, 250, 200, 50, 'Status', font='font14')
     """
 
     def __init__(self, x, y, width, height, label, focusTexture=None, noFocusTexture=None,
@@ -1500,27 +1654,28 @@ class ControlButton(Control):
                  font=None, textColor=None, disabledColor=None, angle=0,
                  shadowColor=None, focusedColor=None):
         """
-        x: integer - x coordinate of control.
-        y: integer - y coordinate of control.
-        width: integer - width of control.
-        height: integer - height of control.
-        label: string or unicode - text string.
-        focusTexture: string - filename for focus texture.
-        noFocusTexture: string - filename for no focus texture.
-        textOffsetX: integer - x offset of label.
-        textOffsetY: integer - y offset of label.
-        alignment: integer - alignment of label - *Note, see xbfont.h
-        font: string - font used for label text. (e.g. 'font13')
-        textColor: hexstring - color of enabled button's label. (e.g. '0xFFFFFFFF')
-        disabledColor: hexstring - color of disabled button's label. (e.g. '0xFFFF3300')
-        angle: integer - angle of control. (+ rotates CCW, - rotates CW)
-        shadowColor: hexstring - color of button's label's shadow. (e.g. '0xFF000000')
-        focusedColor: hexstring - color of focused button's label. (e.g. '0xFF00FFFF')
+        :param x: integer - x coordinate of control.
+        :param y: integer - y coordinate of control.
+        :param width: integer - width of control.
+        :param height: integer - height of control.
+        :param label: string or unicode - text string.
+        :param focusTexture: string - filename for focus texture.
+        :param noFocusTexture: string - filename for no focus texture.
+        :param textOffsetX: integer - x offset of label.
+        :param textOffsetY: integer - y offset of label.
+        :param alignment: integer - alignment of label - *Note, see xbfont.h
+        :param font: string - font used for label text. (e.g. 'font13')
+        :param textColor: hexstring - color of enabled button's label. (e.g. '0xFFFFFFFF')
+        :param disabledColor: hexstring - color of disabled button's label. (e.g. '0xFFFF3300')
+        :param angle: integer - angle of control. (+ rotates CCW, - rotates CW)
+        :param shadowColor: hexstring - color of button's label's shadow. (e.g. '0xFF000000')
+        :param focusedColor: hexstring - color of focused button's label. (e.g. '0xFF00FFFF')
 
-        Note:
+        .. note::
             After you create the control, you need to add it to the window with addControl().
 
-        Example:
+        Example::
+
             self.button = xbmcgui.ControlButton(100, 250, 200, 50, 'Status', font='font14')
         """
         pass
@@ -1552,44 +1707,67 @@ class ControlButton(Control):
 
     def getLabel(self):
         """Returns the buttons label as a unicode string."""
-        return unicode
+        return unicode()
 
     def getLabel2(self):
         """Returns the buttons label2 as a unicode string."""
-        return unicode
+        return unicode()
 
 
 class ControlCheckMark(Control):
 
     """
+    ControlCheckMark(x, y, width, height, label, focusTexture=None, noFocusTexture=None, checkWidth=30, checkHeight=30, _alignment=1, font=None, textColor=None, disabledColor=None)
+
     ControlCheckMark class.
 
     Creates a checkmark with 2 states.
+
+    :param x: integer - x coordinate of control.
+    :param y: integer - y coordinate of control.
+    :param width: integer - width of control.
+    :param height: integer - height of control.
+    :param label: string or unicode - text string.
+    :param focusTexture: string - filename for focus texture.
+    :param noFocusTexture: string - filename for no focus texture.
+    :param checkWidth: integer - width of checkmark.
+    :param checkHeight: integer - height of checkmark.
+    :param _alignment: integer - alignment of label - *Note, see xbfont.h
+    :param font: string - font used for label text. (e.g. 'font13')
+    :param textColor: hexstring - color of enabled checkmark's label. (e.g. '0xFFFFFFFF')
+    :param disabledColor: hexstring - color of disabled checkmark's label. (e.g. '0xFFFF3300')
+
+    .. note::
+        After you create the control, you need to add it to the window with addControl().
+
+    Example::
+
+        self.checkmark = xbmcgui.ControlCheckMark(100, 250, 200, 50, 'Status', font='font14')
     """
 
     def __init__(self, x, y, width, height, label,
                  focusTexture=None, noFocusTexture=None, checkWidth=30,
                  checkHeight=30, _alignment=1, font=None, textColor=None, disabledColor=None):
         """
-        x: integer - x coordinate of control.
-        y: integer - y coordinate of control.
-        width: integer - width of control.
-        height: integer - height of control.
-        label: string or unicode - text string.
+        :param x: integer - x coordinate of control.
+        :param y: integer - y coordinate of control.
+        :param width: integer - width of control.
+        :param height: integer - height of control.
+        :param label: string or unicode - text string.
+        :param focusTexture: string - filename for focus texture.
+        :param noFocusTexture: string - filename for no focus texture.
+        :param checkWidth: integer - width of checkmark.
+        :param checkHeight: integer - height of checkmark.
+        :param _alignment: integer - alignment of label - *Note, see xbfont.h
+        :param font: string - font used for label text. (e.g. 'font13')
+        :param textColor: hexstring - color of enabled checkmark's label. (e.g. '0xFFFFFFFF')
+        :param disabledColor: hexstring - color of disabled checkmark's label. (e.g. '0xFFFF3300')
 
-        focusTexture: string - filename for focus texture.
-        noFocusTexture: string - filename for no focus texture.
-        checkWidth: integer - width of checkmark.
-        checkHeight: integer - height of checkmark.
-        _alignment: integer - alignment of label - *Note, see xbfont.h
-        font: string - font used for label text. (e.g. 'font13')
-        textColor: hexstring - color of enabled checkmark's label. (e.g. '0xFFFFFFFF')
-        disabledColor: hexstring - color of disabled checkmark's label. (e.g. '0xFFFF3300')
-
-        Note:
+        .. note::
             After you create the control, you need to add it to the window with addControl().
 
-        Example:
+        Example::
+
             self.checkmark = xbmcgui.ControlCheckMark(100, 250, 200, 50, 'Status', font='font14')
         """
         pass
@@ -1597,7 +1775,7 @@ class ControlCheckMark(Control):
     def setDisabledColor(self, color):
         """Set's this controls disabled color.
 
-        disabledColor: hexstring - color of disabled checkmark's label. (e.g. '0xFFFF3300')
+        :param color: hexstring - color of disabled checkmark's label. (e.g. '0xFFFF3300')
         """
         pass
 
@@ -1605,24 +1783,25 @@ class ControlCheckMark(Control):
                  shadowColor=None, focusedColor=None, label2=''):
         """Set's this controls text attributes.
 
-        label: string or unicode - text string.
-        font: string - font used for label text. (e.g. 'font13')
-        textColor: hexstring - color of enabled checkmark's label. (e.g. '0xFFFFFFFF')
-        disabledColor: hexstring - color of disabled checkmark's label. (e.g. '0xFFFF3300')
+        :param label: string or unicode - text string.
+        :param font: string - font used for label text. (e.g. 'font13')
+        :param textColor: hexstring - color of enabled checkmark's label. (e.g. '0xFFFFFFFF')
+        :param disabledColor: hexstring - color of disabled checkmark's label. (e.g. '0xFFFF3300')
 
-        Example:
+        Example::
+
             self.checkmark.setLabel('Status', 'font14', '0xFFFFFFFF', '0xFFFF3300')
         """
         pass
 
     def getSelected(self):
         """Returns the selected status for this checkmark as a bool."""
-        return bool
+        return bool(1)
 
     def setSelected(self, selected):
         """Sets this checkmark status to on or off.
 
-        selected - bool - True=selected (on) / False=not selected (off)
+        :param selected: bool - True=selected (on) / False=not selected (off)
         """
         pass
 
@@ -1630,9 +1809,35 @@ class ControlCheckMark(Control):
 class ControlList(Control):
 
     """
+    ControlList(x, y, width, height, font=None, textColor=None, buttonTexture=None, buttonFocusTexture=None, selectedColor=None, _imageWidth=10, _imageHeight=10, _itemTextXOffset=10, _itemTextYOffset=2, _itemHeight=27, _space=2, _alignmentY=4)
+
     ControlList class.
 
     Creates a list of items.
+
+    :param x: integer - x coordinate of control.
+    :param y: integer - y coordinate of control.
+    :param width: integer - width of control.
+    :param height: integer - height of control.
+    :param font: string - font used for items label. (e.g. 'font13')
+    :param textColor: hexstring - color of items label. (e.g. '0xFFFFFFFF')
+    :param buttonTexture: string - filename for no focus texture.
+    :param buttonFocusTexture: string - filename for focus texture.
+    :param selectedColor: integer - x offset of label.
+    :param _imageWidth: integer - width of items icon or thumbnail.
+    :param _imageHeight: integer - height of items icon or thumbnail.
+    :param _itemTextXOffset: integer - x offset of items label.
+    :param _itemTextYOffset: integer - y offset of items label.
+    :param _itemHeight: integer - height of items.
+    :param _space: integer - space between items.
+    :param _alignmentY: integer - Y-axis alignment of items label - *Note, see xbfont.h
+
+    .. note::
+        After you create the control, you need to add it to the window with addControl().
+
+    Example::
+
+        self.cList = xbmcgui.ControlList(100, 250, 200, 250, 'font14', _space=5)
     """
 
     def __init__(self, x, y, width, height, font=None, textColor=None, buttonTexture=None,
@@ -1640,28 +1845,29 @@ class ControlList(Control):
                  _itemTextXOffset=10, _itemTextYOffset=2,
                  _itemHeight=27, _space=2, _alignmentY=4):
         """
-        x: integer - x coordinate of control.
-        y: integer - y coordinate of control.
-        width: integer - width of control.
-        height: integer - height of control.
-        font: string - font used for items label. (e.g. 'font13')
-        textColor: hexstring - color of items label. (e.g. '0xFFFFFFFF')
-        buttonTexture: string - filename for no focus texture.
-        buttonFocusTexture: string - filename for focus texture.
-        selectedColor: integer - x offset of label.
-        _imageWidth: integer - width of items icon or thumbnail.
-        _imageHeight: integer - height of items icon or thumbnail.
-        _itemTextXOffset: integer - x offset of items label.
-        _itemTextYOffset: integer - y offset of items label.
-        _itemHeight: integer - height of items.
-        _space: integer - space between items.
-        _alignmentY: integer - Y-axis alignment of items label - *Note, see xbfont.h
+        :param x: integer - x coordinate of control.
+        :param y: integer - y coordinate of control.
+        :param width: integer - width of control.
+        :param height: integer - height of control.
+        :param font: string - font used for items label. (e.g. 'font13')
+        :param textColor: hexstring - color of items label. (e.g. '0xFFFFFFFF')
+        :param buttonTexture: string - filename for no focus texture.
+        :param buttonFocusTexture: string - filename for focus texture.
+        :param selectedColor: integer - x offset of label.
+        :param _imageWidth: integer - width of items icon or thumbnail.
+        :param _imageHeight: integer - height of items icon or thumbnail.
+        :param _itemTextXOffset: integer - x offset of items label.
+        :param _itemTextYOffset: integer - y offset of items label.
+        :param _itemHeight: integer - height of items.
+        :param _space: integer - space between items.
+        :param _alignmentY: integer - Y-axis alignment of items label - *Note, see xbfont.h
 
-        Note:
+        .. note::
             After you create the control, you need to add it to the window with addControl().
 
-        Example:
-            self.cList = xbmcgui.ControlList(100, 250, 200, 250, 'font14', space=5)
+        Example::
+
+            self.cList = xbmcgui.ControlList(100, 250, 200, 250, 'font14', _space=5)
         """
         pass
 
@@ -1697,7 +1903,7 @@ class ControlList(Control):
             After adding this control list to a window it is not possible to change
             the settings of this spin control.
         """
-        return ControlSpin
+        return ControlSpin()
 
     def setImageDimensions(self, imageWidth, imageHeight):
         """Sets the width/height of items icon or thumbnail.
@@ -1733,7 +1939,7 @@ class ControlList(Control):
 
         .. note:: Returns ``-1`` for empty lists.
         """
-        return int
+        return long()
 
     def getSelectedItem(self):
         """Returns the selected item as a ListItem object.
@@ -1741,11 +1947,11 @@ class ControlList(Control):
        .. note:: Same as ``getSelectedPosition()``, but instead of an integer a ``ListItem`` object is returned.
             Returns ``None`` for empty lists.
         """
-        return ListItem
+        return ListItem()
 
     def size(self):
         """Returns the total number of items in this list control as an integer."""
-        return long
+        return long()
 
     def getListItem(self, index):
         """Returns a given ListItem in this List.
@@ -1754,15 +1960,15 @@ class ControlList(Control):
 
         :raises ValueError: If index is out of range.
         """
-        return ListItem
+        return ListItem()
 
     def getItemHeight(self):
         """Returns the control's current item height as an integer."""
-        return long
+        return long()
 
     def getSpace(self):
         """Returns the control's space between items as an integer."""
-        return long
+        return long()
 
     def setStaticContent(self, items):
         """Fills a static list with a list of listitems.
@@ -1785,28 +1991,46 @@ class ControlList(Control):
 
 
 class ControlImage(Control):
-
     """
+    ControlImage(x, y, width, height, filename, aspectRatio=0, colorDiffuse=None)
+
     ControlImage class.
 
     Displays an image from a file.
+
+    :param x: integer - x coordinate of control.
+    :param y: integer - y coordinate of control.
+    :param width: integer - width of control.
+    :param height: integer - height of control.
+    :param filename: string - image filename.
+    :param colorKey: hexString - (example, '0xFFFF3300')
+    :param aspectRatio: integer - (values 0 = stretch (default), 1 = scale up (crops), 2 = scale down (black bars)
+    :param colorDiffuse: hexString - (example, '0xC0FF0000' (red tint)).
+
+    .. note::
+        After you create the control, you need to add it to the window with addControl().
+
+    Example::
+
+        self.image = xbmcgui.ControlImage(100, 250, 125, 75, aspectRatio=2)
     """
 
     def __init__(self, x, y, width, height, filename, aspectRatio=0, colorDiffuse=None):
         """
-        x: integer - x coordinate of control.
-        y: integer - y coordinate of control.
-        width: integer - width of control.
-        height: integer - height of control.
-        filename: string - image filename.
-        colorKey: hexString - (example, '0xFFFF3300')
-        aspectRatio: integer - (values 0 = stretch (default), 1 = scale up (crops), 2 = scale down (black bars)
-        colorDiffuse: hexString - (example, '0xC0FF0000' (red tint)).
+        :param x: integer - x coordinate of control.
+        :param y: integer - y coordinate of control.
+        :param width: integer - width of control.
+        :param height: integer - height of control.
+        :param filename: string - image filename.
+        :param colorKey: hexString - (example, '0xFFFF3300')
+        :param aspectRatio: integer - (values 0 = stretch (default), 1 = scale up (crops), 2 = scale down (black bars)
+        :param colorDiffuse: hexString - (example, '0xC0FF0000' (red tint)).
 
-        Note:
+        .. note::
             After you create the control, you need to add it to the window with addControl().
 
-        Example:
+        Example::
+
             self.image = xbmcgui.ControlImage(100, 250, 125, 75, aspectRatio=2)
         """
         pass
@@ -1829,7 +2053,29 @@ class ControlImage(Control):
 class ControlProgress(Control):
 
     """
+    ControlProgress(self, x, y, width, height, texturebg=None, textureleft=None, texturemid=None, textureright=None, textureoverlay=None)
+
     ControlProgress class.
+
+    :param x: integer - x coordinate of control.
+    :param y: integer - y coordinate of control.
+    :param width: integer - width of control.
+    :param height: integer - height of control.
+    :param texturebg: string - image filename.
+    :param textureleft: string - image filename.
+    :param texturemid: string - image filename.
+    :param textureright: string - image filename.
+    :param textureoverlay: string - image filename.
+
+    .. note::
+        After you create the control, you need to add it to the window with addControl().
+
+    Example::
+
+        self.progress = xbmcgui.ControlProgress(100, 250, 125, 75)
+
+    .. warning::
+        This control seems to be broken. At least I couldn't make it work (Roman V.M.).
     """
 
     def __init__(self, x, y, width, height,
@@ -1837,20 +2083,21 @@ class ControlProgress(Control):
                  texturemid=None, textureright=None,
                  textureoverlay=None):
         """
-        x: integer - x coordinate of control.
-        y: integer - y coordinate of control.
-        width: integer - width of control.
-        height: integer - height of control.
-        texturebg: string - image filename.
-        textureleft: string - image filename.
-        texturemid: string - image filename.
-        textureright: string - image filename.
-        textureoverlay: string - image filename.
+        :param x: integer - x coordinate of control.
+        :param y: integer - y coordinate of control.
+        :param width: integer - width of control.
+        :param height: integer - height of control.
+        :param texturebg: string - image filename.
+        :param textureleft: string - image filename.
+        :param texturemid: string - image filename.
+        :param textureright: string - image filename.
+        :param textureoverlay: string - image filename.
 
-        Note:
+        .. note::
             After you create the control, you need to add it to the window with addControl().
 
-        Example:
+        Example::
+
             self.progress = xbmcgui.ControlProgress(100, 250, 125, 75)
         """
         pass
@@ -1858,47 +2105,65 @@ class ControlProgress(Control):
     def setPercent(self, pct):
         """Sets the percentage of the progressbar to show.
 
-        percent: float - percentage of the bar to show.
+        :param pct: float - percentage of the bar to show.
 
-        Note:
+        .. note::
             Valid range for percent is 0-100.
         """
         pass
 
     def getPercent(self):
         """Returns a float of the percent of the progress."""
-        return float
+        return float()
 
 
 class ControlSlider(Control):
 
     """
+    ControlSlider(x, y, width, height, textureback=None, texture=None, texturefocus=None)
+
     ControlSlider class.
 
     Creates a slider.
+
+    :param x: integer - x coordinate of control.
+    :param y: integer - y coordinate of control.
+    :param width: integer - width of control.
+    :param height: integer - height of control.
+    :param textureback: string - image filename.
+    :param texture: string - image filename.
+    :param texturefocus: string - image filename.
+
+    .. note::
+        After you create the control, you need to add it to the window with addControl().
+
+    Example::
+
+        self.slider = xbmcgui.ControlSlider(100, 250, 350, 40)
     """
 
     def __init__(self, x, y, width, height, textureback=None, texture=None, texturefocus=None):
         """
-        x: integer - x coordinate of control.
-        y: integer - y coordinate of control.
-        width: integer - width of control.
-        height: integer - height of control.
-        textureback: string - image filename.
-        texture: string - image filename.
-        texturefocus: string - image filename.
+        :param x: integer - x coordinate of control.
+        :param y: integer - y coordinate of control.
+        :param width: integer - width of control.
+        :param height: integer - height of control.
+        :param textureback: string - image filename.
+        :param texture: string - image filename.
+        :param texturefocus: string - image filename.
 
-        Note:
+        .. note::
             After you create the control, you need to add it to the window with addControl().
 
-        Example:
+        Example::
+
             self.slider = xbmcgui.ControlSlider(100, 250, 350, 40)
         """
         pass
 
     def getPercent(self):
         """Returns a float of the percent of the slider."""
-        return float
+        return float()
 
     def setPercent(self, percent):
         """Sets the percent of the slider.
@@ -1910,17 +2175,31 @@ class ControlSlider(Control):
 
 class ControlGroup(Control):
 
-    """ControlGroup class."""
+    """
+    ControlGroup(x, y, width, height)
+
+    ControlGroup class.
+
+    :param x: integer - x coordinate of control.
+    :param y: integer - y coordinate of control.
+    :param width: integer - width of control.
+    :param height: integer - height of control.
+
+    Example::
+
+        self.group = xbmcgui.ControlGroup(100, 250, 125, 75)
+    """
 
     def __init__(self, x, y, width, height):
         """
-        x: integer - x coordinate of control.
-        y: integer - y coordinate of control.
-        width: integer - width of control.
-        height: integer - height of control.
+        :param x: integer - x coordinate of control.
+        :param y: integer - y coordinate of control.
+        :param width: integer - width of control.
+        :param height: integer - height of control.
 
-        Example:
-        self.group = xbmcgui.ControlGroup(100, 250, 125, 75)
+        Example::
+
+            self.group = xbmcgui.ControlGroup(100, 250, 125, 75)
         """
         pass
 
@@ -1928,35 +2207,58 @@ class ControlGroup(Control):
 class ControlEdit(Control):
 
     """
+    ControlEdit(self, x, y, width, height, label, font=None, textColor=None, disabledColor=None, _alignment=0, focusTexture=None, noFocusTexture=None, isPassword=False)
+
     ControlEdit class.
 
-    ControlEdit(x, y, width, height, label[, font, textColor,
-                                                    disabledColor, alignment, focusTexture, noFocusTexture])
+    :param x: integer - x coordinate of control.
+    :param y: integer - y coordinate of control.
+    :param width: integer - width of control.
+    :param height: integer - height of control.
+    :param label: string or unicode - text string.
+    :param font: [opt] string - font used for label text. (e.g. 'font13')
+    :param textColor: [opt] hexstring - color of enabled label's label. (e.g. '0xFFFFFFFF')
+    :param disabledColor: [opt] hexstring - color of disabled label's label. (e.g. '0xFFFF3300')
+    :param _alignment: [opt] integer - alignment of label - *Note, see xbfont.h
+    :param focusTexture: [opt] string - filename for focus texture.
+    :param noFocusTexture: [opt] string - filename for no focus texture.
+    :param isPassword: [opt] bool - if true, mask text value.
+
+    .. note::
+        You can use the above as keywords for arguments and skip certain optional arguments.
+        Once you use a keyword, all following arguments require the keyword.
+        After you create the control, you need to add it to the window with ``addControl()``.
+
+    Example::
+
+        self.edit = xbmcgui.ControlEdit(100, 250, 125, 75, 'Status')
     """
 
     def __init__(self, x, y, width, height, label, font=None, textColor=None,
                  disabledColor=None, _alignment=0,
                  focusTexture=None, noFocusTexture=None, isPassword=False):
         """
-        x              : integer - x coordinate of control.
-        y              : integer - y coordinate of control.
-        width          : integer - width of control.
-        height         : integer - height of control.
-        label          : string or unicode - text string.
-        font           : [opt] string - font used for label text. (e.g. 'font13')
-        textColor      : [opt] hexstring - color of enabled label's label. (e.g. '0xFFFFFFFF')
-        disabledColor  : [opt] hexstring - color of disabled label's label. (e.g. '0xFFFF3300')
-        _alignment      : [opt] integer - alignment of label - *Note, see xbfont.h
-        focusTexture   : [opt] string - filename for focus texture.
-        noFocusTexture : [opt] string - filename for no focus texture.
-        isPassword     : [opt] bool - if true, mask text value.
+        :param x: integer - x coordinate of control.
+        :param y: integer - y coordinate of control.
+        :param width: integer - width of control.
+        :param height: integer - height of control.
+        :param label: string or unicode - text string.
+        :param font: [opt] string - font used for label text. (e.g. 'font13')
+        :param textColor: [opt] hexstring - color of enabled label's label. (e.g. '0xFFFFFFFF')
+        :param disabledColor: [opt] hexstring - color of disabled label's label. (e.g. '0xFFFF3300')
+        :param _alignment: [opt] integer - alignment of label - *Note, see xbfont.h
+        :param focusTexture: [opt] string - filename for focus texture.
+        :param noFocusTexture: [opt] string - filename for no focus texture.
+        :param isPassword: [opt] bool - if true, mask text value.
 
-        *Note, You can use the above as keywords for arguments and skip certain optional arguments.
-        Once you use a keyword, all following arguments require the keyword.
-        After you create the control, you need to add it to the window with addControl().
+        .. note::
+            You can use the above as keywords for arguments and skip certain optional arguments.
+            Once you use a keyword, all following arguments require the keyword.
+            After you create the control, you need to add it to the window with ``addControl()``.
 
-        example:
-        - self.edit = xbmcgui.ControlEdit(100, 250, 125, 75, 'Status')
+        Example::
+
+            self.edit = xbmcgui.ControlEdit(100, 250, 125, 75, 'Status')
         """
         pass
 
@@ -1968,7 +2270,7 @@ class ControlEdit(Control):
 
             label = self.edit.getLabel()
         """
-        return unicode
+        return unicode()
 
     def getText(self):
         """
@@ -1978,7 +2280,7 @@ class ControlEdit(Control):
 
             value = self.edit.getText()
         """
-        return unicode
+        return unicode()
 
     def setLabel(self, label='', font=None, textColor=None, disabledColor=None, shadowColor=None,
                  focusedColor=None, label2=''):
@@ -2058,7 +2360,7 @@ class ControlRadioButton(Control):
 
     def isSelected(self):
         """Returns the radio buttons's selected status."""
-        return bool
+        return bool(1)
 
     def setLabel(self, label, font=None, textColor=None, disabledColor=None, shadowColor=None, focusedColor=None):
         """Set's the radio buttons text attributes.
@@ -2095,7 +2397,7 @@ class ControlSpin(Control):
     """
     ControlSpin class.
 
-    - Not working yet -.
+    .. warning:: Not working yet.
 
     you can't create this object, it is returned by objects likeControlTextBox andControlList.
     """
@@ -2109,109 +2411,119 @@ class ControlSpin(Control):
         pass
 
 class Dialog(object):
+    """
+    Initializes Dialog instance.
 
+    Then you need to call a method to open the respective dialog.
+    """
     def browse(self, type, heading, s_shares, mask='', useThumbs=False, treatAsFolder=False, default='',
                enableMultiple=False):
         """Show a 'Browse' dialog.
 
-        type: integer - the type of browse dialog.
-        heading: string or unicode - dialog heading.
-        s_shares: string or unicode - from sources.xml. (i.e. 'myprograms')
-        mask: string or unicode - '|' separated file mask. (i.e. '.jpg|.png')
-        useThumbs: boolean - if True autoswitch to Thumb view if files exist.
-        treatAsFolder: boolean - if True playlists and archives act as folders.
-        default: string - default path or file.
-        enableMultiple: boolean - if True multiple file selection is enabled.
+        :param type: integer - the type of browse dialog.
+        :param heading: string or unicode - dialog heading.
+        :param s_shares: string or unicode - from sources.xml. (i.e. 'myprograms')
+        :param mask: string or unicode - '|' separated file mask. (i.e. '.jpg|.png')
+        :param useThumbs: boolean - if True autoswitch to Thumb view if files exist.
+        :param treatAsFolder: boolean - if True playlists and archives act as folders.
+        :param default: string - default path or file.
+        :param enableMultiple: boolean - if True multiple file selection is enabled.
 
-        Types:
+        Types::
+
             0: ShowAndGetDirectory
             1: ShowAndGetFile
             2: ShowAndGetImage
             3: ShowAndGetWriteableDirectory
 
-        Note:
+        .. note::
             If enableMultiple is False (default): returns filename and/or path as a string
             to the location of the highlighted item, if user pressed 'Ok' or a masked item
             was selected. Returns the default value if dialog was canceled.
+
             If enableMultiple is True: returns tuple of marked filenames as a string,
             if user pressed 'Ok' or a masked item was selected. Returns empty tuple if dialog was canceled.
 
             If type is 0 or 3 the enableMultiple parameter is ignored.
 
-        Example:
+        Example::
+
             dialog = xbmcgui.Dialog()
             fn = dialog.browse(3, 'XBMC', 'files', '', False, False, False, 'special://masterprofile/script_data/XBMC Lyrics')
         """
-        return str
+        return str()
 
     def browseMultiple(self, type, heading, shares, mask='', useThumbs=None, treatAsFolder=None, default=''):
         """
-        browse(type, heading, shares[, mask, useThumbs, treatAsFolder, default])--Show a 'Browse' dialog.
+        Show a 'Browse' dialog.
 
-        type : integer - the type of browse dialog.
-        heading : string or unicode - dialog heading.
-        shares : string or unicode - from sources.xml. (i.e. 'myprograms')
-        mask : [opt] string or unicode - '|' separated file mask. (i.e. '.jpg|.png')
-        useThumbs : [opt] boolean - if True autoswitch to Thumb view if files exist (default=false).
-        treatAsFolder : [opt] boolean - if True playlists and archives act as folders (default=false).
-        default : [opt] string - default path or file.
+        :param type: integer - the type of browse dialog.
+        :param heading: string or unicode - dialog heading.
+        :param shares: string or unicode - from sources.xml. (i.e. 'myprograms')
+        :param mask: [opt] string or unicode - '|' separated file mask. (i.e. '.jpg|.png')
+        :param useThumbs: [opt] boolean - if True autoswitch to Thumb view if files exist (default=false).
+        :param treatAsFolder: [opt] boolean - if True playlists and archives act as folders (default=false).
+        :param default: [opt] string - default path or file.
 
-        Types:
-        - 1 : ShowAndGetFile
-        - 2 : ShowAndGetImage
+        Types::
+
+            - 1 : ShowAndGetFile
+            - 2 : ShowAndGetImage
 
 
-        *Note,
-        returns tuple of marked filenames as a string,"
-        if user pressed 'Ok' or a masked item was selected. Returns empty tuple if dialog was canceled.
+        .. note::
+            Returns tuple of marked filenames as a string,
+            if user pressed 'Ok' or a masked item was selected. Returns empty tuple if dialog was canceled.
 
-        example:
+        Example::
 
-        - dialog = xbmcgui.Dialog()
-        - fn = dialog.browseMultiple(2, 'XBMC', 'files', '', False, False, 'special://masterprofile/script_data/XBMC Lyrics')
+            dialog = xbmcgui.Dialog()
+            fn = dialog.browseMultiple(2, 'XBMC', 'files', '', False, False, 'special://masterprofile/script_data/XBMC Lyrics')
         """
-        return tuple
+        return tuple()
 
     def browseSingle(self, type, heading, shares, mask='', useThumbs=None, treatAsFolder=None, default=''):
         """
-        browse(type, heading, shares[, mask, useThumbs, treatAsFolder, default])--Show a 'Browse' dialog.
+        Show a 'Browse' dialog.
 
-        type : integer - the type of browse dialog.
-        heading : string or unicode - dialog heading.
-        shares : string or unicode - from sources.xml. (i.e. 'myprograms')
-        mask : [opt] string or unicode - '|' separated file mask. (i.e. '.jpg|.png')
-        useThumbs : [opt] boolean - if True autoswitch to Thumb view if files exist (default=false).
-        treatAsFolder : [opt] boolean - if True playlists and archives act as folders (default=false).
-        default : [opt] string - default path or file.
+        :param type: integer - the type of browse dialog.
+        :param heading: string or unicode - dialog heading.
+        :param shares: string or unicode - from sources.xml. (i.e. 'myprograms')
+        :param mask: [opt] string or unicode - '|' separated file mask. (i.e. '.jpg|.png')
+        :param useThumbs: [opt] boolean - if True autoswitch to Thumb view if files exist (default=false).
+        :param treatAsFolder: [opt] boolean - if True playlists and archives act as folders (default=false).
+        :param default: [opt] string - default path or file.
 
-        Types:
+        Types::
 
-        - 0 : ShowAndGetDirectory
-        - 1 : ShowAndGetFile
-        - 2 : ShowAndGetImage
-        - 3 : ShowAndGetWriteableDirectory
-        *Note, Returns filename and/or path as a string to the location of the highlighted item,
-        if user pressed 'Ok' or a masked item was selected.
-        Returns the default value if dialog was canceled.
+            - 0 : ShowAndGetDirectory
+            - 1 : ShowAndGetFile
+            - 2 : ShowAndGetImage
+            - 3 : ShowAndGetWriteableDirectory
 
-        example:
+        .. note:: Returns filename and/or path as a string to the location of the highlighted item,
+            if user pressed 'Ok' or a masked item was selected.
+            Returns the default value if dialog was canceled.
 
-        - dialog = xbmcgui.Dialog()
-        - fn = dialog.browse(3, 'XBMC', 'files', '', False, False, 'special://masterprofile/script_data/XBMC Lyrics')
+        Example::
+
+            dialog = xbmcgui.Dialog()
+            fn = dialog.browse(3, 'XBMC', 'files', '', False, False, 'special://masterprofile/script_data/XBMC Lyrics')
         """
-        return str
+        return str()
 
     def input(self, heading, default='', type=INPUT_ALPHANUM, option=0, autoclose=0):
         """
-        input(heading[, default, type, option, autoclose])--Show an Input dialog.
+        Show an Input dialog.
 
-        heading : string - dialog heading.
-        default : [opt] string - default value. (default=empty string)
-        type : [opt] integer - the type of keyboard dialog. (default=xbmcgui.INPUT_ALPHANUM)
-        option : [opt] integer - option for the dialog. (see Options below)
-        autoclose : [opt] integer - milliseconds to autoclose dialog. (default=do not autoclose)
+        :param heading: string -- dialog heading.
+        :param default: [opt] string -- default value. (default=empty string)
+        :param type: [opt] integer -- the type of keyboard dialog. (default=xbmcgui.INPUT_ALPHANUM)
+        :param option: [opt] integer -- option for the dialog. (see Options below)
+        :param autoclose: [opt] integer -- milliseconds to autoclose dialog. (default=do not autoclose)
 
         Types:
+
         - xbmcgui.INPUT_ALPHANUM (standard keyboard)
         - xbmcgui.INPUT_NUMERIC (format: #)
         - xbmcgui.INPUT_DATE (format: DD/MM/YYYY)
@@ -2220,136 +2532,147 @@ class Dialog(object):
         - xbmcgui.INPUT_PASSWORD (return md5 hash of input, input is masked)
 
 
-        Options PasswordDialog :
+        Options PasswordDialog: xbmcgui.PASSWORD_VERIFY (verifies an existing (default) md5 hashed password)
+        Options AlphanumDialog: xbmcgui.ALPHANUM_HIDE_INPUT (masks input)
 
-        - xbmcgui.PASSWORD_VERIFY (verifies an existing (default) md5 hashed password)
-        Options AlphanumDialog :
 
-        - xbmcgui.ALPHANUM_HIDE_INPUT (masks input)
-        *Note, Returns the entered data as a string.
-        Returns an empty string if dialog was canceled.
+        .. note::
+            Returns the entered data as a string.
+            Returns an empty string if dialog was canceled.
 
-        Note:
+        .. note::
             available since Gotham
 
-        Example:
-        - dialog = xbmcgui.Dialog()
-        - d = dialog.input('Enter secret code', type=xbmcgui.INPUT_ALPHANUM, option=xbmcgui.ALPHANUM_HIDE_INPUT)
+        Example::
+
+            dialog = xbmcgui.Dialog()
+            d = dialog.input('Enter secret code', type=xbmcgui.INPUT_ALPHANUM, option=xbmcgui.ALPHANUM_HIDE_INPUT)
         """
-        return str
+        return str()
 
     def numeric(self, type, heading, default=''):
         """Show a 'Numeric' dialog.
 
-        type: integer - the type of numeric dialog.
-        heading: string or unicode - dialog heading.
-        default: string - default value.
+        :param type: integer -- the type of numeric dialog.
+        :param heading: string or unicode -- dialog heading.
+        :param default: string -- default value.
 
-        Types:
+        Types::
+
             0: ShowAndGetNumber    (default format: #)
             1: ShowAndGetDate      (default format: DD/MM/YYYY)
             2: ShowAndGetTime      (default format: HH:MM)
             3: ShowAndGetIPAddress (default format: #.#.#.#)
 
-        Note:
+        .. note::
             Returns the entered data as a string.
             Returns the default value if dialog was canceled.
 
-        Example:
+        Example::
+
             dialog = xbmcgui.Dialog()
             d = dialog.numeric(1, 'Enter date of birth')
         """
-        return str
+        return str()
 
     def notification(self, heading, message, icon='', time=0, sound=True):
         """
-        notification(heading, message[, icon, time, sound])--Show a Notification alert.
+        Show a Notification alert.
 
-        heading : string - dialog heading.
-        message : string - dialog message.
-        icon : [opt] string - icon to use. (default xbmcgui.NOTIFICATION_INFO)
-        time : [opt] integer - time in milliseconds (default 5000)
-        sound : [opt] bool - play notification sound (default True)
+        :param heading: string -- dialog heading.
+        :param message: string -- dialog message.
+        :param icon: [opt] string -- icon to use. (default xbmcgui.NOTIFICATION_INFO)
+        :param time: [opt] integer -- time in milliseconds (default 5000)
+        :param sound: [opt] bool -- play notification sound (default True)
 
         Builtin Icons:
 
         - xbmcgui.NOTIFICATION_INFO
         - xbmcgui.NOTIFICATION_WARNING
         - xbmcgui.NOTIFICATION_ERROR
-        example:
-        - dialog = xbmcgui.Dialog()
-        - dialog.notification('Movie Trailers', 'Finding Nemo download finished.', xbmcgui.NOTIFICATION_INFO, 5000)
+
+        example::
+
+            dialog = xbmcgui.Dialog()
+            dialog.notification('Movie Trailers', 'Finding Nemo download finished.', xbmcgui.NOTIFICATION_INFO, 5000)
         """
         pass
 
     def yesno(self, heading, line1, line2='', line3='', nolabel='', yeslabel='', autoclose=0):
-        """Show a dialog 'YES/NO'.
+        """Show a confirmation dialog 'YES/NO'.
 
-        heading: string or unicode - dialog heading.
-        line1: string or unicode - line #1 text.
-        line2: string or unicode - line #2 text.
-        line3: string or unicode - line #3 text.
-        nolabel: label to put on the no button.
-        yeslabel: label to put on the yes button.
-        autoclose : [opt] integer - milliseconds to autoclose dialog. (default=do not autoclose)
+        :param heading: string or unicode -- dialog heading.
+        :param line1: string or unicode -- line #1 text.
+        :param line2: string or unicode -- line #2 text.
+        :param line3: string or unicode -- line #3 text.
+        :param nolabel: label to put on the no button.
+        :param yeslabel: label to put on the yes button.
+        :param autoclose : [opt] integer -- milliseconds to autoclose dialog. (default=do not autoclose)
 
-        Note:
-            Returns True if 'Yes' was pressed, else False.
+        .. note::
+            Returns ``True`` if 'Yes' was pressed, else ``False``.
 
-        Example:
+        Example::
+
             dialog = xbmcgui.Dialog()
             ret = dialog.yesno('XBMC', 'Do you want to exit this script?')
         """
-        return bool
+        return bool(1)
 
     def ok(self, heading, line1, line2='', line3=''):
         """Show a dialog 'OK'.
 
-        heading: string or unicode - dialog heading.
-        line1: string or unicode - line #1 text.
-        line2: string or unicode - line #2 text.
-        line3: string or unicode - line #3 text.
+        :param heading: string or unicode -- dialog heading.
+        :param line1: string or unicode -- line #1 text.
+        :param line2: string or unicode -- line #2 text.
+        :param line3: string or unicode -- line #3 text.
 
-        Note:
-            Returns True if 'Ok' was pressed, else False.
+        .. note::
+            Returns ``True`` if 'Ok' was pressed, else ``False``.
 
-        Example:
+        Example::
+
             dialog = xbmcgui.Dialog()
             ok = dialog.ok('XBMC', 'There was an error.')
         """
-        return bool
+        return bool(1)
 
     def select(self, heading, list, autoclose=0):
         """Show a select dialog.
 
-        heading: string or unicode - dialog heading.
-        list: string list - list of items.
-        autoclose: integer - milliseconds to autoclose dialog.
+        :param heading: string or unicode -- dialog heading.
+        :param list: string list -- list of items.
+        :param autoclose: integer -- milliseconds to autoclose dialog.
 
-        Note:
+        .. note::
             autoclose = 0 - This disables autoclose.
             Returns the position of the highlighted item as an integer.
 
-        Example:
+        Example::
+
             dialog = xbmcgui.Dialog()
             ret = dialog.select('Choose a playlist', ['Playlist #1', 'Playlist #2, 'Playlist #3'])
         """
-        return int
+        return int()
 
 
 class DialogProgress(object):
+    """
+    Implements a modal progress dialog
+    """
     def create(self, heading, line1='', line2='', line3=''):
         """Create and show a progress dialog.
 
-        heading: string or unicode - dialog heading.
-        line1: string or unicode - line #1 text.
-        line2: string or unicode - line #2 text.
-        line3: string or unicode - line #3 text.
+        :param heading: string or unicode - dialog heading.
+        :param line1: string or unicode - line #1 text.
+        :param line2: string or unicode - line #2 text.
+        :param line3: string or unicode - line #3 text.
 
-        Note:
+        .. note::
             Use update() to update lines and progressbar.
 
-        Example:
+        Example::
+
             pDialog = xbmcgui.DialogProgress()
             ret = pDialog.create('XBMC', 'Initializing script...')
         """
@@ -2358,22 +2681,23 @@ class DialogProgress(object):
     def update(self, percent, line1='', line2='', line3=''):
         """Update's the progress dialog.
 
-        percent: integer - percent complete. (0:100)
-        line1: string or unicode - line #1 text.
-        line2: string or unicode - line #2 text.
-        line3: string or unicode - line #3 text.
+        :param percent: integer - percent complete. (0:100)
+        :param line1: string or unicode - line #1 text.
+        :param line2: string or unicode - line #2 text.
+        :param line3: string or unicode - line #3 text.
 
-        Note:
+        .. note::
             If percent == 0, the progressbar will be hidden.
 
-        Example:
+        Example::
+
             pDialog.update(25, 'Importing modules...')
         """
         pass
 
     def iscanceled(self):
-        """Returns True if the user pressed cancel."""
-        return bool
+        """Returns ``True`` if the user pressed cancel."""
+        return bool(1)
 
     def close(self):
         """Close the progress dialog."""
@@ -2381,58 +2705,63 @@ class DialogProgress(object):
 
 
 class DialogProgressBG(object):
-
     """
-   	DialogProgressBG class
     Displays a small progress dialog in the corner of the screen.
+
+    The dialog is not modal and does not block Kodi UI.
     """
 
     def close(self):
         """
-        close() --Close the background progress dialog
+        Close the background progress dialog
 
-        example:
-        - pDialog.close()
+        example::
+
+            pDialog.close()
         """
         pass
 
     def create(self, heading, message=''):
         """
-        create(heading[, message])--Create and show a background progress dialog.n
+        Create and show a background progress dialog.n
 
-        heading : string or unicode - dialog headingn
-        message : [opt] string or unicode - message textn
+        :param heading: string or unicode - dialog heading
+        :param message: [opt] string or unicode - message text
 
-        *Note, 'heading' is used for the dialog's id. Use a unique heading.n
-        Useupdate() to update heading, message and progressbar.n
+        .. note:: 'heading' is used for the dialog's id. Use a unique heading.
+            Use update() to update heading, message and progressbar.
 
-        example:
-        - pDialog = xbmcgui.DialogProgressBG()
-        - pDialog.create('Movie Trailers', 'Downloading Monsters Inc. ...')
+        example::
+
+            pDialog = xbmcgui.DialogProgressBG()
+            pDialog.create('Movie Trailers', 'Downloading Monsters Inc. ...')
         """
         pass
 
     def isFinished(self):
         """
-        isFinished() --Returns True if the background dialog is active.
+        Returns ``True`` if the background dialog is active.
 
-        example:
-        - if (pDialog.isFinished()): break
+        example::
+
+            if (pDialog.isFinished()):
+                break
         """
-        return bool
+        return bool(1)
 
     def update(self, percent=0, heading='', message=''):
         """
-        update([percent, heading, message])--Updates the background progress dialog.
+        Updates the background progress dialog.
 
-        percent : [opt] integer - percent complete. (0:100)
-        heading : [opt] string or unicode - dialog heading
-        message : [opt] string or unicode - message text
+        :param percent: [opt] integer - percent complete. (0:100)
+        :param heading: [opt] string or unicode - dialog heading
+        :param message: [opt] string or unicode - message text
 
-        *Note, To clear heading or message, you must pass a blank character.
+        .. note:: To clear heading or message, you must pass a blank character.
 
-        example:
-        - pDialog.update(25, message='Downloading Finding Nemo ...')
+        example::
+
+            pDialog.update(25, message='Downloading Finding Nemo ...')
         """
         pass
 
@@ -2443,42 +2772,46 @@ class Action(object):
     For backwards compatibility reasons the == operator is extended so that it
     can compare an action with other actions and action.GetID() with numbers.
 
-    Example:
-        (action == ACTION_MOVE_LEFT)
+    Example::
+
+        if action == ACTION_MOVE_LEFT:
+            do.something()
     """
 
     def getId(self):
         """Returns the action's current id as a long or 0 if no action is mapped in the xml's."""
-        return long
+        return long()
 
     def getButtonCode(self):
         """Returns the button code for this action."""
-        return long
+        return long()
 
     def getAmount1(self):
         """Returns the first amount of force applied to the thumbstick."""
-        return float
+        return float()
 
     def getAmount2(self):
         """Returns the second amount of force applied to the thumbstick."""
-        return float
+        return float()
 
 
 def getCurrentWindowId():
     """
-    getCurrentWindowId()--Returns the id for the current 'active' window as an integer.
+    Returns the id for the current 'active' window as an integer.
 
-    example:
-    - wid = xbmcgui.getCurrentWindowId()
+    example::
+
+        wid = xbmcgui.getCurrentWindowId()
     """
-    return long
+    return long()
 
 
 def getCurrentWindowDialogId():
     """
-    getCurrentWindowDialogId()--Returns the id for the current 'active' dialog as an integer.
+    Returns the id for the current 'active' dialog as an integer.
 
-    example:
-    - wid = xbmcgui.getCurrentWindowDialogId()
+    example::
+
+        wid = xbmcgui.getCurrentWindowDialogId()
     """
-    return long
+    return long()
