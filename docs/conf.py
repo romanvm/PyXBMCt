@@ -40,7 +40,7 @@ extensions = [
 ]
 
 autodoc_member_order = 'bysource'
-autodoc_default_flags = ['members', 'inherited-members', 'show-inheritance']
+autodoc_default_flags = ['members', 'show-inheritance']
 autosummary_generate = True
 intersphinx_mapping = {'https://docs.python.org/2.7': None,
                        'http://romanvm.github.io/Kodistubs/': None}
