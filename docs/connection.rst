@@ -4,9 +4,11 @@ Connection Manager
 Connection manager is similar to the signal-slot connection mechanism of Qt framework.
 It allows you to connect an event — a control or a key action code — to a function or a method to be activated
 when the respective control is activated or when a key is pressed, thus invoking the key action bound to it.
-The connection manager is implemented through ``connect`` method of a base PyXBMCt class.
+The connection manager is implemented through :meth:`connect<pyxbmct.addonwindow.AbstractWindow.connect>`
+method of a base PyXBMCt class.
 
-You can only connect the following controls: ``Button``, ``RadioButton`` and ``List``.
+You can only connect the following controls: :class:`Button<pyxbmct.addonwindow.Button>`,
+:class:`RadioButton<pyxbmct.addonwindow.RadioButton>` and :class:`List<pyxbmct.addonwindow.List>`.
 Other controls do not generate any UI events, so connecting them won’t have any effect.
 
 .. warning::

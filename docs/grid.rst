@@ -14,8 +14,8 @@ how many cells it should take.
     Row and column numbers start from zero, i.e. the top-left cell will have row# = ``0``, column# = ``0``.
 
 .. warning::
-    Currently PyXBMCt does not support changing window geometry at runtime so you must call ``setGeometry``
-    method only once.
+    Currently PyXBMCt does not support changing window geometry at runtime so you must call
+    :meth:`setGeometry<pyxbmct.addonwindow.AbstractWindow.setGeometry>` method only once.
 
 The Grid layout manager does not check if a control will actually be placed within the parent window.
 By providing a row and/or a column number which exceeds row and/or column count of the parent window, a control can be placed outside the window, intentionally or unintentionally.
@@ -25,4 +25,5 @@ The Grid layout manager also works with xbmcgui controls, but when instantiating
 to provide it with fake coordinates and size. Any integer values will do.
 
 **Hint**: the size and aspect of an individual control can be adjusted with ``pad_x`` and ``pad_y`` parameters
-of ``placeControl`` method. By default, both padding values equal ``5``.
+of :meth:`placeControl<pyxbmct.addonwindow.AbstractWindow.placeControl>` method.
+By default, both padding values equal ``5``.
