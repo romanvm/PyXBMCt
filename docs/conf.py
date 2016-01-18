@@ -20,7 +20,7 @@ import os
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 
 sys.path.insert(0, os.path.abspath('../../script.module.pyxbmct/lib'))
-sys.path.insert(0, os.path.abspath('../xbmcstubs'))
+sys.path.insert(0, os.path.abspath('../../xbmcstubs'))
 
 # -- General configuration ------------------------------------------------
 
