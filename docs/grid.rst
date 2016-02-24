@@ -11,8 +11,10 @@ The Grid layout manager is implemented through
   Currently PyXBMCt does not support changing window geometry at runtime so you must call
   :meth:`setGeometry<pyxbmct.addonwindow.AbstractWindow.setGeometry>` method only once.
 
-To place a control you simply provide it as the 1st positional argument to addControl then specify a row and a column
-for the control as the next arguments, and the control will be placed in a specific grid cell.
+To place a control you simply provide it as the 1st positional argument to
+:meth:`placeControl<pyxbmct.addonwindow.AbstractWindow.placeControl>` method,
+and then specify a row and a column for the control as the next arguments,
+and the control will be placed in a specific grid cell.
 This eliminates the need to provide exact coordinates for each control and then fine-tune them.
 If a control needs to occupy several grid cells, you can provide rowspan and/or columspan parameters to specify
 how many cells it should take.
