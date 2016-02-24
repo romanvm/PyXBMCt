@@ -19,8 +19,8 @@ import os
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 
-sys.path.insert(0, os.path.abspath('../../script.module.pyxbmct/lib'))
-sys.path.insert(0, os.path.abspath('../../xbmcstubs'))
+sys.path.insert(0, os.path.abspath('../script.module.pyxbmct/lib'))
+sys.path.insert(0, os.path.abspath('../Kodistubs'))
 
 # -- General configuration ------------------------------------------------
 
@@ -43,7 +43,7 @@ autodoc_member_order = 'bysource'
 autodoc_default_flags = ['members', 'show-inheritance']
 autosummary_generate = True
 intersphinx_mapping = {'https://docs.python.org/2.7': None,
-                       'http://romanvm.github.io/Kodistubs/': None}
+                       'http://romanvm.github.io/Kodistubs': None}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
