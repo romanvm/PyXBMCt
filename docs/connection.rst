@@ -10,7 +10,7 @@ or a numeric action code, and a function/method object to be called. For example
 
   self.connect(self.foo_button, self.on_foo_clicked)
 
-Where ``self.foo_button`` is a :class:`Button<pyxbmct.addonwindow.Button>` instance and
+Here ``self.foo_button`` is a :class:`Button<pyxbmct.addonwindow.Button>` instance and
 ``self.on_foo_clicked`` is some method that needs to be called when a user activates
 ``self.foo_button``.
 
